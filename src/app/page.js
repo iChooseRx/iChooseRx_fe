@@ -1,33 +1,36 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { getSavedPrescriptions } from '../services/api';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
-export default function Home() {
-  const [prescriptions, setPrescriptions] = useState([]);
-  const [error, setError] = useState(null);
+export default function LandingPage() {
+  const router = useRouter();
 
+  // Redirect if user is already logged in
   useEffect(() => {
-    const fetchPrescriptions = async () => {
-      try {
-        const data = await getSavedPrescriptions();
-        setPrescriptions(data.data);
-      } catch (err) {
-        setError('Failed to load saved prescriptions.');
-      }
-    };
-    fetchPrescriptions();
-  }, []);
+    const isLoggedIn = !!localStorage.getItem('user'); // Mock logged-in state
+    if (isLoggedIn) {
+      router.push('/dashboard');
+    }
+  }, [router]);
 
   return (
-    <main className="p-6">
-      <h1 className="text-2xl font-bold">Saved Prescriptions</h1>
-      {error && <p className="text-red-500">{error}</p>}
-      <ul>
-        {prescriptions.map((prescription) => (
-          <li key={prescription.id}>{prescription.attributes.drug_name}</li>
-        ))}
-      </ul>
+    <main className="h-screen flex flex-col items-center justify-center bg-gray-100">
+      <h1 className="text-4xl font-bold mb-6">Welcome to NoColorX</h1>
+      <div className="space-x-4">
+        <button
+          onClick={() => router.push('/login')}
+          className="px-6 py-2 bg-blue-600 text-white rounded"
+        >
+          Login
+        </button>
+        <button
+          onClick={() => router.push('/signup')}
+          className="px-6 py-2 bg-green-600 text-white rounded"
+        >
+          Sign Up
+        </button>
+      </div>
     </main>
   );
 }

@@ -1,9 +1,11 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+  baseURL: process.env.NEXT_PUBLIC_NOCOLORX_BE_BASE_URL,
   withCredentials: true, // Enable cookies for session handling
 });
+
+console.log('Base URL:', api.defaults.baseURL); // Add this for debugging base url
 
 export const getSavedPrescriptions = async () => {
   const response = await api.get('/saved_prescriptions');
@@ -17,6 +19,11 @@ export const createSavedPrescription = async (prescription) => {
 
 export const deleteSavedPrescription = async (id) => {
   const response = await api.delete(`/saved_prescriptions/${id}`);
+  return response.data;
+};
+
+export const createUser = async (user) => {
+  const response = await api.post('/users', { user }); // Matches /api/v1/users
   return response.data;
 };
 
