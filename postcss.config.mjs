@@ -4,5 +4,11 @@ const config = {
     tailwindcss: {},
   },
 };
+// module.exports = {
+//   plugins: {
+//     tailwindcss: {},
+//     autoprefixer: {}, // Add this to handle browser-specific CSS prefixes
+//   },
+// };
 
 export default config;
