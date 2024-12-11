@@ -37,4 +37,14 @@ export const logoutUser = async () => {
   return response.data;
 };
 
+export const searchDrugs = async (drugName) => {
+  try {
+    const response = await api.get(`/drugs`, { params: { drug_name: drugName } });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching drugs:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
 export default api;
