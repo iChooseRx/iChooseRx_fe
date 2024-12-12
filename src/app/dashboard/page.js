@@ -169,7 +169,7 @@ export default function Dashboard() {
             value={drugName}
             onChange={(e) => setDrugName(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSearch(e)} // Trigger search on Enter
-            placeholder="Enter drug name"
+            placeholder="Enter drug's generic name"
             className="border rounded p-2 w-full font-bold bg-white text-black dark:bg-gray-800 dark:text-white transition-colors"
           />
           <button
