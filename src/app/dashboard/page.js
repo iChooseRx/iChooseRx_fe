@@ -57,7 +57,7 @@ export default function Dashboard() {
 
   const renderSearchResults = () => (
     <section>
-      <h2 className="text-xl font-semibold mb-2">Search Results</h2>
+      <h2 className="text-xl font-semibold mb-2">{`${searchResults.length} ${drugName} Search Results without FD&C Food Colorings`}</h2>
       <ul className="space-y-4">
         {searchResults.map((result) => {
           const { metadata, fields, package_label_principal_display_panel } = result.attributes;
@@ -66,18 +66,20 @@ export default function Dashboard() {
           return (
             <li
               key={result.id}
-              className={`border p-4 rounded shadow cursor-pointer ${isExpanded ? 'bg-gray-100' : ''
+              className={`border p-4 rounded shadow cursor-pointer transition-colors ${isExpanded
+                ? 'bg-white text-black dark:bg-gray-800 dark:text-white' // Expanded: Dynamic colors
+                : 'bg-gray-100 text-black dark:bg-gray-900 dark:text-white' // Collapsed: Dynamic colors
                 }`}
               onClick={() => handleSelectDrug(result)} // Handle click to expand/collapse
             >
               {/* Brand Name */}
-              <h3 className="font-bold text-lg text-black">
+              <h3 className="font-bold text-lg">
                 {metadata.openfda?.brand_name?.[0] || 'Unknown Brand'}
               </h3>
 
               {/* Render additional details only if expanded */}
               {isExpanded && (
-                <div className="mt-4 text-black">
+                <div className="mt-4">
                   {/* Manufacturer */}
                   <p>
                     <strong>Manufacturer:</strong> {metadata.openfda?.manufacturer_name?.[0] || 'N/A'}
@@ -168,7 +170,7 @@ export default function Dashboard() {
             onChange={(e) => setDrugName(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSearch(e)} // Trigger search on Enter
             placeholder="Enter drug name"
-            className="border rounded p-2 w-full font-bold text-black"
+            className="border rounded p-2 w-full font-bold bg-white text-black dark:bg-gray-800 dark:text-white transition-colors"
           />
           <button
             onClick={handleSearch}
