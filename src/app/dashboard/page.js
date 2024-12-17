@@ -67,7 +67,7 @@ export default function Dashboard() {
             <li
               key={result.id}
               className={`border p-4 rounded shadow cursor-pointer transition-colors ${isExpanded
-                ? 'bg-white text-black dark:bg-gray-800 dark:text-white' // Expanded: Dynamic colors
+                ? 'bg-white text-black dark:bg-gray-900 dark:text-white' // Expanded: Dynamic colors
                 : 'bg-gray-100 text-black dark:bg-gray-900 dark:text-white' // Collapsed: Dynamic colors
                 }`}
               onClick={() => handleSelectDrug(result)} // Handle click to expand/collapse
@@ -170,7 +170,7 @@ export default function Dashboard() {
             onChange={(e) => setDrugName(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSearch(e)} // Trigger search on Enter
             placeholder="Enter drug's generic name"
-            className="border rounded p-2 w-full font-bold bg-white text-black dark:bg-gray-800 dark:text-white transition-colors"
+            className="border rounded p-2 w-full font-bold bg-white text-black dark:bg-gray-900 dark:text-white transition-colors"
           />
           <button
             onClick={handleSearch}
