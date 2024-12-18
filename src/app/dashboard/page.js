@@ -88,7 +88,7 @@ export default function Dashboard() {
         {`${resultStats?.filtered_results || 0} ${drugName} Search Results without FD&C Food Colorings`}
       </h2>
       {/* Bar Graph */}
-      <div style={{ width: '100%', height: 200 }} className="mb-4">
+      <div style={{ width: '100%', height: 150 }} className="mb-4">
         <ResponsiveContainer>
           <BarChart
             data={chartData}
@@ -117,10 +117,14 @@ export default function Dashboard() {
               cursor={{ fill: 'transparent' }}
               contentStyle={{
                 backgroundColor: isDarkMode ? '#2c2c2c' : '#ffffff',
-                color: '#000000',
+                color: isDarkMode ? '#ffffff' : '#000000', // White font in dark mode
                 border: '1px solid #ddd',
+                fontWeight: 'bold'
               }}
-              labelStyle={{ color: '#000000', fontWeight: 'bold' }}
+              labelStyle={{
+                color: isDarkMode ? '#ffffff' : '#000000', // White font for the label in dark mode
+                fontWeight: 'bold'
+              }}
             />
 
             {/* Bars */}
