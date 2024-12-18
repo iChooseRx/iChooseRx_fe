@@ -49,20 +49,11 @@ export default function Dashboard() {
     setLoading(true);
 
     try {
-      const apiResponse = await searchDrugs(drugName); // Fetch response
-      console.log('API Response:', apiResponse);
-
-      const { data, meta } = apiResponse || {}; // Safely destructure data and meta
-      console.log('Meta:', meta);
-
-      const totalResults = meta?.total_results || 0;
-      const filteredResults = meta?.filtered_results || 0;
-
-      console.log('Total Results:', totalResults);
-      console.log('Filtered Results:', filteredResults);
-
-      setSearchResults(data || []); // Set drug data
-      setResultStats({ total_results: totalResults, filtered_results: filteredResults }); // Set result stats
+      const { data, meta } = await searchDrugs(drugName); // Fetch data from API
+      console.log('API Meta Data:', meta); // Debugging log for meta
+      console.log('Filtered Data:', data); // Debugging log for filtered data
+      setSearchResults(data); // Store filtered drug data
+      setResultStats(meta); // Store meta data (total and filtered results)
     } catch (err) {
       console.error('Search Error:', err);
       setError('Failed to fetch drug data. Please try again.');
@@ -81,23 +72,15 @@ export default function Dashboard() {
   };
 
   // bar chart data
-  const totalResults = Number(resultStats?.total_results) || 0;
-  const filteredResults = Number(resultStats?.filtered_results) || 0;
-
-  console.log('Sanitized Total Results:', totalResults);
-  console.log('Sanitized Filtered Results:', filteredResults);
-
   const chartData = [
     {
       name: 'Results',
-      totalResults: totalResults,
-      filteredResults: filteredResults,
+      totalResults: resultStats?.total_results || 0,
+      filteredResults: resultStats?.filtered_results || 0,
     },
   ];
 
-  console.log('Chart Data to Render:', chartData);
-  console.log('Total Results:', totalResults);
-  console.log('Filtered Results:', filteredResults);
+  console.log('Chart Data:', chartData); // Debugging log for chartData
 
   const renderSearchResults = () => (
     <section>
@@ -107,21 +90,23 @@ export default function Dashboard() {
       {/* Bar Graph */}
       <div style={{ width: '100%', height: 200 }} className="mb-4">
         <ResponsiveContainer>
-          <BarChart data={chartData} layout="horizontal">
-            {/* X-Axis */}
-            <XAxis
-              type="number"
-              domain={[0, 'dataMax + 10']} // Adds padding to show bars properly
-              allowDecimals={false}
+          <BarChart
+            data={chartData}
+            layout="vertical" // Makes the bars horizontal
+          >
+            {/* Y-Axis - The "category" axis */}
+            <YAxis
+              type="category"
+              dataKey="name"
               tick={{ fill: isDarkMode ? '#ffffff' : '#000000' }}
               axisLine={{ stroke: isDarkMode ? '#ffffff' : '#000000' }}
               tickLine={{ stroke: isDarkMode ? '#ffffff' : '#000000' }}
             />
 
-            {/* Y-Axis */}
-            <YAxis
-              type="category"
-              dataKey="name"
+            {/* X-Axis - The "number" axis */}
+            <XAxis
+              type="number"
+              domain={[0, 'dataMax + 10']} // Adds padding to the bar lengths
               tick={{ fill: isDarkMode ? '#ffffff' : '#000000' }}
               axisLine={{ stroke: isDarkMode ? '#ffffff' : '#000000' }}
               tickLine={{ stroke: isDarkMode ? '#ffffff' : '#000000' }}
@@ -144,14 +129,14 @@ export default function Dashboard() {
               name="Total Results"
               fill="#e74c3c"
               barSize={20}
-              radius={[4, 4, 0, 0]}
+              radius={[0, 4, 4, 0]} // Adjust the corner radius for horizontal bars
             />
             <Bar
               dataKey="filteredResults"
               name="Filtered Results"
               fill="#2ecc71"
               barSize={20}
-              radius={[4, 4, 0, 0]}
+              radius={[0, 4, 4, 0]}
             />
 
             {/* Legend */}
