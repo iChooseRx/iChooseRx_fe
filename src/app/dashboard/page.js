@@ -145,10 +145,16 @@ export default function Dashboard() {
 
             {/* Legend */}
             <Legend
-              wrapperStyle={{
-                color: isDarkMode ? '#ffffff' : '#000000',
-                fontWeight: 'bold',
-              }}
+              content={() => (
+                <div style={{ textAlign: 'center', color: isDarkMode ? '#ffffff' : '#000000', fontWeight: 'bold' }}>
+                  <span style={{ color: '#e74c3c', marginRight: '10px' }}>
+                    Total Results: {resultStats?.total_results || 0}
+                  </span>
+                  <span style={{ color: '#2ecc71' }}>
+                    Filtered Results: {resultStats?.filtered_results || 0}
+                  </span>
+                </div>
+              )}
             />
           </BarChart>
         </ResponsiveContainer>
