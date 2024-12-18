@@ -41,8 +41,8 @@ export const searchDrugs = async (drugName) => {
   const response = await api.get('/drugs', {
     params: { drug_name: drugName },
   });
+  console.log('API Response:', response.data);
   return response.data;
 };
-
 
 export default api;

@@ -2,14 +2,29 @@
 
 import { useEffect, useState } from 'react';
 import { getSavedPrescriptions, searchDrugs } from '../../services/api';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+
 
 export default function Dashboard() {
   const [prescriptions, setPrescriptions] = useState([]);
   const [drugName, setDrugName] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [selectedDrug, setSelectedDrug] = useState(null); // State for selected drug
+  const [resultStats, setResultStats] = useState(null);   // Stores total/filtered results
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // Theme detection
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    setIsDarkMode(mediaQuery.matches);
+
+    const handleThemeChange = (e) => setIsDarkMode(e.matches);
+    mediaQuery.addEventListener('change', handleThemeChange);
+
+    return () => mediaQuery.removeEventListener('change', handleThemeChange);
+  }, []);
 
   // Fetch saved prescriptions on component mount
   useEffect(() => {
@@ -26,18 +41,28 @@ export default function Dashboard() {
   };
 
   const handleSearch = async (e) => {
-    if (e?.preventDefault) {
-      e.preventDefault(); // Prevent page reload if this is triggered by a form or button click
-    }
+    if (e?.preventDefault) e.preventDefault();
 
-    if (!drugName.trim()) return; // Ensure a drug name is entered
+    if (!drugName.trim()) return; // Ensure input is valid
 
     setError('');
     setLoading(true);
 
     try {
-      const data = await searchDrugs(drugName);
-      setSearchResults(data.data);
+      const apiResponse = await searchDrugs(drugName); // Fetch response
+      console.log('API Response:', apiResponse);
+
+      const { data, meta } = apiResponse || {}; // Safely destructure data and meta
+      console.log('Meta:', meta);
+
+      const totalResults = meta?.total_results || 0;
+      const filteredResults = meta?.filtered_results || 0;
+
+      console.log('Total Results:', totalResults);
+      console.log('Filtered Results:', filteredResults);
+
+      setSearchResults(data || []); // Set drug data
+      setResultStats({ total_results: totalResults, filtered_results: filteredResults }); // Set result stats
     } catch (err) {
       console.error('Search Error:', err);
       setError('Failed to fetch drug data. Please try again.');
@@ -55,9 +80,92 @@ export default function Dashboard() {
     }
   };
 
+  // bar chart data
+  const totalResults = Number(resultStats?.total_results) || 0;
+  const filteredResults = Number(resultStats?.filtered_results) || 0;
+
+  console.log('Sanitized Total Results:', totalResults);
+  console.log('Sanitized Filtered Results:', filteredResults);
+
+  const chartData = [
+    {
+      name: 'Results',
+      totalResults: totalResults,
+      filteredResults: filteredResults,
+    },
+  ];
+
+  console.log('Chart Data to Render:', chartData);
+  console.log('Total Results:', totalResults);
+  console.log('Filtered Results:', filteredResults);
+
   const renderSearchResults = () => (
     <section>
-      <h2 className="text-xl font-semibold mb-2">{`${searchResults.length} ${drugName} Search Results without FD&C Food Colorings`}</h2>
+      <h2 className="text-xl font-semibold mb-4">
+        {`${resultStats?.filtered_results || 0} ${drugName} Search Results without FD&C Food Colorings`}
+      </h2>
+      {/* Bar Graph */}
+      <div style={{ width: '100%', height: 200 }} className="mb-4">
+        <ResponsiveContainer>
+          <BarChart data={chartData} layout="horizontal">
+            {/* X-Axis */}
+            <XAxis
+              type="number"
+              domain={[0, 'dataMax + 10']} // Adds padding to show bars properly
+              allowDecimals={false}
+              tick={{ fill: isDarkMode ? '#ffffff' : '#000000' }}
+              axisLine={{ stroke: isDarkMode ? '#ffffff' : '#000000' }}
+              tickLine={{ stroke: isDarkMode ? '#ffffff' : '#000000' }}
+            />
+
+            {/* Y-Axis */}
+            <YAxis
+              type="category"
+              dataKey="name"
+              tick={{ fill: isDarkMode ? '#ffffff' : '#000000' }}
+              axisLine={{ stroke: isDarkMode ? '#ffffff' : '#000000' }}
+              tickLine={{ stroke: isDarkMode ? '#ffffff' : '#000000' }}
+            />
+
+            {/* Tooltip */}
+            <Tooltip
+              cursor={{ fill: 'transparent' }}
+              contentStyle={{
+                backgroundColor: isDarkMode ? '#2c2c2c' : '#ffffff',
+                color: '#000000',
+                border: '1px solid #ddd',
+              }}
+              labelStyle={{ color: '#000000', fontWeight: 'bold' }}
+            />
+
+            {/* Bars */}
+            <Bar
+              dataKey="totalResults"
+              name="Total Results"
+              fill="#e74c3c"
+              barSize={20}
+              radius={[4, 4, 0, 0]}
+            />
+            <Bar
+              dataKey="filteredResults"
+              name="Filtered Results"
+              fill="#2ecc71"
+              barSize={20}
+              radius={[4, 4, 0, 0]}
+            />
+
+            {/* Legend */}
+            <Legend
+              wrapperStyle={{
+                color: isDarkMode ? '#ffffff' : '#000000',
+                fontWeight: 'bold',
+              }}
+            />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+
+      {/* Drug List */}
       <ul className="space-y-4">
         {searchResults.map((result) => {
           const { metadata, fields, package_label_principal_display_panel } = result.attributes;
@@ -73,9 +181,7 @@ export default function Dashboard() {
               onClick={() => handleSelectDrug(result)} // Handle click to expand/collapse
             >
               {/* Brand Name */}
-              <h3 className="font-bold text-lg">
-                {metadata.openfda?.brand_name?.[0] || 'Unknown Brand'}
-              </h3>
+              <h3 className="font-bold text-lg">{metadata.openfda?.brand_name?.[0] || 'Unknown Brand'}</h3>
 
               {/* Render additional details only if expanded */}
               {isExpanded && (
@@ -185,3 +291,4 @@ export default function Dashboard() {
     </main>
   );
 }
+
