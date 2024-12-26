@@ -1,7 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getSavedPrescriptions, searchDrugs, createSavedPrescription, deleteSavedPrescription } from '../../services/api';
+import {
+  getSavedPrescriptions,
+  searchDrugs,
+  createSavedPrescription,
+  deleteSavedPrescription,
+  logoutUser,
+  deleteAccount,
+} from '../../services/api';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 export default function Dashboard() {
@@ -58,6 +65,31 @@ export default function Dashboard() {
       setError('Failed to fetch drug data. Please try again.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logoutUser(); // Call logout API
+      alert('Logged out successfully!');
+      window.location.href = '/login'; // Redirect to login page
+    } catch (error) {
+      console.error('Logout Error:', error);
+      alert('Failed to logout. Please try again.');
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+      try {
+        const userId = 1; // Replace with the current user's ID if available
+        await deleteAccount(userId); // Call delete account API
+        alert('Account deleted successfully!');
+        window.location.href = '/'; // Redirect to home page
+      } catch (error) {
+        console.error('Delete Account Error:', error);
+        alert('Failed to delete account. Please try again.');
+      }
     }
   };
 
@@ -371,42 +403,52 @@ export default function Dashboard() {
   );
 
   return (
-    <main className="grid grid-cols-2 gap-6 h-screen p-6">
-      {/* Left: Saved Prescriptions */}
-      <div className="pr-4 border-r">
-        {renderSavedPrescriptions()}
-      </div>
-
-      {/* Right: Search and Results */}
-      <div>
-        {/* Add Title Above Search */}
-        <h2 className="text-2xl font-semibold mb-4">
-          Search FDA for drugs without FD&C food colorings
-        </h2>
-
-        {/* Search Bar Section */}
-        <div className="flex items-center space-x-4 mb-6">
-          <input
-            type="text"
-            value={drugName}
-            onChange={(e) => setDrugName(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSearch(e)}
-            placeholder="Enter drug's generic name"
-            className="border rounded p-2 w-full font-bold bg-white text-black dark:bg-gray-900 dark:text-white transition-colors"
-            aria-label="Search for a drug by its generic name"
-            role="searchbox"
-          />
-          <button
-            onClick={handleSearch}
-            className="bg-blue-500 text-white px-4 py-2 rounded"
-            disabled={loading}
-            aria-label="Search"
-          >
-            {loading ? 'Searching...' : 'Search'}
-          </button>
+    <div>
+      {/* Banner Section */}
+      <header className="bg-blue-500 text-white p-4 flex justify-between items-center">
+        <h1 className="text-xl font-bold">NoColoRx</h1>
+        <div className="space-x-4">
+          <button onClick={handleLogout} className="text-white hover:underline">Logout</button>
+          <button onClick={handleDeleteAccount} className="text-white hover:underline">Delete Account</button>
         </div>
-        {searchResults.length > 0 && renderSearchResults()}
-      </div>
-    </main>
+      </header>
+      <main className="grid grid-cols-2 gap-6 h-screen p-6">
+        {/* Left: Saved Prescriptions */}
+        <div className="pr-4 border-r">
+          {renderSavedPrescriptions()}
+        </div>
+
+        {/* Right: Search and Results */}
+        <div>
+          {/* Add Title Above Search */}
+          <h2 className="text-2xl font-semibold mb-4">
+            Search FDA for drugs without FD&C food colorings
+          </h2>
+
+          {/* Search Bar Section */}
+          <div className="flex items-center space-x-4 mb-6">
+            <input
+              type="text"
+              value={drugName}
+              onChange={(e) => setDrugName(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch(e)}
+              placeholder="Enter drug's generic name"
+              className="border rounded p-2 w-full font-bold bg-white text-black dark:bg-gray-900 dark:text-white transition-colors"
+              aria-label="Search for a drug by its generic name"
+              role="searchbox"
+            />
+            <button
+              onClick={handleSearch}
+              className="bg-blue-500 text-white px-4 py-2 rounded"
+              disabled={loading}
+              aria-label="Search"
+            >
+              {loading ? 'Searching...' : 'Search'}
+            </button>
+          </div>
+          {searchResults.length > 0 && renderSearchResults()}
+        </div>
+      </main>
+    </div>
   );
 }
