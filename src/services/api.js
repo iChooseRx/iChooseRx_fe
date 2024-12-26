@@ -37,6 +37,11 @@ export const logoutUser = async () => {
   return response.data;
 };
 
+export const deleteAccount = async (userId) => {
+  const response = await api.delete(`/users/${userId}`);
+  return response.data;
+};
+
 export const searchDrugs = async (drugName) => {
   const response = await api.get('/drugs', {
     params: { drug_name: drugName },
