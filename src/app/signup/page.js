@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link'; // Import Link for navigation
 import { createUser } from '../../services/api';
 
 export default function SignupPage() {
@@ -23,7 +24,7 @@ export default function SignupPage() {
 
   return (
     <main className="h-screen flex flex-col items-center justify-center bg-background text-foreground">
-      <h1 className="text-2xl font-bold mb-4">Sign Up</h1>
+      <h1 className="text-2xl font-bold mb-4">Sign up for NoColoRX : Search generic drugs without FD&C food colorings!</h1>
       <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
         {error && <p className="text-error">{error}</p>}
         <input
@@ -54,6 +55,12 @@ export default function SignupPage() {
           Sign Up
         </button>
       </form>
+      <p className="mt-4 text-sm">
+        Already have an account?{' '}
+        <Link href="/login" className="text-primary hover:underline">
+          Log in here
+        </Link>
+      </p>
     </main>
   );
 }

@@ -13,12 +13,12 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background:rgb(0, 0, 0);
     --foreground: #ededed;
     --primary: #3b82f6; /* Slightly lighter blue */
     --secondary: #22c55e; /* Slightly lighter green */
     --error: #f87171; /* Slightly lighter red */
-    --border-color: #374151;
+    --border-color:rgb(114, 154, 218);
   }
 }
 
@@ -36,12 +36,21 @@ button:hover {
   opacity: 0.9;
 }
 
+/* Ensure all typed text is black for all input fields */
 input {
-  color: #000000; /* Set text color to black */
-  border-color: #3b82f6; /* Matches the app's light blue */
+  background-color: #ffffff; /* Ensure white background */
+  color: #000000; /* Force black text color */
+  border: 1px solid var(--border-color); /* Use the border color from root variables */
+  padding: 0.5rem; /* Add consistent padding */
+  border-radius: 0.25rem; /* Rounded corners */
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Ensure placeholder text is dark gray */
 input::placeholder {
-  color:rgb(49, 49, 49); /* Optional: Make placeholder text dark grey for contrast */
+  color: rgb(106, 91, 91); /* Dark gray placeholder text */
 }
+
+
+
 
