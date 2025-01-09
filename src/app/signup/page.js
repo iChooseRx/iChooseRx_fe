@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link'; // Import Link for navigation
 import { createUser } from '../../services/api';
 
 export default function SignupPage() {
@@ -22,35 +23,44 @@ export default function SignupPage() {
   };
 
   return (
-    <main className="h-screen flex flex-col items-center justify-center bg-gray-100">
-      <h1 className="text-2xl font-bold mb-4">Sign Up</h1>
+    <main className="h-screen flex flex-col items-center justify-center bg-background text-foreground">
+      <h1 className="text-2xl font-bold mb-4">Sign up for NoColoRX : Search generic drugs without FD&C food colorings!</h1>
       <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-        {error && <p className="text-red-500">{error}</p>}
+        {error && <p className="text-error">{error}</p>}
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="px-4 py-2 border rounded"
+          className="px-4 py-2 border border-borderColor rounded"
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="px-4 py-2 border rounded"
+          className="px-4 py-2 border border-borderColor rounded"
         />
         <input
           type="password"
           placeholder="Confirm Password"
           value={passwordConfirmation}
           onChange={(e) => setPasswordConfirmation(e.target.value)}
-          className="px-4 py-2 border rounded"
+          className="px-4 py-2 border border-borderColor rounded"
         />
-        <button type="submit" className="px-6 py-2 bg-green-600 text-white rounded">
+        <button
+          type="submit"
+          className="px-6 py-2 bg-secondary text-white rounded hover:bg-green-700"
+        >
           Sign Up
         </button>
       </form>
+      <p className="mt-4 text-sm">
+        Already have an account?{' '}
+        <Link href="/login" className="text-primary hover:underline">
+          Log in here
+        </Link>
+      </p>
     </main>
   );
 }

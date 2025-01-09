@@ -139,7 +139,7 @@ export default function Dashboard() {
   ];
 
   const renderSearchResults = () => (
-    <section role="region" aria-labelledby="search-results">
+    <section role="region" aria-labelledby="search-results" className="text-foreground bg-background">
       <h2 id="search-results" className="text-xl font-semibold mb-4">
         {`${resultStats?.filtered_results || 0} ${drugName} Search Results without FD&C Food Colorings`}
       </h2>
@@ -149,27 +149,27 @@ export default function Dashboard() {
             <YAxis
               type="category"
               dataKey="name"
-              tick={{ fill: isDarkMode ? '#ffffff' : '#000000' }}
-              axisLine={{ stroke: isDarkMode ? '#ffffff' : '#000000' }}
-              tickLine={{ stroke: isDarkMode ? '#ffffff' : '#000000' }}
+              tick={{ fill: 'var(--foreground)' }}
+              axisLine={{ stroke: 'var(--foreground)' }}
+              tickLine={{ stroke: 'var(--foreground)' }}
             />
             <XAxis
               type="number"
               domain={[0, 'dataMax + 10']}
-              tick={{ fill: isDarkMode ? '#ffffff' : '#000000' }}
-              axisLine={{ stroke: isDarkMode ? '#ffffff' : '#000000' }}
-              tickLine={{ stroke: isDarkMode ? '#ffffff' : '#000000' }}
+              tick={{ fill: 'var(--foreground)' }}
+              axisLine={{ stroke: 'var(--foreground)' }}
+              tickLine={{ stroke: 'var(--foreground)' }}
             />
             <Tooltip
               cursor={{ fill: 'transparent' }}
               contentStyle={{
-                backgroundColor: isDarkMode ? '#2c2c2c' : '#ffffff',
-                color: isDarkMode ? '#ffffff' : '#000000',
-                border: '1px solid #ddd',
+                backgroundColor: 'var(--background)',
+                color: 'var(--foreground)',
+                border: '1px solid var(--foreground)',
                 fontWeight: 'bold',
               }}
               labelStyle={{
-                color: isDarkMode ? '#ffffff' : '#000000',
+                color: 'var(--foreground)',
                 fontWeight: 'bold',
               }}
             />
@@ -189,7 +189,7 @@ export default function Dashboard() {
             />
             <Legend
               content={() => (
-                <div style={{ textAlign: 'center', color: isDarkMode ? '#ffffff' : '#000000', fontWeight: 'bold' }}>
+                <div className="text-center font-bold" style={{ color: 'var(--foreground)' }}>
                   <span style={{ color: '#e74c3c', marginRight: '10px' }}>
                     Total Results: {resultStats?.total_results || 0}
                   </span>
@@ -211,7 +211,7 @@ export default function Dashboard() {
             <li
               key={result.id}
               className={`border p-4 rounded shadow transition-colors ${isExpanded
-                ? 'bg-white text-black dark:bg-gray-900 dark:text-white'
+                ? 'bg-white text-black dark:bg-gray-800 dark:text-white'
                 : 'bg-gray-100 text-black dark:bg-gray-900 dark:text-white'
                 }`}
               role="listitem"
@@ -219,11 +219,11 @@ export default function Dashboard() {
               <div className="flex justify-between items-center">
                 {/* Brand Name and Expand/Collapse Button */}
                 <div className="flex items-center">
-                  <h3 className="font-bold text-lg">{metadata.openfda?.brand_name?.[0] || 'Unknown Brand'}
-                    <span>&nbsp;&nbsp;</span> {/* Adds two non-breaking spaces */}
+                  <h3 className="font-bold text-lg">
+                    {metadata.openfda?.brand_name?.[0] || 'Unknown Brand'}
                     <button
                       onClick={() => setSelectedDrug(isExpanded ? null : result)}
-                      className="text-md font-regular text-blue-300 hover:text-blue-500"
+                      className="ml-2 text-blue-500 hover:text-blue-600"
                       aria-expanded={isExpanded}
                       aria-controls={`drug-details-${result.id}`}
                       aria-label={isExpanded ? 'Collapse details' : 'Expand details'}
@@ -253,8 +253,7 @@ export default function Dashboard() {
                   </p>
                   {package_label_principal_display_panel && (
                     <p>
-                      <strong>Package Label:</strong>{' '}
-                      {package_label_principal_display_panel.join(', ')}
+                      <strong>Package Label:</strong> {package_label_principal_display_panel.join(', ')}
                     </p>
                   )}
                   {metadata && (
@@ -299,7 +298,7 @@ export default function Dashboard() {
   );
 
   const renderSavedPrescriptions = () => (
-    <section role="region" aria-labelledby="saved-prescriptions">
+    <section role="region" aria-labelledby="saved-prescriptions" className="text-foreground bg-background">
       <h2 id="saved-prescriptions" className="text-2xl font-semibold mb-4">
         Saved Drugs
       </h2>
@@ -311,7 +310,7 @@ export default function Dashboard() {
             <li
               key={prescription.id}
               className={`border p-4 rounded shadow transition-colors ${isExpanded
-                ? 'bg-white text-black dark:bg-gray-900 dark:text-white'
+                ? 'bg-white text-black dark:bg-gray-800 dark:text-white'
                 : 'bg-gray-100 text-black dark:bg-gray-900 dark:text-white'
                 }`}
               role="listitem"
@@ -321,10 +320,9 @@ export default function Dashboard() {
                 <div className="flex items-center">
                   <h3 className="font-bold text-lg">
                     {prescription.attributes.drug_name || 'Unknown Brand'}
-                    <span>&nbsp;&nbsp;</span> {/* Adds spacing */}
                     <button
                       onClick={() => setSelectedDrug(isExpanded ? null : prescription)}
-                      className="text-md font-regular text-blue-300 hover:text-blue-500"
+                      className="ml-2 text-blue-500 hover:text-blue-600"
                       aria-expanded={isExpanded}
                       aria-controls={`saved-prescription-details-${prescription.id}`}
                       aria-label={isExpanded ? 'Collapse details' : 'Expand details'}
@@ -333,6 +331,7 @@ export default function Dashboard() {
                     </button>
                   </h3>
                 </div>
+
                 {/* Delete Button */}
                 <button
                   onClick={() => handleDeletePrescription(prescription.id)}
@@ -345,9 +344,14 @@ export default function Dashboard() {
 
               {/* Render additional details only if expanded */}
               {isExpanded && (
-                <div id={`saved-prescription-details-${prescription.id}`} className="mt-4" tabIndex="0">
+                <div
+                  id={`saved-prescription-details-${prescription.id}`}
+                  className="mt-4"
+                  tabIndex="0"
+                >
                   <p>
-                    <strong>Manufacturer:</strong> {prescription.attributes.manufacturer || 'N/A'}
+                    <strong>Manufacturer:</strong>{' '}
+                    {prescription.attributes.manufacturer || 'N/A'}
                   </p>
                   <p>
                     <strong>Description:</strong>{' '}
@@ -403,29 +407,38 @@ export default function Dashboard() {
   );
 
   return (
-    <div>
+    <div className="min-h-screen bg-background text-foreground">
       {/* Banner Section */}
-      <header className="bg-blue-500 text-white p-4 flex justify-between items-center">
+      <header className="bg-primary text-foreground p-4 flex justify-between items-center">
         <h1 className="text-xl font-bold">NoColoRx</h1>
         <div className="space-x-4">
-          <button onClick={handleLogout} className="text-white hover:underline">Logout</button>
-          <button onClick={handleDeleteAccount} className="text-white hover:underline">Delete Account</button>
+          <button
+            onClick={handleLogout}
+            className="text-foreground hover:underline"
+            aria-label="Logout"
+          >
+            Logout
+          </button>
+          <button
+            onClick={handleDeleteAccount}
+            className="text-foreground hover:underline"
+            aria-label="Delete Account"
+          >
+            Delete Account
+          </button>
         </div>
       </header>
+
       <main className="grid grid-cols-2 gap-6 h-screen p-6">
         {/* Left: Saved Prescriptions */}
-        <div className="pr-4 border-r">
+        <div className="pr-4 border-r border-borderColor">
           {renderSavedPrescriptions()}
         </div>
 
         {/* Right: Search and Results */}
         <div>
-          {/* Add Title Above Search */}
-          <h2 className="text-2xl font-semibold mb-4">
-            Search FDA for drugs without FD&C food colorings
-          </h2>
+          <h2 className="text-2xl font-semibold mb-4">Search FDA for drugs without FD&C food colorings</h2>
 
-          {/* Search Bar Section */}
           <div className="flex items-center space-x-4 mb-6">
             <input
               type="text"
@@ -433,13 +446,13 @@ export default function Dashboard() {
               onChange={(e) => setDrugName(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSearch(e)}
               placeholder="Enter drug's generic name"
-              className="border rounded p-2 w-full font-bold bg-white text-black dark:bg-gray-900 dark:text-white transition-colors"
+              className="border border-borderColor rounded p-2 w-full font-bold bg-white text-black placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
               aria-label="Search for a drug by its generic name"
               role="searchbox"
             />
             <button
               onClick={handleSearch}
-              className="bg-blue-500 text-white px-4 py-2 rounded"
+              className="bg-primary text-foreground px-4 py-2 rounded hover:opacity-90"
               disabled={loading}
               aria-label="Search"
             >

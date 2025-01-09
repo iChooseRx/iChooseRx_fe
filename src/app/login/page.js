@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link'; // Import Link for navigation
 import { loginUser } from '../../services/api';
 
 export default function LoginPage() {
@@ -22,28 +23,37 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="h-screen flex flex-col items-center justify-center bg-gray-100">
-      <h1 className="text-2xl font-bold mb-4">Login</h1>
+    <main className="h-screen flex flex-col items-center justify-center bg-background text-foreground">
+      <h1 className="text-2xl font-bold mb-4">Login to NoColoRX</h1>
       <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-        {error && <p className="text-red-500">{error}</p>}
+        {error && <p className="text-error">{error}</p>}
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="px-4 py-2 border rounded"
+          className="px-4 py-2 border border-borderColor rounded"
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="px-4 py-2 border rounded"
+          className="px-4 py-2 border border-borderColor rounded"
         />
-        <button type="submit" className="px-6 py-2 bg-blue-600 text-white rounded">
+        <button
+          type="submit"
+          className="px-6 py-2 bg-primary text-white rounded hover:bg-blue-600"
+        >
           Login
         </button>
       </form>
+      <p className="mt-4 text-sm">
+        Don’t have an account?{' '}
+        <Link href="/signup" className="text-primary hover:underline">
+          Sign up here
+        </Link>
+      </p>
     </main>
   );
 }
