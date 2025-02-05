@@ -25,14 +25,14 @@ export default function Dashboard() {
 
   // Available filters from the backend
   const FILTER_CATEGORIES = [
-    { key: "artificial_colors", label: "Artificial Colors" },
-    { key: "artificial_sweeteners", label: "Artificial Sweeteners" },
-    { key: "artificial_flavors", label: "Artificial Flavors" },
-    { key: "preservatives", label: "Preservatives" },
-    { key: "gluten", label: "Gluten" },
-    { key: "added_sugar", label: "Added Sugar" },
-    { key: "vegan", label: "Animal Ingredients" },
-    { key: "possible_endocrine_disruptors", label: "Endocrine Disruptors" }
+    { key: "artificial_colors", label: " No Artificial Colors" },
+    { key: "artificial_sweeteners", label: "No Artificial Sweeteners" },
+    { key: "artificial_flavors", label: "No Artificial Flavors" },
+    { key: "preservatives", label: "No Preservatives" },
+    { key: "gluten", label: "No Gluten" },
+    { key: "added_sugar", label: "No Added Sugar" },
+    { key: "vegan", label: "No Animal Ingredients" },
+    { key: "possible_endocrine_disruptors", label: "No Endocrine Disruptors" }
   ];
 
   /**
