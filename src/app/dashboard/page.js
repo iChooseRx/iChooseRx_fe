@@ -15,7 +15,8 @@ export default function Dashboard() {
   const [prescriptions, setPrescriptions] = useState([]);
   const [drugName, setDrugName] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  const [selectedDrug, setSelectedDrug] = useState(null);
+  const [expandedDrugs, setExpandedDrugs] = useState({});
+  const [selectedDrug, setSelectedDrug] = useState(null); // 🔹 Default to `null`
   const [resultStats, setResultStats] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -46,7 +47,7 @@ export default function Dashboard() {
     if (!isClient) return; // Prevent SSR execution
 
     /**
-     * ✅ Fix Theme Detection
+     * Theme Detection
      */
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     setIsDarkMode(mediaQuery.matches);
@@ -89,7 +90,7 @@ export default function Dashboard() {
   };
 
   /**
-   * ✅ Handle Search with API Call
+   * Handle Search with API Call
    */
   const handleSearch = async (e) => {
     if (e?.preventDefault) e.preventDefault();
@@ -97,6 +98,8 @@ export default function Dashboard() {
 
     setError('');
     setLoading(true);
+    setSelectedDrug(null); // 🔹 Reset expanded selection
+    setExpandedDrugs({});  // 🔹 Fix: Reset expanded results on new search
 
     try {
       // Convert selectedFilters array into query string format
@@ -119,7 +122,6 @@ export default function Dashboard() {
       setLoading(false);
     }
   };
-
 
   /**
    * ✅ Handle Logout
@@ -203,77 +205,36 @@ export default function Dashboard() {
     },
   ];
 
-  // 
+  console.log("Current Selected Drug:", selectedDrug);
+
   const renderSearchResults = () => (
     <section role="region" aria-labelledby="search-results" className="text-foreground bg-background">
       <h2 id="search-results" className="text-xl font-semibold mb-4">
-        {`${resultStats?.filtered_results || 0} ${drugName} Search Results without FD&C Food Colorings`}
+        {`${resultStats?.filtered_results || 0} ${drugName} results you can choose from with your selected filters!`}
       </h2>
 
       <div style={{ width: '100%', height: 150 }} className="mb-4">
         <ResponsiveContainer>
           <BarChart data={chartData} layout="vertical">
-            <YAxis
-              type="category"
-              dataKey="name"
-              tick={{ fill: 'var(--foreground)' }}
-              axisLine={{ stroke: 'var(--foreground)' }}
-              tickLine={{ stroke: 'var(--foreground)' }}
-            />
-            <XAxis
-              type="number"
-              domain={[0, 'dataMax + 10']}
-              tick={{ fill: 'var(--foreground)' }}
-              axisLine={{ stroke: 'var(--foreground)' }}
-              tickLine={{ stroke: 'var(--foreground)' }}
-            />
-            <Tooltip
-              cursor={{ fill: 'transparent' }}
-              contentStyle={{
-                backgroundColor: 'var(--background)',
-                color: 'var(--foreground)',
-                border: '1px solid var(--foreground)',
-                fontWeight: 'bold',
-              }}
-              labelStyle={{
-                color: 'var(--foreground)',
-                fontWeight: 'bold',
-              }}
-            />
-            <Bar
-              dataKey="totalResults"
-              name="Total Results"
-              fill="#e74c3c"
-              barSize={20}
-              radius={[0, 4, 4, 0]}
-            />
-            <Bar
-              dataKey="filteredResults"
-              name="Filtered Results"
-              fill="#2ecc71"
-              barSize={20}
-              radius={[0, 4, 4, 0]}
-            />
-            <Legend
-              content={() => (
-                <div className="text-center font-bold" style={{ color: 'var(--foreground)' }}>
-                  <span style={{ color: '#e74c3c', marginRight: '10px' }}>
-                    Total Results: {resultStats?.total_results || 0}
-                  </span>
-                  <span style={{ color: '#2ecc71' }}>
-                    Filtered Results: {resultStats?.filtered_results || 0}
-                  </span>
-                </div>
-              )}
-            />
+            <YAxis type="category" dataKey="name" tick={{ fill: 'var(--foreground)' }} axisLine={{ stroke: 'var(--foreground)' }} tickLine={{ stroke: 'var(--foreground)' }} />
+            <XAxis type="number" domain={[0, 'dataMax + 10']} tick={{ fill: 'var(--foreground)' }} axisLine={{ stroke: 'var(--foreground)' }} tickLine={{ stroke: 'var(--foreground)' }} />
+            <Tooltip cursor={{ fill: 'transparent' }} contentStyle={{ backgroundColor: 'var(--background)', color: 'var(--foreground)', border: '1px solid var(--foreground)', fontWeight: 'bold' }} labelStyle={{ color: 'var(--foreground)', fontWeight: 'bold' }} />
+            <Bar dataKey="totalResults" name="Total Results" fill="#e74c3c" barSize={20} radius={[0, 4, 4, 0]} />
+            <Bar dataKey="filteredResults" name="Filtered Results" fill="#2ecc71" barSize={20} radius={[0, 4, 4, 0]} />
+            <Legend content={() => (
+              <div className="text-center font-bold" style={{ color: 'var(--foreground)' }}>
+                <span style={{ color: '#e74c3c', marginRight: '10px' }}>Total Results: {resultStats?.total_results || 0}</span>
+                <span style={{ color: '#2ecc71' }}>Filtered Results: {resultStats?.filtered_results || 0}</span>
+              </div>
+            )} />
           </BarChart>
         </ResponsiveContainer>
       </div>
 
       <ul role="list" className="space-y-4">
         {Array.isArray(searchResults) && searchResults.length > 0 ? (
-          searchResults.map((result, index) => { // Added index as fallback key
-            if (!result) return null; // Ensure result is valid
+          searchResults.map((result, index) => {
+            if (!result) return null;
 
             const {
               brand_name,
@@ -282,7 +243,7 @@ export default function Dashboard() {
               manufacturer_name,
               description,
               inactive_ingredient,
-              alerts = [], // Ensure it's always an array
+              alerts = [],
               how_supplied,
               route,
               product_ndc,
@@ -290,14 +251,12 @@ export default function Dashboard() {
               original_packager_product_ndc
             } = result || {};
 
-            const isExpanded = selectedDrug?.id === result.id;
+            const isExpanded = expandedDrugs[result.id] || false;
 
             return (
               <li
-                key={result.id || `search-result-${index}`} // Ensure unique key
-                className={`border p-4 rounded shadow transition-colors ${isExpanded
-                  ? 'bg-white text-black dark:bg-gray-800 dark:text-white'
-                  : 'bg-gray-100 text-black dark:bg-gray-900 dark:text-white'
+                key={result.id || `search-result-${index}`}
+                className={`border p-4 rounded shadow transition-colors ${isExpanded ? 'bg-white text-black dark:bg-gray-800 dark:text-white' : 'bg-gray-100 text-black dark:bg-gray-900 dark:text-white'
                   }`}
                 role="listitem"
               >
@@ -305,11 +264,15 @@ export default function Dashboard() {
                   <h3 className="font-bold text-lg">
                     {brand_name || 'Unknown Brand'}
                     <button
-                      onClick={() => setSelectedDrug(isExpanded ? null : result)}
+                      onClick={() =>
+                        setExpandedDrugs((prevExpanded) => {
+                          const newExpanded = { ...prevExpanded, [result.id]: !prevExpanded[result.id] };
+                          return newExpanded;
+                        })
+                      }
                       className="ml-2 text-blue-500 hover:text-blue-600"
-                      aria-expanded={isExpanded}
-                      aria-controls={`drug-details-${result.id}`}
-                      aria-label={isExpanded ? 'Collapse details' : 'Expand details'}
+                      aria-expanded={!!expandedDrugs[result.id]}
+                      aria-label={!!expandedDrugs[result.id] ? 'Collapse details' : 'Expand details'}
                     >
                       {isExpanded ? '- details' : '+ details'}
                     </button>
@@ -502,7 +465,7 @@ export default function Dashboard() {
 
         {/* Right: Search and Results */}
         <div>
-          <h2 className="text-2xl font-semibold mb-4">Search FDA approved drugs with the filters below</h2>
+          <h2 className="text-2xl font-semibold mb-4">Search FDA approved drugs with iChoseRx filters!</h2>
 
           <div className="flex items-center space-x-4 mb-6">
             <input
