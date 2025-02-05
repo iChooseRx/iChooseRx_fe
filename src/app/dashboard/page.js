@@ -20,9 +20,34 @@ export default function Dashboard() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState([]);
 
-  // Theme detection for accessibility
+  // Available filters from the backend
+  const FILTER_CATEGORIES = [
+    { key: "artificial_colors", label: "Artificial Colors" },
+    { key: "artificial_sweeteners", label: "Artificial Sweeteners" },
+    { key: "artificial_flavors", label: "Artificial Flavors" },
+    { key: "preservatives", label: "Preservatives" },
+    { key: "gluten", label: "Gluten" },
+    { key: "added_sugar", label: "Added Sugar" },
+    { key: "vegan", label: "Animal Ingredients" },
+    { key: "possible_endocrine_disruptors", label: "Endocrine Disruptors" }
+  ];
+
+  /**
+   * ✅ Ensure code only runs on the client
+   */
   useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isClient) return; // Prevent SSR execution
+
+    /**
+     * ✅ Fix Theme Detection
+     */
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     setIsDarkMode(mediaQuery.matches);
 
@@ -30,12 +55,15 @@ export default function Dashboard() {
     mediaQuery.addEventListener('change', handleThemeChange);
 
     return () => mediaQuery.removeEventListener('change', handleThemeChange);
-  }, []);
+  }, [isClient]); // Runs only after `isClient` is true
 
-  // Fetch saved prescriptions
+  /**
+   * ✅ Fetch saved prescriptions only after client has loaded
+   */
   useEffect(() => {
+    if (!isClient) return;
     fetchPrescriptions();
-  }, []);
+  }, [isClient]);
 
   const fetchPrescriptions = async () => {
     try {
@@ -46,18 +74,42 @@ export default function Dashboard() {
     }
   };
 
+  // Ensure component only renders after client is ready
+  if (!isClient) {
+    return null;
+  }
+
+  /**
+   * ✅ Handle filter selection
+   */
+  const toggleFilter = (filter) => {
+    setSelectedFilters((prev) =>
+      prev.includes(filter) ? prev.filter((f) => f !== filter) : [...prev, filter]
+    );
+  };
+
+  /**
+   * ✅ Handle Search with API Call
+   */
   const handleSearch = async (e) => {
     if (e?.preventDefault) e.preventDefault();
-
     if (!drugName.trim()) return;
 
     setError('');
     setLoading(true);
 
     try {
-      const { data, meta } = await searchDrugs(drugName);
-      console.log('API Meta Data:', meta);
-      console.log('Filtered Data:', data);
+      // Convert selectedFilters array into query string format
+      const filterParams = selectedFilters.length
+        ? selectedFilters.map((filter) => `filters[]=${encodeURIComponent(filter)}`).join('&')
+        : '';
+
+      // Call API with correctly formatted filters
+      const { data, meta } = await searchDrugs(drugName, filterParams);
+
+      console.log("Filters Sent:", filterParams);
+      console.log("API Response:", data);
+
       setSearchResults(data);
       setResultStats(meta);
     } catch (err) {
@@ -68,24 +120,30 @@ export default function Dashboard() {
     }
   };
 
+
+  /**
+   * ✅ Handle Logout
+   */
   const handleLogout = async () => {
     try {
-      await logoutUser(); // Call logout API
+      await logoutUser();
       alert('Logged out successfully!');
-      window.location.href = '/login'; // Redirect to login page
+      window.location.href = '/login';
     } catch (error) {
       console.error('Logout Error:', error);
       alert('Failed to logout. Please try again.');
     }
   };
 
+  /**
+   * ✅ Handle Account Deletion
+   */
   const handleDeleteAccount = async () => {
     if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
       try {
-        const userId = 1; // Replace with the current user's ID if available
-        await deleteAccount(userId); // Call delete account API
+        await deleteAccount(1);
         alert('Account deleted successfully!');
-        window.location.href = '/'; // Redirect to home page
+        window.location.href = '/';
       } catch (error) {
         console.error('Delete Account Error:', error);
         alert('Failed to delete account. Please try again.');
@@ -93,22 +151,29 @@ export default function Dashboard() {
     }
   };
 
+  /**
+   * ✅ Handle Saving a Prescription
+   */
   const handleSavePrescription = async (drugData) => {
     try {
       const payload = {
-        drug_name: drugData.metadata.openfda?.brand_name?.[0] || 'Unknown Brand',
-        manufacturer: drugData.metadata.openfda?.manufacturer_name?.[0] || 'N/A',
-        description: drugData.fields || [], // Map fields to description
-        package_label_principal_display_panel:
-          drugData.package_label_principal_display_panel?.[0] || 'N/A', // Map first item or fallback
-        metadata: drugData.metadata, // Full metadata object
+        brand_name: drugData.brand_name || 'Unknown Brand',
+        generic_name: drugData.generic_name || 'Unknown Generic',
+        substance_name: drugData.substance_name || [],
+        manufacturer_name: drugData.manufacturer_name || 'N/A',
+        description: drugData.description || 'No description available.',
+        inactive_ingredient: drugData.inactive_ingredient || 'N/A',
+        alerts: drugData.alerts || [],
+        how_supplied: drugData.how_supplied || 'No supply information available.',
+        route: drugData.route || 'Unknown',
+        product_ndc: drugData.product_ndc || 'N/A',
+        package_ndc: drugData.package_ndc || 'N/A',
+        original_packager_product_ndc: drugData.original_packager_product_ndc || 'N/A'
       };
 
-      console.log('Saving Prescription Payload:', payload); // Debugging
-
-      await createSavedPrescription(payload); // Send payload to backend
+      await createSavedPrescription(payload);
       alert('Prescription saved successfully!');
-      fetchPrescriptions(); // Refresh saved prescriptions
+      fetchPrescriptions();
     } catch (error) {
       console.error('Error saving prescription:', error);
       alert('Failed to save prescription. Please try again.');
@@ -138,11 +203,13 @@ export default function Dashboard() {
     },
   ];
 
+  // 
   const renderSearchResults = () => (
     <section role="region" aria-labelledby="search-results" className="text-foreground bg-background">
       <h2 id="search-results" className="text-xl font-semibold mb-4">
         {`${resultStats?.filtered_results || 0} ${drugName} Search Results without FD&C Food Colorings`}
       </h2>
+
       <div style={{ width: '100%', height: 150 }} className="mb-4">
         <ResponsiveContainer>
           <BarChart data={chartData} layout="vertical">
@@ -202,25 +269,41 @@ export default function Dashboard() {
           </BarChart>
         </ResponsiveContainer>
       </div>
-      <ul role="list" className="space-y-4">
-        {searchResults.map((result) => {
-          const { metadata, fields, package_label_principal_display_panel } = result.attributes;
-          const isExpanded = selectedDrug?.id === result.id;
 
-          return (
-            <li
-              key={result.id}
-              className={`border p-4 rounded shadow transition-colors ${isExpanded
-                ? 'bg-white text-black dark:bg-gray-800 dark:text-white'
-                : 'bg-gray-100 text-black dark:bg-gray-900 dark:text-white'
-                }`}
-              role="listitem"
-            >
-              <div className="flex justify-between items-center">
-                {/* Brand Name and Expand/Collapse Button */}
-                <div className="flex items-center">
+      <ul role="list" className="space-y-4">
+        {Array.isArray(searchResults) && searchResults.length > 0 ? (
+          searchResults.map((result, index) => { // Added index as fallback key
+            if (!result) return null; // Ensure result is valid
+
+            const {
+              brand_name,
+              generic_name,
+              substance_name,
+              manufacturer_name,
+              description,
+              inactive_ingredient,
+              alerts = [], // Ensure it's always an array
+              how_supplied,
+              route,
+              product_ndc,
+              package_ndc,
+              original_packager_product_ndc
+            } = result || {};
+
+            const isExpanded = selectedDrug?.id === result.id;
+
+            return (
+              <li
+                key={result.id || `search-result-${index}`} // Ensure unique key
+                className={`border p-4 rounded shadow transition-colors ${isExpanded
+                  ? 'bg-white text-black dark:bg-gray-800 dark:text-white'
+                  : 'bg-gray-100 text-black dark:bg-gray-900 dark:text-white'
+                  }`}
+                role="listitem"
+              >
+                <div className="flex justify-between items-center">
                   <h3 className="font-bold text-lg">
-                    {metadata.openfda?.brand_name?.[0] || 'Unknown Brand'}
+                    {brand_name || 'Unknown Brand'}
                     <button
                       onClick={() => setSelectedDrug(isExpanded ? null : result)}
                       className="ml-2 text-blue-500 hover:text-blue-600"
@@ -233,66 +316,53 @@ export default function Dashboard() {
                   </h3>
                 </div>
 
-                {/* Save Button */}
                 <button
-                  onClick={() => handleSavePrescription(result.attributes)}
+                  onClick={() => handleSavePrescription(result)}
                   className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-                  aria-label={`Save prescription for ${metadata.openfda?.brand_name?.[0] || 'Unknown Brand'}`}
+                  aria-label={`Save prescription for ${brand_name || 'Unknown Brand'}`}
                 >
                   Save
                 </button>
-              </div>
-              {isExpanded && (
-                <div id={`drug-details-${result.id}`} className="mt-4" tabIndex="0">
-                  <p>
-                    <strong>Manufacturer:</strong> {metadata.openfda?.manufacturer_name?.[0] || 'N/A'}
-                  </p>
-                  <p>
-                    <strong>Description:</strong>{' '}
-                    {fields?.length > 0 ? fields.join(', ') : 'No description available.'}
-                  </p>
-                  {package_label_principal_display_panel && (
-                    <p>
-                      <strong>Package Label:</strong> {package_label_principal_display_panel.join(', ')}
-                    </p>
-                  )}
-                  {metadata && (
-                    <div>
-                      <strong>Additional Drug Information:</strong>
-                      <ul className="list-disc ml-5">
-                        {Object.entries(metadata).map(([key, value]) => {
-                          if (key === 'openfda' && typeof value === 'object') {
-                            return (
-                              <li key={key}>
-                                <strong>{key}:</strong>
-                                <ul className="list-disc ml-5">
-                                  {Object.entries(value).map(([nestedKey, nestedValue]) => (
-                                    <li key={nestedKey}>
-                                      <strong>{nestedKey}:</strong>{' '}
-                                      {Array.isArray(nestedValue)
-                                        ? nestedValue.join(', ')
-                                        : nestedValue.toString()}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </li>
-                            );
-                          }
-                          return (
-                            <li key={key}>
-                              <strong>{key}:</strong>{' '}
-                              {Array.isArray(value) ? value.join(', ') : value.toString()}
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              )}
-            </li>
-          );
-        })}
+
+                {isExpanded && (
+                  <div id={`drug-details-${result.id}`} className="mt-4" tabIndex="0">
+                    <p><strong>Generic Name:</strong> {generic_name || 'N/A'}</p>
+                    {substance_name && substance_name.length > 0 && (
+                      <div>
+                        <strong>Substance Name:</strong>
+                        <ul className="list-disc ml-5">
+                          {substance_name.map((substance, index) => (
+                            <li key={index}>{substance}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    <p><strong>Manufacturer:</strong> {manufacturer_name || 'N/A'}</p>
+                    <p><strong>Description:</strong> {description || 'No description available.'}</p>
+                    <p><strong>Inactive Ingredients:</strong> {inactive_ingredient || 'N/A'}</p>
+                    {alerts.length > 0 && (
+                      <div>
+                        <strong>Alerts:</strong>
+                        <ul className="list-disc ml-5">
+                          {alerts.map((alert, index) => (
+                            <li key={index}>{alert.message}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    <p><strong>How Supplied:</strong> {how_supplied || 'No supply information available.'}</p>
+                    <p><strong>Route:</strong> {route || 'Unknown'}</p>
+                    <p><strong>Product NDC:</strong> {product_ndc || 'N/A'}</p>
+                    <p><strong>Package NDC:</strong> {package_ndc || 'N/A'}</p>
+                    <p><strong>Original Packager Product NDC:</strong> {original_packager_product_ndc || 'N/A'}</p>
+                  </div>
+                )}
+              </li>
+            );
+          })
+        ) : (
+          <p>No results found.</p>
+        )}
       </ul>
     </section>
   );
@@ -303,23 +373,39 @@ export default function Dashboard() {
         Saved Drugs
       </h2>
       <ul role="list" className="space-y-4">
-        {prescriptions.map((prescription) => {
-          const isExpanded = selectedDrug?.id === prescription.id;
+        {Array.isArray(prescriptions) && prescriptions.length > 0 ? (
+          prescriptions.map((prescription) => {
+            if (!prescription) return null; // Ensure valid prescription data
 
-          return (
-            <li
-              key={prescription.id}
-              className={`border p-4 rounded shadow transition-colors ${isExpanded
-                ? 'bg-white text-black dark:bg-gray-800 dark:text-white'
-                : 'bg-gray-100 text-black dark:bg-gray-900 dark:text-white'
-                }`}
-              role="listitem"
-            >
-              <div className="flex justify-between items-center">
-                {/* Brand Name and Expand/Collapse Button */}
-                <div className="flex items-center">
+            const {
+              brand_name,
+              generic_name,
+              substance_name,
+              manufacturer_name,
+              description,
+              inactive_ingredient,
+              alerts = [], // Ensure alerts is an array
+              how_supplied,
+              route,
+              product_ndc,
+              package_ndc,
+              original_packager_product_ndc
+            } = prescription || {}; // Prevent destructuring issues
+
+            const isExpanded = selectedDrug?.id === prescription.id;
+
+            return (
+              <li
+                key={prescription.id}
+                className={`border p-4 rounded shadow transition-colors ${isExpanded
+                  ? 'bg-white text-black dark:bg-gray-800 dark:text-white'
+                  : 'bg-gray-100 text-black dark:bg-gray-900 dark:text-white'
+                  }`}
+                role="listitem"
+              >
+                <div className="flex justify-between items-center">
                   <h3 className="font-bold text-lg">
-                    {prescription.attributes.drug_name || 'Unknown Brand'}
+                    {brand_name || 'Unknown Brand'}
                     <button
                       onClick={() => setSelectedDrug(isExpanded ? null : prescription)}
                       className="ml-2 text-blue-500 hover:text-blue-600"
@@ -332,76 +418,55 @@ export default function Dashboard() {
                   </h3>
                 </div>
 
-                {/* Delete Button */}
                 <button
                   onClick={() => handleDeletePrescription(prescription.id)}
                   className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                  aria-label={`Delete prescription for ${prescription.attributes.drug_name}`}
+                  aria-label={`Delete prescription for ${brand_name || 'Unknown Brand'}`}
                 >
                   Delete
                 </button>
-              </div>
 
-              {/* Render additional details only if expanded */}
-              {isExpanded && (
-                <div
-                  id={`saved-prescription-details-${prescription.id}`}
-                  className="mt-4"
-                  tabIndex="0"
-                >
-                  <p>
-                    <strong>Manufacturer:</strong>{' '}
-                    {prescription.attributes.manufacturer || 'N/A'}
-                  </p>
-                  <p>
-                    <strong>Description:</strong>{' '}
-                    {prescription.attributes.description?.length > 0
-                      ? prescription.attributes.description.join(', ')
-                      : 'No description available.'}
-                  </p>
-                  {prescription.attributes.package_label_principal_display_panel && (
-                    <p>
-                      <strong>Package Label:</strong>{' '}
-                      {prescription.attributes.package_label_principal_display_panel}
-                    </p>
-                  )}
-                  {prescription.attributes.metadata && (
-                    <div>
-                      <strong>Additional Drug Information:</strong>
-                      <ul className="list-disc ml-5">
-                        {Object.entries(prescription.attributes.metadata).map(([key, value]) => {
-                          if (key === 'openfda' && typeof value === 'object') {
-                            return (
-                              <li key={key}>
-                                <strong>{key}:</strong>
-                                <ul className="list-disc ml-5">
-                                  {Object.entries(value).map(([nestedKey, nestedValue]) => (
-                                    <li key={nestedKey}>
-                                      <strong>{nestedKey}:</strong>{' '}
-                                      {Array.isArray(nestedValue)
-                                        ? nestedValue.join(', ')
-                                        : nestedValue.toString()}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </li>
-                            );
-                          }
-                          return (
-                            <li key={key}>
-                              <strong>{key}:</strong>{' '}
-                              {Array.isArray(value) ? value.join(', ') : value.toString()}
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              )}
-            </li>
-          );
-        })}
+                {isExpanded && (
+                  <div id={`saved-prescription-details-${prescription.id}`} className="mt-4" tabIndex="0">
+                    <p><strong>Generic Name:</strong> {generic_name || 'N/A'}</p>
+                    {substance_name && substance_name.length > 0 && (
+                      <div>
+                        <strong>Substance Name:</strong>
+                        <ul className="list-disc ml-5">
+                          {substance_name.map((substance, index) => (
+                            <li key={index}>{substance}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    <p><strong>Manufacturer:</strong> {manufacturer_name || 'N/A'}</p>
+                    <p><strong>Description:</strong> {description || 'No description available.'}</p>
+                    <p><strong>Inactive Ingredients:</strong> {inactive_ingredient || 'N/A'}</p>
+
+                    {alerts.length > 0 && (
+                      <div>
+                        <strong>Alerts:</strong>
+                        <ul className="list-disc ml-5">
+                          {alerts.map((alert, index) => (
+                            <li key={index}>{alert.message}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    <p><strong>How Supplied:</strong> {how_supplied || 'No supply information available.'}</p>
+                    <p><strong>Route:</strong> {route || 'Unknown'}</p>
+                    <p><strong>Product NDC:</strong> {product_ndc || 'N/A'}</p>
+                    <p><strong>Package NDC:</strong> {package_ndc || 'N/A'}</p>
+                    <p><strong>Original Packager Product NDC:</strong> {original_packager_product_ndc || 'N/A'}</p>
+                  </div>
+                )}
+              </li>
+            );
+          })
+        ) : (
+          <p>No saved prescriptions found.</p>
+        )}
       </ul>
     </section>
   );
@@ -410,7 +475,7 @@ export default function Dashboard() {
     <div className="min-h-screen bg-background text-foreground">
       {/* Banner Section */}
       <header className="bg-primary text-foreground p-4 flex justify-between items-center">
-        <h1 className="text-xl font-bold">NoColoRx</h1>
+        <h1 className="text-xl font-bold">iChooseRx</h1>
         <div className="space-x-4">
           <button
             onClick={handleLogout}
@@ -437,7 +502,7 @@ export default function Dashboard() {
 
         {/* Right: Search and Results */}
         <div>
-          <h2 className="text-2xl font-semibold mb-4">Search FDA for drugs without FD&C food colorings</h2>
+          <h2 className="text-2xl font-semibold mb-4">Search FDA approved drugs with the filters below</h2>
 
           <div className="flex items-center space-x-4 mb-6">
             <input
@@ -458,6 +523,20 @@ export default function Dashboard() {
             >
               {loading ? 'Searching...' : 'Search'}
             </button>
+          </div>
+
+          <div className="flex flex-wrap gap-2 mb-4">
+            {FILTER_CATEGORIES.map((filter) => (
+              <label key={filter.key} className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={selectedFilters.includes(filter.key)}
+                  onChange={() => toggleFilter(filter.key)}
+                  className="form-checkbox"
+                />
+                <span className="text-sm">{filter.label}</span>
+              </label>
+            ))}
           </div>
           {searchResults.length > 0 && renderSearchResults()}
         </div>

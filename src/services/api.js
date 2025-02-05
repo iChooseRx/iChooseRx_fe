@@ -5,7 +5,7 @@ const api = axios.create({
   withCredentials: true, // Enable cookies for session handling
 });
 
-console.log('Base URL:', api.defaults.baseURL); // Add this for debugging base url
+console.log('Base URL:', api.defaults.baseURL); // Debugging base URL
 
 export const getSavedPrescriptions = async () => {
   const response = await api.get('/saved_prescriptions');
@@ -23,7 +23,7 @@ export const deleteSavedPrescription = async (id) => {
 };
 
 export const createUser = async (user) => {
-  const response = await api.post('/users', { user }); // Matches /api/v1/users
+  const response = await api.post('/users', { user });
   return response.data;
 };
 
@@ -42,11 +42,11 @@ export const deleteAccount = async (userId) => {
   return response.data;
 };
 
-export const searchDrugs = async (drugName) => {
-  const response = await api.get('/drugs', {
-    params: { drug_name: drugName },
-  });
+export const searchDrugs = async (drugName, filterParams = '') => {
+  const response = await api.get(`/drugs?drug_name=${drugName}&${filterParams}`);
+  console.log('API Request URL:', response.config.url); // Debugging
   console.log('API Response:', response.data);
+
   return response.data;
 };
 
