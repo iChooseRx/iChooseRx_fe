@@ -15,7 +15,7 @@ export default function Dashboard() {
   const [prescriptions, setPrescriptions] = useState([]);
   const [drugName, setDrugName] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  const [expandedDrugs, setExpandedDrugs] = useState({});
+  const [expandedSearchId, setExpandedSearchId] = useState(null);
   const [selectedDrug, setSelectedDrug] = useState(null); // 🔹 Default to `null`
   const [resultStats, setResultStats] = useState(null);
   const [error, setError] = useState('');
@@ -99,7 +99,7 @@ export default function Dashboard() {
     setError('');
     setLoading(true);
     setSelectedDrug(null); // 🔹 Reset expanded selection
-    setExpandedDrugs({});  // 🔹 Fix: Reset expanded results on new search
+    setExpandedSearchId(null);
 
     try {
       // Convert selectedFilters array into query string format
@@ -109,9 +109,6 @@ export default function Dashboard() {
 
       // Call API with correctly formatted filters
       const { data, meta } = await searchDrugs(drugName, filterParams);
-
-      console.log("Filters Sent:", filterParams);
-      console.log("API Response:", data);
 
       setSearchResults(data);
       setResultStats(meta);
@@ -233,8 +230,11 @@ export default function Dashboard() {
 
       <ul role="list" className="space-y-4">
         {Array.isArray(searchResults) && searchResults.length > 0 ? (
-          searchResults.map((result, index) => {
+          searchResults.map((result) => {
             if (!result) return null;
+
+            // Use result.id for unique identifier for toggling expand/contract results
+            const uniqueId = result.id;
 
             const {
               brand_name,
@@ -251,12 +251,15 @@ export default function Dashboard() {
               original_packager_product_ndc
             } = result || {};
 
-            const isExpanded = expandedDrugs[result.id] || false;
+            // Compare using the uniqueId
+            const isExpanded = expandedSearchId === uniqueId;
 
             return (
               <li
-                key={result.id || `search-result-${index}`}
-                className={`border p-4 rounded shadow transition-colors ${isExpanded ? 'bg-white text-black dark:bg-gray-800 dark:text-white' : 'bg-gray-100 text-black dark:bg-gray-900 dark:text-white'
+                key={uniqueId}
+                className={`border p-4 rounded shadow transition-colors ${isExpanded
+                  ? 'bg-white text-black dark:bg-gray-800 dark:text-white'
+                  : 'bg-gray-100 text-black dark:bg-gray-900 dark:text-white'
                   }`}
                 role="listitem"
               >
@@ -264,15 +267,10 @@ export default function Dashboard() {
                   <h3 className="font-bold text-lg">
                     {brand_name || 'Unknown Brand'}
                     <button
-                      onClick={() =>
-                        setExpandedDrugs((prevExpanded) => {
-                          const newExpanded = { ...prevExpanded, [result.id]: !prevExpanded[result.id] };
-                          return newExpanded;
-                        })
-                      }
+                      onClick={() => setExpandedSearchId(isExpanded ? null : uniqueId)}
                       className="ml-2 text-blue-500 hover:text-blue-600"
-                      aria-expanded={!!expandedDrugs[result.id]}
-                      aria-label={!!expandedDrugs[result.id] ? 'Collapse details' : 'Expand details'}
+                      aria-expanded={isExpanded}
+                      aria-label={isExpanded ? 'Collapse details' : 'Expand details'}
                     >
                       {isExpanded ? '- details' : '+ details'}
                     </button>
@@ -288,36 +286,54 @@ export default function Dashboard() {
                 </button>
 
                 {isExpanded && (
-                  <div id={`drug-details-${result.id}`} className="mt-4" tabIndex="0">
-                    <p><strong>Generic Name:</strong> {generic_name || 'N/A'}</p>
+                  <div id={`drug-details-${uniqueId}`} className="mt-4" tabIndex="0">
+                    <p>
+                      <strong>Generic Name:</strong> {generic_name || 'N/A'}
+                    </p>
                     {substance_name && substance_name.length > 0 && (
                       <div>
                         <strong>Substance Name:</strong>
                         <ul className="list-disc ml-5">
-                          {substance_name.map((substance, index) => (
-                            <li key={index}>{substance}</li>
+                          {substance_name.map((substance, idx) => (
+                            <li key={idx}>{substance}</li>
                           ))}
                         </ul>
                       </div>
                     )}
-                    <p><strong>Manufacturer:</strong> {manufacturer_name || 'N/A'}</p>
-                    <p><strong>Description:</strong> {description || 'No description available.'}</p>
-                    <p><strong>Inactive Ingredients:</strong> {inactive_ingredient || 'N/A'}</p>
+                    <p>
+                      <strong>Manufacturer:</strong> {manufacturer_name || 'N/A'}
+                    </p>
+                    <p>
+                      <strong>Description:</strong> {description || 'No description available.'}
+                    </p>
+                    <p>
+                      <strong>Inactive Ingredients:</strong> {inactive_ingredient || 'N/A'}
+                    </p>
                     {alerts.length > 0 && (
                       <div>
                         <strong>Alerts:</strong>
                         <ul className="list-disc ml-5">
-                          {alerts.map((alert, index) => (
-                            <li key={index}>{alert.message}</li>
+                          {alerts.map((alert, idx) => (
+                            <li key={idx}>{alert.message}</li>
                           ))}
                         </ul>
                       </div>
                     )}
-                    <p><strong>How Supplied:</strong> {how_supplied || 'No supply information available.'}</p>
-                    <p><strong>Route:</strong> {route || 'Unknown'}</p>
-                    <p><strong>Product NDC:</strong> {product_ndc || 'N/A'}</p>
-                    <p><strong>Package NDC:</strong> {package_ndc || 'N/A'}</p>
-                    <p><strong>Original Packager Product NDC:</strong> {original_packager_product_ndc || 'N/A'}</p>
+                    <p>
+                      <strong>How Supplied:</strong> {how_supplied || 'No supply information available.'}
+                    </p>
+                    <p>
+                      <strong>Route:</strong> {route || 'Unknown'}
+                    </p>
+                    <p>
+                      <strong>Product NDC:</strong> {product_ndc || 'N/A'}
+                    </p>
+                    <p>
+                      <strong>Package NDC:</strong> {package_ndc || 'N/A'}
+                    </p>
+                    <p>
+                      <strong>Original Packager Product NDC:</strong> {original_packager_product_ndc || 'N/A'}
+                    </p>
                   </div>
                 )}
               </li>
