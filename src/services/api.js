@@ -17,6 +17,11 @@ export const createSavedPrescription = async (prescription) => {
   return response.data;
 };
 
+export const updateSavedPrescriptionNotes = async (id, notes) => {
+  const response = await api.put(`/saved_prescriptions/${id}`, { saved_prescription: { notes } });
+  return response.data;
+};
+
 export const deleteSavedPrescription = async (id) => {
   const response = await api.delete(`/saved_prescriptions/${id}`);
   return response.data;
