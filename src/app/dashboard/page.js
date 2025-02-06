@@ -69,7 +69,16 @@ export default function Dashboard() {
   const fetchPrescriptions = async () => {
     try {
       const data = await getSavedPrescriptions();
-      setPrescriptions(data.data);
+
+      // data.data is an array of JSON:API resource objects.
+      // Flatten each resource object into a plain JS object.
+      const flattenedPrescriptions = data.data.map((resource) => ({
+        id: resource.id,
+        // Merge all resource.attributes keys at the top level
+        ...resource.attributes,
+      }));
+
+      setPrescriptions(flattenedPrescriptions);
     } catch {
       setError('Failed to load saved prescriptions.');
     }
@@ -154,21 +163,28 @@ export default function Dashboard() {
    * ✅ Handle Saving a Prescription
    */
   const handleSavePrescription = async (drugData) => {
+    console.log("Saving with alerts:", drugData.alerts);
+
     try {
       const payload = {
-        brand_name: drugData.brand_name || 'Unknown Brand',
-        generic_name: drugData.generic_name || 'Unknown Generic',
-        substance_name: drugData.substance_name || [],
-        manufacturer_name: drugData.manufacturer_name || 'N/A',
-        description: drugData.description || 'No description available.',
-        inactive_ingredient: drugData.inactive_ingredient || 'N/A',
-        alerts: drugData.alerts || [],
-        how_supplied: drugData.how_supplied || 'No supply information available.',
-        route: drugData.route || 'Unknown',
-        product_ndc: drugData.product_ndc || 'N/A',
-        package_ndc: drugData.package_ndc || 'N/A',
-        original_packager_product_ndc: drugData.original_packager_product_ndc || 'N/A'
+        brand_name: drugData.brand_name,
+        generic_name: drugData.generic_name,
+        substance_name: drugData.substance_name,  // Assuming this should remain an array
+        manufacturer_name: drugData.manufacturer_name,
+        // Store description as a string; if it's an array, join it.
+        description: Array.isArray(drugData.description)
+          ? drugData.description.join("\n")
+          : (drugData.description || 'No description available.'),
+        inactive_ingredient: drugData.inactive_ingredient,
+        alerts: drugData.alerts,                  // an array of objects
+        how_supplied: drugData.how_supplied,
+        route: drugData.route,
+        product_ndc: drugData.product_ndc,
+        package_ndc: drugData.package_ndc,
+        original_packager_product_ndc: drugData.original_packager_product_ndc
       };
+
+      console.log("Payload being sent to createSavedPrescription:", payload);
 
       await createSavedPrescription(payload);
       alert('Prescription saved successfully!');
@@ -356,6 +372,7 @@ export default function Dashboard() {
           prescriptions.map((prescription) => {
             if (!prescription) return null; // Ensure valid prescription data
 
+            // Destructure using the keys output by the serializer
             const {
               brand_name,
               generic_name,
@@ -363,13 +380,13 @@ export default function Dashboard() {
               manufacturer_name,
               description,
               inactive_ingredient,
-              alerts = [], // Ensure alerts is an array
+              alerts = [],
               how_supplied,
               route,
               product_ndc,
               package_ndc,
               original_packager_product_ndc
-            } = prescription || {}; // Prevent destructuring issues
+            } = prescription || {};
 
             const isExpanded = selectedDrug?.id === prescription.id;
 
@@ -421,7 +438,6 @@ export default function Dashboard() {
                     <p><strong>Manufacturer:</strong> {manufacturer_name || 'N/A'}</p>
                     <p><strong>Description:</strong> {description || 'No description available.'}</p>
                     <p><strong>Inactive Ingredients:</strong> {inactive_ingredient || 'N/A'}</p>
-
                     {alerts.length > 0 && (
                       <div>
                         <strong>Alerts:</strong>
@@ -432,7 +448,6 @@ export default function Dashboard() {
                         </ul>
                       </div>
                     )}
-
                     <p><strong>How Supplied:</strong> {how_supplied || 'No supply information available.'}</p>
                     <p><strong>Route:</strong> {route || 'Unknown'}</p>
                     <p><strong>Product NDC:</strong> {product_ndc || 'N/A'}</p>
