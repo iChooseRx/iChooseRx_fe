@@ -8,6 +8,7 @@ import {
   deleteSavedPrescription,
   logoutUser,
   deleteAccount,
+  updateSavedPrescriptionNotes
 } from '../../services/api';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
@@ -23,6 +24,7 @@ export default function Dashboard() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState([]);
+  const [notesByPrescription, setNotesByPrescription] = useState({});
 
   // Available filters from the backend
   const FILTER_CATEGORIES = [
@@ -181,7 +183,8 @@ export default function Dashboard() {
         route: drugData.route,
         product_ndc: drugData.product_ndc,
         package_ndc: drugData.package_ndc,
-        original_packager_product_ndc: drugData.original_packager_product_ndc
+        original_packager_product_ndc: drugData.original_packager_product_ndc,
+        notes: drugData.notes
       };
 
       console.log("Payload being sent to createSavedPrescription:", payload);
@@ -192,6 +195,22 @@ export default function Dashboard() {
     } catch (error) {
       console.error('Error saving prescription:', error);
       alert('Failed to save prescription. Please try again.');
+    }
+  };
+
+  function handleNoteChange(prescriptionId, newNotes) {
+    setNotesByPrescription((prev) => ({
+      ...prev,
+      [prescriptionId]: newNotes,
+    }));
+  }
+
+  const handleUpdateNotes = async (id, notes) => {
+    try {
+      await updateSavedPrescriptionNotes(id, notes);
+      fetchPrescriptions(); // Refresh data
+    } catch (error) {
+      console.error('Failed to update notes:', error);
     }
   };
 
@@ -274,8 +293,8 @@ export default function Dashboard() {
               <li
                 key={uniqueId}
                 className={`border p-4 rounded shadow transition-colors ${isExpanded
-                  ? 'bg-white text-black dark:bg-gray-800 dark:text-white'
-                  : 'bg-gray-100 text-black dark:bg-gray-900 dark:text-white'
+                  ? 'bg-white text-black dark:bg-gray-900 dark:text-white'
+                  : 'bg-gray-100 text-black dark:bg-gray-950 dark:text-white'
                   }`}
                 role="listitem"
               >
@@ -385,7 +404,8 @@ export default function Dashboard() {
               route,
               product_ndc,
               package_ndc,
-              original_packager_product_ndc
+              original_packager_product_ndc,
+              notes
             } = prescription || {};
 
             const isExpanded = selectedDrug?.id === prescription.id;
@@ -394,8 +414,8 @@ export default function Dashboard() {
               <li
                 key={prescription.id}
                 className={`border p-4 rounded shadow transition-colors ${isExpanded
-                  ? 'bg-white text-black dark:bg-gray-800 dark:text-white'
-                  : 'bg-gray-100 text-black dark:bg-gray-900 dark:text-white'
+                  ? 'bg-white text-black dark:bg-gray-900 dark:text-white'
+                  : 'bg-gray-100 text-black dark:bg-gray-950 dark:text-white'
                   }`}
                 role="listitem"
               >
@@ -453,6 +473,19 @@ export default function Dashboard() {
                     <p><strong>Product NDC:</strong> {product_ndc || 'N/A'}</p>
                     <p><strong>Package NDC:</strong> {package_ndc || 'N/A'}</p>
                     <p><strong>Original Packager Product NDC:</strong> {original_packager_product_ndc || 'N/A'}</p>
+                    <textarea
+                      value={(notesByPrescription[prescription.id] ?? notes) || ''}
+                      onChange={(e) => handleNoteChange(prescription.id, e.target.value)}
+                      placeholder="Add your notes here..."
+                      className="border border-borderColor rounded p-2 w-full font-bold bg-white text-black placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary transition-colors mt-2"
+                    />
+                    <button
+                      onClick={() => handleUpdateNotes(prescription.id, notesByPrescription[prescription.id] ?? notes)}
+                      className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                    >
+                      Save Notes
+                    </button>
+
                   </div>
                 )}
               </li>
