@@ -469,7 +469,7 @@ export default function Dashboard() {
     <div className="min-h-screen bg-background text-foreground">
       {/* Banner Section */}
       <header className="bg-primary text-foreground p-4 flex justify-between items-center">
-        <h1 className="text-xl font-bold">iChooseRx</h1>
+        <h1 className="text-3xl md:text-5xl font-bold">iChooseRx</h1>
         <div className="space-x-4">
           <button
             onClick={handleLogout}
