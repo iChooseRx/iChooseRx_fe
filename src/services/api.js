@@ -7,23 +7,23 @@ const api = axios.create({
 
 console.log('Base URL:', api.defaults.baseURL); // Debugging base URL
 
-export const getSavedPrescriptions = async () => {
-  const response = await api.get('/saved_prescriptions');
+export const getSaveddrugs = async () => {
+  const response = await api.get('/saved_drugs');
   return response.data;
 };
 
-export const createSavedPrescription = async (prescription) => {
-  const response = await api.post('/saved_prescriptions', { saved_prescription: prescription });
+export const createSaveddrug = async (drug) => {
+  const response = await api.post('/saved_drugs', { saved_drug: drug });
   return response.data;
 };
 
-export const updateSavedPrescriptionNotes = async (id, notes) => {
-  const response = await api.put(`/saved_prescriptions/${id}`, { saved_prescription: { notes } });
+export const updateSaveddrugNotes = async (id, notes) => {
+  const response = await api.put(`/saved_drugs/${id}`, { saved_drug: { notes } });
   return response.data;
 };
 
-export const deleteSavedPrescription = async (id) => {
-  const response = await api.delete(`/saved_prescriptions/${id}`);
+export const deleteSaveddrug = async (id) => {
+  const response = await api.delete(`/saved_drugs/${id}`);
   return response.data;
 };
 
@@ -48,7 +48,7 @@ export const deleteAccount = async (userId) => {
 };
 
 export const searchDrugs = async (drugName, filterParams = '') => {
-  const response = await api.get(`/drugs?drug_name=${drugName}&${filterParams}`);
+  const response = await api.get(`/drug_searches?drug_name=${drugName}&${filterParams}`);
   console.log('API Request URL:', response.config.url); // Debugging
   console.log('API Response:', response.data);
 

@@ -2,18 +2,18 @@
 
 import { useEffect, useState } from 'react';
 import {
-  getSavedPrescriptions,
+  getSaveddrugs,
   searchDrugs,
-  createSavedPrescription,
-  deleteSavedPrescription,
+  createSaveddrug,
+  deleteSaveddrug,
   logoutUser,
   deleteAccount,
-  updateSavedPrescriptionNotes
+  updateSaveddrugNotes
 } from '../../services/api';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 export default function Dashboard() {
-  const [prescriptions, setPrescriptions] = useState([]);
+  const [drugs, setdrugs] = useState([]);
   const [drugName, setDrugName] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [expandedSearchId, setExpandedSearchId] = useState(null);
@@ -24,7 +24,7 @@ export default function Dashboard() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState([]);
-  const [notesByPrescription, setNotesByPrescription] = useState({});
+  const [notesBydrug, setNotesBydrug] = useState({});
 
   // Available filters from the backend
   const FILTER_CATEGORIES = [
@@ -61,28 +61,28 @@ export default function Dashboard() {
   }, [isClient]); // Runs only after `isClient` is true
 
   /**
-   * ✅ Fetch saved prescriptions only after client has loaded
+   * ✅ Fetch saved drugs only after client has loaded
    */
   useEffect(() => {
     if (!isClient) return;
-    fetchPrescriptions();
+    fetchdrugs();
   }, [isClient]);
 
-  const fetchPrescriptions = async () => {
+  const fetchdrugs = async () => {
     try {
-      const data = await getSavedPrescriptions();
+      const data = await getSaveddrugs();
 
       // data.data is an array of JSON:API resource objects.
       // Flatten each resource object into a plain JS object.
-      const flattenedPrescriptions = data.data.map((resource) => ({
+      const flatteneddrugs = data.data.map((resource) => ({
         id: resource.id,
         // Merge all resource.attributes keys at the top level
         ...resource.attributes,
       }));
 
-      setPrescriptions(flattenedPrescriptions);
+      setdrugs(flatteneddrugs);
     } catch {
-      setError('Failed to load saved prescriptions.');
+      setError('Failed to load saved drugs.');
     }
   };
 
@@ -113,7 +113,6 @@ export default function Dashboard() {
     setExpandedSearchId(null);
 
     try {
-      // Convert selectedFilters array into query string format
       const filterParams = selectedFilters.length
         ? selectedFilters.map((filter) => `filters[]=${encodeURIComponent(filter)}`).join('&')
         : '';
@@ -121,7 +120,13 @@ export default function Dashboard() {
       // Call API with correctly formatted filters
       const { data, meta } = await searchDrugs(drugName, filterParams);
 
-      setSearchResults(data);
+      // 🔹 Extract attributes from JSON:API response
+      const formattedResults = data.map((item) => ({
+        id: item.id,
+        ...item.attributes, // Spread attributes into the top-level object
+      }));
+
+      setSearchResults(formattedResults);
       setResultStats(meta);
     } catch (err) {
       console.error('Search Error:', err);
@@ -130,6 +135,7 @@ export default function Dashboard() {
       setLoading(false);
     }
   };
+
 
   /**
    * ✅ Handle Logout
@@ -162,9 +168,9 @@ export default function Dashboard() {
   };
 
   /**
-   * ✅ Handle Saving a Prescription
+   * ✅ Handle Saving a drug
    */
-  const handleSavePrescription = async (drugData) => {
+  const handleSavedrug = async (drugData) => {
     console.log("Saving with alerts:", drugData.alerts);
 
     try {
@@ -187,44 +193,44 @@ export default function Dashboard() {
         notes: drugData.notes
       };
 
-      console.log("Payload being sent to createSavedPrescription:", payload);
+      console.log("Payload being sent to createSaveddrug:", payload);
 
-      await createSavedPrescription(payload);
-      alert('Prescription saved successfully!');
-      fetchPrescriptions();
+      await createSaveddrug(payload);
+      alert('drug saved successfully!');
+      fetchdrugs();
     } catch (error) {
-      console.error('Error saving prescription:', error);
-      alert('Failed to save prescription. Please try again.');
+      console.error('Error saving drug:', error);
+      alert('Failed to save drug. Please try again.');
     }
   };
 
-  function handleNoteChange(prescriptionId, newNotes) {
-    setNotesByPrescription((prev) => ({
+  function handleNoteChange(drugId, newNotes) {
+    setNotesBydrug((prev) => ({
       ...prev,
-      [prescriptionId]: newNotes,
+      [drugId]: newNotes,
     }));
   }
 
   const handleUpdateNotes = async (id, notes) => {
     try {
-      await updateSavedPrescriptionNotes(id, notes);
-      fetchPrescriptions(); // Refresh data
+      await updateSaveddrugNotes(id, notes);
+      fetchdrugs(); // Refresh data
     } catch (error) {
       console.error('Failed to update notes:', error);
     }
   };
 
-  // Delete saved prescription
-  const handleDeletePrescription = async (id) => {
+  // Delete saved drug
+  const handleDeletedrug = async (id) => {
     try {
-      await deleteSavedPrescription(id); // API call to delete the prescription
-      alert('Prescription deleted successfully!');
-      setPrescriptions((prevPrescriptions) =>
-        prevPrescriptions.filter((prescription) => prescription.id !== id)
-      ); // Update the state to remove the deleted prescription
+      await deleteSaveddrug(id); // API call to delete the drug
+      alert('drug deleted successfully!');
+      setdrugs((prevdrugs) =>
+        prevdrugs.filter((drug) => drug.id !== id)
+      ); // Update the state to remove the deleted drug
     } catch (error) {
-      console.error('Error deleting prescription:', error);
-      alert('Failed to delete prescription. Please try again.');
+      console.error('Error deleting drug:', error);
+      alert('Failed to delete drug. Please try again.');
     }
   };
 
@@ -313,9 +319,9 @@ export default function Dashboard() {
                 </div>
 
                 <button
-                  onClick={() => handleSavePrescription(result)}
+                  onClick={() => handleSavedrug(result)}
                   className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-                  aria-label={`Save prescription for ${brand_name || 'Unknown Brand'}`}
+                  aria-label={`Save drug for ${brand_name || 'Unknown Brand'}`}
                 >
                   Save
                 </button>
@@ -381,15 +387,15 @@ export default function Dashboard() {
     </section>
   );
 
-  const renderSavedPrescriptions = () => (
-    <section role="region" aria-labelledby="saved-prescriptions" className="text-foreground bg-background">
-      <h2 id="saved-prescriptions" className="text-2xl font-semibold mb-4">
+  const renderSaveddrugs = () => (
+    <section role="region" aria-labelledby="saved-drugs" className="text-foreground bg-background">
+      <h2 id="saved-drugs" className="text-2xl font-semibold mb-4">
         Saved Drugs
       </h2>
       <ul role="list" className="space-y-4">
-        {Array.isArray(prescriptions) && prescriptions.length > 0 ? (
-          prescriptions.map((prescription) => {
-            if (!prescription) return null; // Ensure valid prescription data
+        {Array.isArray(drugs) && drugs.length > 0 ? (
+          drugs.map((drug) => {
+            if (!drug) return null; // Ensure valid drug data
 
             // Destructure using the keys output by the serializer
             const {
@@ -406,13 +412,13 @@ export default function Dashboard() {
               package_ndc,
               original_packager_product_ndc,
               notes
-            } = prescription || {};
+            } = drug || {};
 
-            const isExpanded = selectedDrug?.id === prescription.id;
+            const isExpanded = selectedDrug?.id === drug.id;
 
             return (
               <li
-                key={prescription.id}
+                key={drug.id}
                 className={`border p-4 rounded shadow transition-colors ${isExpanded
                   ? 'bg-white text-black dark:bg-gray-900 dark:text-white'
                   : 'bg-gray-100 text-black dark:bg-gray-950 dark:text-white'
@@ -423,10 +429,10 @@ export default function Dashboard() {
                   <h3 className="font-bold text-lg">
                     {brand_name || 'Unknown Brand'}
                     <button
-                      onClick={() => setSelectedDrug(isExpanded ? null : prescription)}
+                      onClick={() => setSelectedDrug(isExpanded ? null : drug)}
                       className="ml-2 text-blue-500 hover:text-blue-600"
                       aria-expanded={isExpanded}
-                      aria-controls={`saved-prescription-details-${prescription.id}`}
+                      aria-controls={`saved-drug-details-${drug.id}`}
                       aria-label={isExpanded ? 'Collapse details' : 'Expand details'}
                     >
                       {isExpanded ? '- details' : '+ details'}
@@ -435,15 +441,15 @@ export default function Dashboard() {
                 </div>
 
                 <button
-                  onClick={() => handleDeletePrescription(prescription.id)}
+                  onClick={() => handleDeletedrug(drug.id)}
                   className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                  aria-label={`Delete prescription for ${brand_name || 'Unknown Brand'}`}
+                  aria-label={`Delete drug for ${brand_name || 'Unknown Brand'}`}
                 >
                   Delete
                 </button>
 
                 {isExpanded && (
-                  <div id={`saved-prescription-details-${prescription.id}`} className="mt-4" tabIndex="0">
+                  <div id={`saved-drug-details-${drug.id}`} className="mt-4" tabIndex="0">
                     <p><strong>Generic Name:</strong> {generic_name || 'N/A'}</p>
                     {substance_name && substance_name.length > 0 && (
                       <div>
@@ -474,13 +480,13 @@ export default function Dashboard() {
                     <p><strong>Package NDC:</strong> {package_ndc || 'N/A'}</p>
                     <p><strong>Original Packager Product NDC:</strong> {original_packager_product_ndc || 'N/A'}</p>
                     <textarea
-                      value={(notesByPrescription[prescription.id] ?? notes) || ''}
-                      onChange={(e) => handleNoteChange(prescription.id, e.target.value)}
+                      value={(notesBydrug[drug.id] ?? notes) || ''}
+                      onChange={(e) => handleNoteChange(drug.id, e.target.value)}
                       placeholder="Add your notes here..."
                       className="border border-borderColor rounded p-2 w-full font-bold bg-white text-black placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary transition-colors mt-2"
                     />
                     <button
-                      onClick={() => handleUpdateNotes(prescription.id, notesByPrescription[prescription.id] ?? notes)}
+                      onClick={() => handleUpdateNotes(drug.id, notesBydrug[drug.id] ?? notes)}
                       className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
                     >
                       Save Notes
@@ -492,7 +498,7 @@ export default function Dashboard() {
             );
           })
         ) : (
-          <p>No saved prescriptions found.</p>
+          <p>No saved drugs found.</p>
         )}
       </ul>
     </section>
@@ -522,9 +528,9 @@ export default function Dashboard() {
       </header>
 
       <main className="grid grid-cols-2 gap-6 h-screen p-6">
-        {/* Left: Saved Prescriptions */}
+        {/* Left: Saved drugs */}
         <div className="pr-4 border-r border-borderColor">
-          {renderSavedPrescriptions()}
+          {renderSaveddrugs()}
         </div>
 
         {/* Right: Search and Results */}
