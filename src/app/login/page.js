@@ -24,7 +24,7 @@ export default function LoginPage() {
 
   return (
     <main className="h-screen flex flex-col items-center justify-center bg-background text-foreground">
-      <h1 className="text-2xl font-bold mb-4">Login to NoColoRX</h1>
+      <h1 className="text-2xl font-bold mb-4">Login to iChooseRx</h1>
       <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
         {error && <p className="text-error">{error}</p>}
         <input
