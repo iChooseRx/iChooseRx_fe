@@ -770,7 +770,6 @@ export default function DashboardClient() {
         route: drugData.route,
         product_ndc: drugData.product_ndc,
         package_ndc: drugData.package_ndc,
-        original_packager_product_ndc: drugData.original_packager_product_ndc,
         notes: drugData.notes,
       };
       await createSaveddrug(payload);
@@ -903,8 +902,7 @@ export default function DashboardClient() {
               how_supplied,
               route,
               product_ndc,
-              package_ndc,
-              original_packager_product_ndc,
+              package_ndc
             } = result;
 
             const isExpanded = expandedSearchId === uniqueId;
@@ -971,7 +969,6 @@ export default function DashboardClient() {
                     <p><strong>Route:</strong> {route || 'Unknown'}</p>
                     <p><strong>Product NDC:</strong> {product_ndc || 'N/A'}</p>
                     <p><strong>Package NDC:</strong> {package_ndc || 'N/A'}</p>
-                    <p><strong>Original Packager Product NDC:</strong> {original_packager_product_ndc || 'N/A'}</p>
                   </div>
                 )}
               </li>
@@ -1013,7 +1010,6 @@ export default function DashboardClient() {
               route,
               product_ndc,
               package_ndc,
-              original_packager_product_ndc,
               notes,
             } = drug;
 
@@ -1086,8 +1082,6 @@ export default function DashboardClient() {
                     <p><strong>Route:</strong> {route || 'Unknown'}</p>
                     <p><strong>Product NDC:</strong> {product_ndc || 'N/A'}</p>
                     <p><strong>Package NDC:</strong> {package_ndc || 'N/A'}</p>
-                    <p><strong>Original Packager Product NDC:</strong> {original_packager_product_ndc || 'N/A'}</p>
-
                     {/* Notes */}
                     <textarea
                       value={(notesBydrug[drug.id] ?? notes) || ''}
