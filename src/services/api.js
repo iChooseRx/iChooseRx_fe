@@ -1,11 +1,12 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_NOCOLORX_BE_BASE_URL,
+  baseURL: process.env.NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL,
   withCredentials: true, // Enable cookies for session handling
 });
 
 console.log('Base URL:', api.defaults.baseURL); // Debugging base URL
+
 
 export const getSaveddrugs = async () => {
   const response = await api.get('/saved_drugs');
@@ -48,10 +49,13 @@ export const deleteAccount = async (userId) => {
 };
 
 export const searchDrugs = async (drugName, filterParams = '') => {
-  const response = await api.get(`/drug_searches?drug_name=${drugName}&${filterParams}`);
+  // Build the query string properly:
+  // - URL-encode the drugName
+  // - Append filterParams only if they exist.
+  const queryString = `drug_name=${encodeURIComponent(drugName)}${filterParams ? `&${filterParams}` : ''}`;
+  const response = await api.get(`/drug_searches?${queryString}`);
   console.log('API Request URL:', response.config.url); // Debugging
   console.log('API Response:', response.data);
-
   return response.data;
 };
 
