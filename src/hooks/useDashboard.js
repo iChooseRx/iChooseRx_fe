@@ -7,7 +7,7 @@ import {
   logoutUser,
   deleteAccount,
   updateSaveddrugNotes
-} from "../../services/api";
+} from "@/services/api";
 
 export function useDashboard() {
   const [drugs, setDrugs] = useState([]);
