@@ -8,7 +8,7 @@ import {
   logoutUser,
   deleteAccount,
   updateSaveddrugNotes
-} from '../../services/api';
+} from '../../../services/api';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 export default function DashboardClient() {
