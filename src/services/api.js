@@ -7,7 +7,6 @@ const api = axios.create({
 
 console.log('Base URL:', api.defaults.baseURL); // Debugging base URL
 
-
 export const getSaveddrugs = async () => {
   const response = await api.get('/saved_drugs');
   return response.data;
@@ -57,6 +56,23 @@ export const searchDrugs = async (drugName, filterParams = '') => {
   console.log('API Request URL:', response.config.url); // Debugging
   console.log('API Response:', response.data);
   return response.data;
+};
+
+// Search pharmacies by NDC
+export const searchPharmaciesByNDC = async (ndc) => {
+  if (!ndc) {
+    throw new Error("NDC number is required.");
+  }
+
+  try {
+    const response = await api.get(`/pharmacy_searches?ndc=${encodeURIComponent(ndc)}`);
+    console.log('Pharmacy Search API Request URL:', response.config.url); // Debugging
+    console.log('Pharmacy Search API Response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching pharmacies:", error.response?.data || error.message);
+    throw error;
+  }
 };
 
 export default api;
