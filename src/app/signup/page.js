@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link'; // Import Link for navigation
-import { createUser } from '../../services/api';
+import { createUser } from '@/services/api';
 
 export default function SignupPage() {
   const [email, setEmail] = useState('');
