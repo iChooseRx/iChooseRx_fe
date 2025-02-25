@@ -2,7 +2,7 @@
 import { useDashboard } from "../../hooks/useDashboard";
 import DashboardHeader from "@/components/DashboardHeader";
 import SearchBar from "@/components/SearchBar";
-import DrugFilter from "@/components/Filters";
+import DrugFilter from "@/components/filters";
 import SearchResults from "@/components/SearchResults";
 import SavedDrugs from "@/components/SavedDrugs";
 import PharmacySearch from "@/components/PharmacySearch";
