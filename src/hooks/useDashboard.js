@@ -6,7 +6,8 @@ import {
   deleteSaveddrug,
   logoutUser,
   deleteAccount,
-  updateSaveddrugNotes
+  updateSaveddrugNotes,
+  getSaveddrugs
 } from "@/services/api";
 
 export function useDashboard() {
@@ -45,16 +46,20 @@ export function useDashboard() {
 
   async function fetchDrugs() {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL}/saved_drugs`, { credentials: "include" });
-      if (res.status === 401) {
-        alert("You are not logged in!");
-        window.location.href = "/login";
-        return;
-      }
-      const data = await res.json();
-      setDrugs(data.data.map((r) => ({ id: r.id, ...r.attributes })));
+      const savedDrugs = await getSaveddrugs();
+      console.log("📥 API Response from /saved_drugs:", savedDrugs); // ✅ Log full response
+
+      const formattedDrugs = savedDrugs.data.map((r) => ({
+        id: r.id,
+        notes: r.attributes.notes, // ✅ Ensure notes are mapped
+        ...r.attributes
+      }));
+
+      console.log("✅ Processed drugs with notes:", formattedDrugs);
+
+      setDrugs(formattedDrugs);
     } catch (error) {
-      console.error("Error fetching drugs:", error);
+      console.error("❌ Error fetching saved drugs:", error);
     }
   }
 
@@ -106,8 +111,18 @@ export function useDashboard() {
   };
 
   const handleUpdateNotes = async (id, notes) => {
-    await updateSaveddrugNotes(id, notes);
-    await fetchDrugs();
+    try {
+      await updateSaveddrugNotes(id, notes); // ✅ Send API request to update notes
+
+      // ✅ Update local state instead of refetching all drugs
+      setDrugs((prev) =>
+        prev.map((d) => (d.id === id ? { ...d, notes } : d))
+      );
+
+      console.log(`✅ Updated notes for drug ${id} in frontend state:`, notes);
+    } catch (error) {
+      console.error("❌ Failed to update notes:", error);
+    }
   };
 
   return {

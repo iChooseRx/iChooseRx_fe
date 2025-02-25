@@ -9,6 +9,7 @@ console.log('Base URL:', api.defaults.baseURL); // Debugging base URL
 
 export const getSaveddrugs = async () => {
   const response = await api.get('/saved_drugs');
+  console.log("📥 API Response from /saved_drugs:", response.data); // ✅ Log API response
   return response.data;
 };
 
@@ -18,7 +19,7 @@ export const createSaveddrug = async (drug) => {
 };
 
 export const updateSaveddrugNotes = async (id, notes) => {
-  const response = await api.put(`/saved_drugs/${id}`, { saved_drug: { notes } });
+  const response = await api.patch(`/saved_drugs/${id}`, { notes }); // PATCH, send only notes
   return response.data;
 };
 

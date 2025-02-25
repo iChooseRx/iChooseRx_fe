@@ -109,7 +109,7 @@ export default function SavedDrugs({ drugs, onDelete, notesByDrug, setNotesByDru
                   {/* ✅ DrugNotes Component */}
                   <DrugNotes
                     drugId={id}
-                    initialNotes={notesByDrug[id] || ""}
+                    initialNotes={drug.notes || ""}
                     onSave={handleUpdateNotes}
                   />
                 </div>

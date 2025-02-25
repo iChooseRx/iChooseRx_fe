@@ -7,7 +7,6 @@ import SearchResults from "@/components/SearchResults";
 import SavedDrugs from "@/components/SavedDrugs";
 import PharmacySearch from "@/components/PharmacySearch";
 
-
 export default function DashboardClient() {
   const dashboard = useDashboard();
 
