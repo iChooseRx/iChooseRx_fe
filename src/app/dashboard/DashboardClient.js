@@ -35,7 +35,7 @@ export default function DashboardClient() {
         {/* ✅ Right Column: Drug Search & Results */}
         <div>
           <h2 className="text-2xl font-semibold mb-4">
-            Search FDA-approved drugs with iChooseRx filters!
+            Search FDA-Approved Drugs By Generic Name
           </h2>
 
           <SearchBar
@@ -44,7 +44,9 @@ export default function DashboardClient() {
             onSearch={dashboard.handleSearch}
             isLoading={dashboard.loading}
           />
-
+          <h3 className="text-xl font-semibold mb-4">
+            Select What You DO NOT Want In Your Drug (Then Click Search)
+          </h3>
           <DrugFilter
             filters={dashboard.FILTER_CATEGORIES}
             selectedFilters={dashboard.selectedFilters}

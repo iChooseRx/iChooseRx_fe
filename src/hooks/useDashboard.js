@@ -24,14 +24,16 @@ export function useDashboard() {
   const [notesByDrug, setNotesByDrug] = useState({});
 
   const FILTER_CATEGORIES = [
-    { key: "artificial_colors", label: "No Artificial Colors" },
-    { key: "artificial_sweeteners", label: "No Artificial Sweeteners" },
-    { key: "artificial_flavors", label: "No Artificial Flavors" },
-    { key: "preservatives", label: "No Preservatives" },
-    { key: "gluten", label: "No Gluten" },
-    { key: "added_sugar", label: "No Added Sugar" },
-    { key: "vegan", label: "No Animal Ingredients" },
-    { key: "possible_endocrine_disruptors", label: "No Endocrine Disruptors" }
+    { key: "artificial_colors", label: "Artificial Colors" },
+    { key: "artificial_sweeteners", label: "Artificial Sweeteners" },
+    { key: "artificial_flavors", label: "Artificial Flavors" },
+    { key: "preservatives", label: "Preservatives" },
+    { key: "gluten", label: "Gluten" },
+    { key: "added_sugar", label: "Added Sugar" },
+    { key: "vegan", label: "Animal Ingredients" },
+    { key: "possible_endocrine_disruptors", label: "Endocrine Disruptors" },
+    { key: "sugar_alcohols", label: "Sugar Alcohols" },
+    { key: "potentially_harmful_additives", label: "Other Potentially Harmful Additives" },
   ];
 
   useEffect(() => {
