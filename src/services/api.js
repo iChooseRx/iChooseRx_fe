@@ -3,8 +3,18 @@ import axios from "axios";
 // 🔹 Rails Backend API (Default)
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL,
-  withCredentials: true, // Enable cookies for session handling
+  // withCredentials: true, // Enable cookies for session handling
 });
+
+// Attach token to every request
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("auth_token");
+  if (token) {
+    config.headers["Authorization"] = `Bearer ${token}`;
+  }
+  return config;
+}, (error) => Promise.reject(error));
+
 
 // 🔹 Python Microservice API (Port 8000)
 const pythonApi = axios.create({
@@ -107,3 +117,11 @@ export const uploadPharmacyFile = async (file) => {
     throw error;
   }
 };
+
+export const sendInvitation = async ({ email, role }) => {
+  const response = await api.post("/invitations", {
+    invitation: { email, role: parseInt(role, 10) }
+  });
+  return response.data;
+};
+

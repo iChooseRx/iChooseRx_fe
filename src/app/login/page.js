@@ -14,8 +14,11 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const user = await loginUser({ email, password });
-      localStorage.setItem('user', JSON.stringify(user));
+      const userData = await loginUser({ email, password });
+      // Example userData => { message, auth_token, user: { id, email, role } }
+      localStorage.setItem("auth_token", userData.auth_token);
+      localStorage.setItem("user_role", userData.user.role);
+      // redirect to dashboard
       router.push('/dashboard');
     } catch (err) {
       setError('Invalid email or password.');

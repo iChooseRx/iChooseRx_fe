@@ -1,32 +1,46 @@
 "use client";
-import React from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useDashboard } from "@/hooks/useDashboard";
 
-export default function DashboardHeader({ onLogout, onDeleteAccount }) {
+export default function DashboardHeader() {
+  const { handleLogout, handleDeleteAccount } = useDashboard();
+  const [role, setRole] = useState("user");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setRole(localStorage.getItem("user_role") || "user");
+    }
+  }, []);
+
   return (
-    <header className="bg-primary text-foreground p-4 flex justify-between items-center">
-      <h1 className="text-3xl md:text-5xl font-bold">iChooseRx</h1>
+    <header className="bg-primary text-white p-4 flex justify-between items-center">
+      <h1 className="text-5xl font-bold">iChooseRx</h1>
 
-      {/* ✅ Navigation Links */}
       <nav className="space-x-4">
-        <Link href="/dashboard" className="text-foreground hover:underline">
-          Home
+        {/* ✅ Update Home link to go to the Drug Search Dashboard */}
+        <Link href="/dashboard/user" className="hover:underline">
+          Drug Search Dashboard
         </Link>
-        <Link href="/dashboard/upload" className="text-foreground hover:underline">
-          📂 Upload
-        </Link>
-        <button
-          onClick={onLogout}
-          className="text-foreground hover:underline"
-          aria-label="Logout"
-        >
+
+        {/* ✅ Pharmacy and Admin can see Upload */}
+        {(role === "pharmacy" || role === "admin") && (
+          <Link href="/dashboard/pharmacy" className="hover:underline">
+            Upload Dashboard
+          </Link>
+        )}
+
+        {/* ✅ Admins can see Admin Dashboard */}
+        {role === "admin" && (
+          <Link href="/dashboard/admin" className="hover:underline">
+            Admin Dashboard
+          </Link>
+        )}
+
+        <button onClick={handleLogout} className="hover:underline">
           Logout
         </button>
-        <button
-          onClick={onDeleteAccount}
-          className="text-foreground hover:underline"
-          aria-label="Delete Account"
-        >
+        <button onClick={handleDeleteAccount} className="hover:underline">
           Delete Account
         </button>
       </nav>
