@@ -63,8 +63,14 @@ export const loginUser = async (credentials) => {
 
 // ✅ Logout User (Rails)
 export const logoutUser = async () => {
-  const response = await api.delete("/logout");
-  return response.data;
+  try {
+    await api.delete("/logout"); // Call API to signal logout
+  } catch (error) {
+    console.error("Logout failed:", error);
+  }
+  localStorage.removeItem("auth_token"); // ✅ Remove token locally
+  localStorage.removeItem("user_role"); // ✅ Remove role
+  window.location.href = "/login"; // ✅ Redirect to login page
 };
 
 // ✅ Delete User Account (Rails)
