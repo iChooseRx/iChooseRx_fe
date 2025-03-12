@@ -49,10 +49,7 @@ export default function SearchResults({ results, resultStats, onSave }) {
           return (
             <li
               key={uniqueId}
-              className={`border p-4 rounded shadow transition-colors ${isExpanded
-                ? "bg-white text-black dark:bg-gray-900 dark:text-white"
-                : "bg-gray-100 text-black dark:bg-gray-950 dark:text-white"
-                }`}
+              className={`border p-4 rounded shadow bg-background text-foreground transition-colors ${isExpanded ? "shadow-lg" : ""}`}
               role="listitem"
             >
               <div className="flex justify-between items-center">

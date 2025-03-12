@@ -68,7 +68,7 @@ export default function PharmacySearch() {
       {pharmacies.length > 0 && (
         <ul className="mt-4 space-y-2">
           {pharmacies.map((pharmacy) => (
-            <li key={pharmacy.id} className="border p-2 rounded bg-gray-100 dark:bg-gray-800">
+            <li key={pharmacy.id} className="border p-2 rounded bg-background text-foreground transition-colors">
               <strong>{pharmacy.name}</strong>
               {isValid(pharmacy.stock_status) && <> - Availability: {pharmacy.stock_status}</>}
 
