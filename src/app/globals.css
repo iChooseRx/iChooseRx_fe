@@ -8,24 +8,29 @@
   --primary: #2563eb; /* Blue for buttons */
   --secondary: #16a34a; /* Green for secondary actions */
   --error: #dc2626; /* Red for errors */
-  --border-color: #e5e7eb;
+  --border-color: rgb(111, 157, 249);
+
+  /* Geist Fonts */
+  --font-geist-sans: "GeistSans", sans-serif;
+  --font-geist-mono: "GeistMono", monospace;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background:rgb(0, 0, 0);
+    --background: rgb(0, 0, 0);
     --foreground: #ededed;
-    --primary: #3b82f6; /* Slightly lighter blue */
-    --secondary: #22c55e; /* Slightly lighter green */
-    --error: #f87171; /* Slightly lighter red */
-    --border-color:rgb(114, 154, 218);
+    --primary: rgb(51, 129, 255); /* Slightly lighter blue */
+    --secondary: rgb(24, 182, 82); /* Slightly lighter green */
+    --error: rgb(251, 101, 101); /* Slightly lighter red */
+    --border-color: rgb(102, 150, 226);
   }
 }
 
+/* Apply Geist Sans globally */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans);
 }
 
 button {
@@ -38,19 +43,31 @@ button:hover {
 
 /* Ensure all typed text is black for all input fields */
 input {
-  background-color: #ffffff; /* Ensure white background */
-  color: #000000; /* Force black text color */
+  background-color: var(--background); /* Dynamic background */
+  color: var(--foreground); /* Dynamic text color */
   border: 1px solid var(--border-color); /* Use the border color from root variables */
-  padding: 0.5rem; /* Add consistent padding */
-  border-radius: 0.25rem; /* Rounded corners */
+  padding: 0.5rem;
+  border-radius: 0.25rem;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Ensure placeholder text is dark gray */
-input::placeholder {
-  color: rgb(106, 91, 91); /* Dark gray placeholder text */
+/* Light Mode Placeholder */
+:root input::placeholder {
+  color: rgb(75, 75, 75) !important; /* Almost black for light mode */
 }
 
+/* Dark Mode Placeholder */
+.dark input::placeholder {
+  color: rgb(149, 149, 149) !important; /* Lighter gray for dark mode */
+}
 
+/* Apply Geist Mono to code blocks or other elements */
+code, pre {
+  font-family: var(--font-geist-mono);
+}
 
-
+body {
+  background: var(--background) !important; /* Ensure background is applied */
+  color: var(--foreground);
+  font-family: var(--font-geist-sans);
+}

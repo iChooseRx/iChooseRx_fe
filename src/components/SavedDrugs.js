@@ -47,8 +47,7 @@ export default function SavedDrugs({ drugs, onDelete, notesByDrug, setNotesByDru
           return (
             <li
               key={id}
-              className={`border p-4 rounded shadow transition-colors ${isExpanded ? "bg-white text-black dark:bg-gray-900 dark:text-white" : "bg-gray-100 text-black dark:bg-gray-950 dark:text-white"
-                }`}
+              className={`border p-4 rounded shadow transition-colors bg-background text-foreground`}
               role="listitem"
             >
               <div className="flex justify-between items-center">

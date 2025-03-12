@@ -31,8 +31,10 @@ const FileUpload = () => {
 
     // ✅ Ensure files have valid MIME types
     const validFiles = acceptedFiles.map(file => {
-      file.type = determineMimeType(file); // Assign correct MIME type if missing
-      return file;
+      const newMimeType = determineMimeType(file); // Get correct MIME type
+
+      // ✅ Create a new File object with the correct MIME type
+      return new File([file], file.name, { type: newMimeType, lastModified: file.lastModified });
     });
 
     if (validFiles.length === 0) {
@@ -61,8 +63,16 @@ const FileUpload = () => {
       return;
     }
 
+    // ✅ Get user ID from localStorage
+    const userId = localStorage.getItem("user_id");
+    if (!userId) {
+      setUploadStatus("❌ User not authenticated!");
+      return;
+    }
+
     const formData = new FormData();
-    formData.append("file", files[0]); // Only upload the first file
+    formData.append("file", files[0]);
+    formData.append("user_id", userId);  // ✅ Send user ID with file
 
     setUploadStatus("⏳ Uploading...");
 
@@ -73,14 +83,12 @@ const FileUpload = () => {
 
       if (response.status === 200) {
         setUploadStatus("✅ File uploaded successfully!");
-        setUploadedFiles((prev) => [...prev, files[0].name]); // Store file history
-        setFiles([]); // Reset selected files
       } else {
         setUploadStatus(`❌ Upload failed: ${response.data.message}`);
       }
     } catch (error) {
       console.error("Upload Error:", error);
-      setUploadStatus("❌ Upload error! Check console for details.");
+      setUploadStatus("❌ Upload error!");
     }
   };
 
@@ -125,16 +133,17 @@ const FileUpload = () => {
           text-align: center;
         }
         .dropzone {
-          padding: 20px;
+          margin-top: 50px;
+          padding: 80px;
           border: 2px dashed #0070f3;
           border-radius: 8px;
           cursor: pointer;
-          background-color: #f9f9f9;
+          background-color:rgb(237, 237, 237);
           color: #000;
           transition: background 0.3s;
         }
         .dropzone:hover {
-          background-color: #e0f2ff;
+          background-color:rgb(214, 236, 252);
         }
         .file-preview {
           margin-top: 10px;
