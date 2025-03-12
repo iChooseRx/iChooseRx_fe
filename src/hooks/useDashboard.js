@@ -23,6 +23,8 @@ export function useDashboard() {
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [notesByDrug, setNotesByDrug] = useState({});
 
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // ✅ Track Auth Status
+
   const FILTER_CATEGORIES = [
     { key: "artificial_colors", label: "Artificial Colors" },
     { key: "artificial_sweeteners", label: "Artificial Sweeteners" },
@@ -36,8 +38,16 @@ export function useDashboard() {
     { key: "potentially_harmful_additives", label: "Other Potentially Harmful Additives" },
   ];
 
+  // ✅ Run only when the auth token is present
   useEffect(() => {
-    fetchDrugs();
+    const token = localStorage.getItem("auth_token");
+    if (token) {
+      setIsAuthenticated(true);
+      fetchDrugs();
+    } else {
+      console.warn("⚠️ No auth token found, skipping API calls.");
+    }
+
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     setIsDarkMode(mediaQuery.matches);
 
@@ -46,24 +56,33 @@ export function useDashboard() {
     return () => mediaQuery.removeEventListener("change", handleThemeChange);
   }, []);
 
-  async function fetchDrugs() {
+  const fetchDrugs = async () => {
+    const token = localStorage.getItem("auth_token");
+    if (!token) {
+      console.warn("⚠️ Skipping fetchDrugs: No auth token found.");
+      return;
+    }
+
     try {
       const savedDrugs = await getSaveddrugs();
-      console.log("📥 API Response from /saved_drugs:", savedDrugs); // ✅ Log full response
+      console.log("📥 API Response from /saved_drugs:", savedDrugs);
+
+      if (!savedDrugs || !Array.isArray(savedDrugs.data)) {
+        console.warn("⚠️ No saved drugs found or response format incorrect.");
+        return;
+      }
 
       const formattedDrugs = savedDrugs.data.map((r) => ({
         id: r.id,
-        notes: r.attributes.notes, // ✅ Ensure notes are mapped
+        notes: r.attributes?.notes || "", // ✅ Prevent undefined errors
         ...r.attributes
       }));
 
-      console.log("✅ Processed drugs with notes:", formattedDrugs);
-
-      setDrugs(formattedDrugs);
+      setDrugs(formattedDrugs); // ✅ Set correct state
     } catch (error) {
-      console.error("❌ Error fetching saved drugs:", error);
+      console.error("❌ Error fetching saved drugs:", error.message);
     }
-  }
+  };
 
   const handleSearch = async (e) => {
     e?.preventDefault();
@@ -88,15 +107,31 @@ export function useDashboard() {
 
   const handleLogout = async () => {
     await logoutUser();
+    localStorage.removeItem("auth_token");
+    localStorage.removeItem("user_role");
+    localStorage.removeItem("user_id");
     alert("Logged out successfully!");
     window.location.href = "/login";
   };
 
   const handleDeleteAccount = async () => {
     if (confirm("Are you sure you want to delete your account?")) {
-      await deleteAccount(1);
-      alert("Account deleted successfully!");
-      window.location.href = "/";
+      const userId = localStorage.getItem("user_id");
+      if (!userId) {
+        alert("❌ Error: Could not retrieve user ID");
+        return;
+      }
+
+      try {
+        await deleteAccount(userId);
+        localStorage.removeItem("auth_token");
+        localStorage.removeItem("user_role");
+        localStorage.removeItem("user_id");
+        alert("Account deleted successfully!");
+        window.location.href = "/signup";
+      } catch (err) {
+        alert("Failed to delete account. Please try again.");
+      }
     }
   };
 
@@ -114,7 +149,7 @@ export function useDashboard() {
 
   const handleUpdateNotes = async (id, notes) => {
     try {
-      await updateSaveddrugNotes(id, notes); // ✅ Send API request to update notes
+      await updateSaveddrugNotes(id, notes);
 
       // ✅ Update local state instead of refetching all drugs
       setDrugs((prev) =>

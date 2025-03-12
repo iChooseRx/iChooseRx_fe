@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { pythonApi } from "@/services/api"; // ✅ Correct path
 
@@ -7,15 +7,51 @@ const FileUpload = () => {
   const [uploadStatus, setUploadStatus] = useState(""); // Stores upload status
   const [uploadedFiles, setUploadedFiles] = useState([]); // Stores previous uploads
 
-  // 🟢 Handle Drag & Drop Files
+  // 🟢 Function to determine MIME type if missing
+  const determineMimeType = (file) => {
+    if (!file.type || file.type === "") {
+      console.warn(`⚠️ File "${file.name}" has no MIME type. Assigning manually.`);
+
+      const extension = file.name.split(".").pop().toLowerCase();
+      const mimeTypes = {
+        csv: "text/csv",
+        json: "application/json",
+        xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      };
+
+      return mimeTypes[extension] || "application/octet-stream"; // Default fallback
+    }
+
+    return file.type; // Return original type if it's valid
+  };
+
+  // 🟢 Handle Drag & Drop Files with Enhanced MIME Handling
   const onDrop = useCallback((acceptedFiles) => {
-    setFiles(acceptedFiles);
+    console.log("📥 Dropzone received:", acceptedFiles);
+
+    // ✅ Ensure files have valid MIME types
+    const validFiles = acceptedFiles.map(file => {
+      file.type = determineMimeType(file); // Assign correct MIME type if missing
+      return file;
+    });
+
+    if (validFiles.length === 0) {
+      console.warn("⚠️ No valid files detected. Skipping.");
+      return;
+    }
+
+    setFiles(validFiles);
     setUploadStatus(""); // Reset status when a new file is added
   }, []);
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
-    accept: ".csv,.xlsx,.json", // Only allow specific file types
+    accept: {
+      "text/csv": [],
+      "application/json": [],
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": []
+    },
+    multiple: false, // Allow only one file at a time
   });
 
   // 🔥 Handle File Upload
@@ -59,7 +95,7 @@ const FileUpload = () => {
       {/* Selected File Preview */}
       {files.length > 0 && (
         <div className="file-preview">
-          <p>📝 Selected File: {files[0].name}</p>
+          <p>📝 Selected File: {files[0].name} ({files[0].type})</p>
           <button onClick={handleUpload} className="upload-btn">
             🚀 Upload File
           </button>

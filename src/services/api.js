@@ -26,9 +26,25 @@ export default api;
 
 // ✅ Get Saved Drugs (Rails)
 export const getSaveddrugs = async () => {
-  const response = await api.get("/saved_drugs");
-  console.log("📥 API Response from /saved_drugs:", response.data);
-  return response.data;
+  const token = localStorage.getItem("auth_token"); // ✅ Get stored token
+
+  if (!token) {
+    console.error("❌ No auth token found in localStorage");
+    return;
+  }
+
+  try {
+    const response = await api.get("/saved_drugs", {
+      headers: {
+        Authorization: `Bearer ${token}` // ✅ Attach token
+      }
+    });
+    console.log("📥 API Response from /saved_drugs:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("❌ Error fetching saved drugs:", error.response?.data || error.message);
+    throw error;
+  }
 };
 
 // ✅ Create a Saved Drug (Rails)
@@ -50,16 +66,42 @@ export const deleteSaveddrug = async (id) => {
 };
 
 // ✅ Create User (Rails)
-export const createUser = async (user) => {
-  const response = await api.post("/users", { user });
-  return response.data;
+export const createUser = async (userData) => {
+  console.log("📡 API Request Payload:", JSON.stringify(userData, null, 2)); // 🔍 Debug log before sending request
+  try {
+    const response = await api.post("/users", userData);
+    console.log("✅ User created successfully:", response.data);
+
+    if (response.data.auth_token) {
+      localStorage.setItem("auth_token", response.data.auth_token); // ✅ Store token
+      localStorage.setItem("user_id", response.data.user.id); // ✅ Store user ID
+      localStorage.setItem("user_role", response.data.user.role); // ✅ Store user role
+    } else {
+      console.warn("❌ No auth token returned after signup");
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error("❌ Error creating user:", error.response?.data || error.message);
+    throw error;
+  }
 };
 
 // ✅ Login User (Rails)
 export const loginUser = async (credentials) => {
   const response = await api.post("/login", credentials);
+
+  if (response.data.user) {
+    localStorage.setItem("auth_token", response.data.auth_token);
+    localStorage.setItem("user_id", response.data.user.id); // ✅ Store user ID
+    localStorage.setItem("user_role", response.data.user.role);
+  } else {
+    console.error("❌ Error: No user object returned from API");
+  }
+
   return response.data;
 };
+
 
 // ✅ Logout User (Rails)
 export const logoutUser = async () => {
@@ -75,8 +117,32 @@ export const logoutUser = async () => {
 
 // ✅ Delete User Account (Rails)
 export const deleteAccount = async (userId) => {
-  const response = await api.delete(`/users/${userId}`);
-  return response.data;
+  if (!userId) {
+    console.error("❌ Missing userId when calling deleteAccount");
+    return;
+  }
+
+  const token = localStorage.getItem("auth_token"); // ✅ Retrieve JWT Token
+  if (!token) {
+    console.error("❌ No auth token found in localStorage");
+    return;
+  }
+
+  console.log(`🛑 Deleting user with ID: ${userId}`);
+
+  try {
+    const response = await api.delete(`/users/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}` // ✅ Send token with request
+      }
+    });
+
+    console.log("✅ User deleted successfully:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("❌ Error deleting user:", error.response?.data || error.message);
+    throw error;
+  }
 };
 
 // ✅ Search FDA-Approved Drugs (Rails)
