@@ -62,17 +62,17 @@ export default function DrugNotes({ drugId, initialNotes, onSave }) {
         value={notes}
         onChange={(e) => setNotes(e.target.value)}
         placeholder="Add your notes here..."
-        onKeyDown={handleKeyDown} // ✅ Listen for keyboard shortcut
-        className="border border-borderColor rounded p-2 w-full bg-white text-black placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
+        onKeyDown={handleKeyDown}
+        className="border border-borderColor rounded p-2 w-full bg-background text-foreground placeholder:text-gray-600 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
       />
       <button
         onClick={handleSaveNotes}
-        className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 mt-2"
+        className="bg-primary text-white px-3 py-1 rounded hover:opacity-90 mt-2 transition-colors"
         disabled={saving}
       >
         {saving ? "Saving..." : "Save Notes"}
       </button>
-      {savedMessage && <p className="mt-2 text-sm text-gray-600">{savedMessage}</p>}
+      {savedMessage && <p className="mt-2 text-sm text-foreground">{savedMessage}</p>}
     </div>
   );
 }

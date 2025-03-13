@@ -16,7 +16,7 @@ export default function LandingPage() {
 
   return (
     <main className="h-screen flex flex-col items-center justify-center bg-gray-100">
-      <h1 className="text-4xl font-bold mb-6">Welcome to NoColorX</h1>
+      <h1 className="text-4xl font-bold mb-6">Welcome to iChooseRx</h1>
       <div className="space-x-4">
         <button
           onClick={() => router.push('/login')}

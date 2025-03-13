@@ -15,10 +15,13 @@ export default function LoginPage() {
     e.preventDefault();
     try {
       const userData = await loginUser({ email, password });
-      // Example userData => { message, auth_token, user: { id, email, role } }
+
+      // ✅ Store user ID and role
       localStorage.setItem("auth_token", userData.auth_token);
+      localStorage.setItem("user_id", userData.user.id);  // 🆕 Save user ID
       localStorage.setItem("user_role", userData.user.role);
-      // redirect to dashboard
+
+      // Redirect to dashboard
       router.push('/dashboard');
     } catch (err) {
       setError('Invalid email or password.');

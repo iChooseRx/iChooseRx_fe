@@ -8,6 +8,19 @@ export default function PharmacySearch() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  // ✅ Function to check if a value is valid (not empty, null, or generic)
+  const isValid = (value) => {
+    if (
+      !value ||
+      value.trim() === "" ||
+      value.toLowerCase().includes("unknown") ||
+      value === "000-000-0000" // ❌ Generic phone number
+    ) {
+      return false;
+    }
+    return true;
+  };
+
   const handleSearch = async () => {
     if (!ndc.trim()) {
       setError("Please enter a valid NDC.");
@@ -38,7 +51,7 @@ export default function PharmacySearch() {
           placeholder="Enter NDC number"
           value={ndc}
           onChange={(e) => setNdc(e.target.value)}
-          className="border border-borderColor rounded p-2 w-full bg-white text-black placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
+          className="border border-borderColor rounded p-2 w-full bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
           aria-label="Enter NDC to search for pharmacies"
         />
         <button
@@ -55,10 +68,19 @@ export default function PharmacySearch() {
       {pharmacies.length > 0 && (
         <ul className="mt-4 space-y-2">
           {pharmacies.map((pharmacy) => (
-            <li key={pharmacy.id} className="border p-2 rounded bg-gray-100 dark:bg-gray-800">
-              <strong>{pharmacy.name}</strong> - {pharmacy.stock_status} <br />
-              {pharmacy.form && <>Form: {pharmacy.form} | </>}
-              {pharmacy.strength && <>Strength: {pharmacy.strength} | </>}
+            <li key={pharmacy.id} className="border p-2 rounded bg-background text-foreground transition-colors">
+              <strong>{pharmacy.name}</strong>
+              {isValid(pharmacy.stock_status) && <> - Availability: {pharmacy.stock_status}</>}
+
+              <br />
+              {isValid(pharmacy.form) && <>Form: {pharmacy.form} | </>}
+              {isValid(pharmacy.strength) && <>Strength: {pharmacy.strength} | </>}
+
+              {/* ✅ Show additional pharmacy details only if valid */}
+              {isValid(pharmacy.street_address) && (
+                <p>📍 Address: {pharmacy.street_address}, {pharmacy.city}, {pharmacy.state} {pharmacy.zip_code}</p>
+              )}
+              {isValid(pharmacy.phone) && <p>📞 Phone: {pharmacy.phone}</p>}
             </li>
           ))}
         </ul>
