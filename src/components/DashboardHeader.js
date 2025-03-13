@@ -21,13 +21,13 @@ export default function DashboardHeader() {
     <header className="bg-primary text-white p-4 flex justify-between items-center">
       <h1 className="text-3xl font-bold">iChooseRx</h1>
 
-      {/* Navigation Menu */}
+      {/* Menu */}
       <div className="relative">
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className="bg-secondary px-4 py-2 rounded-lg text-white font-medium transition-all duration-300"
         >
-          Navigation Menu
+          Menu
         </button>
 
         {/* Dropdown */}
