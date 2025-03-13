@@ -17,8 +17,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: rgb(0, 0, 0);
-    --foreground: #ededed;
+    --background: rgb(3, 3, 3);
+     --foreground:rgb(211, 211, 211); /* Lighter gray to reduce harsh contrast */
     --primary: rgb(51, 129, 255); /* Slightly lighter blue */
     --secondary: rgb(24, 182, 82); /* Slightly lighter green */
     --error: rgb(251, 101, 101); /* Slightly lighter red */
@@ -26,11 +26,18 @@
   }
 }
 
-/* Apply Geist Sans globally */
+/* Apply Geist Sans globally with a default weight */
 body {
-  background: var(--background);
-  color: var(--foreground);
   font-family: var(--font-geist-sans);
+  font-weight: 400; /* Set to a normal weight */
+  background: var(--background) !important;
+  color: var(--foreground);
+}
+
+/* Apply Geist Mono to code blocks */
+code, pre {
+  font-family: var(--font-geist-mono);
+  font-weight: 400; /* Ensure it’s not too bold */
 }
 
 button {
@@ -70,4 +77,11 @@ body {
   background: var(--background) !important; /* Ensure background is applied */
   color: var(--foreground);
   font-family: var(--font-geist-sans);
+}
+
+/* Improve font rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }

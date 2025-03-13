@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import ResultsChart from "./ResultsChart";
 
 /**
@@ -8,12 +8,57 @@ import ResultsChart from "./ResultsChart";
  */
 export default function SearchResults({ results, resultStats, onSave }) {
   const [expandedSearchId, setExpandedSearchId] = useState(null);
+  const resultsContainerRef = useRef(null);
+  const [showBackToTop, setShowBackToTop] = useState(false);
+  const [isInteracting, setIsInteracting] = useState(true);
+  const timeoutRef = useRef(null);
 
   if (!results || results.length === 0) return null;
 
   const handleToggleExpand = (id) => {
     setExpandedSearchId((prev) => (prev === id ? null : id));
   };
+
+  const handleScroll = () => {
+    if (resultsContainerRef.current) {
+      setShowBackToTop(resultsContainerRef.current.scrollTop > 200);
+    }
+    resetInteractionTimer();
+  };
+
+  const handleMouseMove = () => {
+    resetInteractionTimer();
+  };
+
+  const resetInteractionTimer = () => {
+    setIsInteracting(true);
+    clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      setIsInteracting(false);
+    }, 3000); // Button hides after 3 seconds of inactivity
+  };
+
+  const scrollToTop = () => {
+    if (resultsContainerRef.current) {
+      resultsContainerRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  useEffect(() => {
+    const container = resultsContainerRef.current;
+    if (container) {
+      container.addEventListener("mousemove", handleMouseMove);
+      container.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (container) {
+        container.removeEventListener("mousemove", handleMouseMove);
+        container.removeEventListener("scroll", handleScroll);
+      }
+      clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   return (
     <section role="region" aria-labelledby="search-results" className="text-foreground bg-background">
@@ -24,8 +69,11 @@ export default function SearchResults({ results, resultStats, onSave }) {
       {/* Chart */}
       <ResultsChart resultStats={resultStats} />
 
-      {/* Scrollable results container */}
-      <div className="max-h-[500px] overflow-y-auto border rounded-lg p-2 shadow-inner">
+      {/* ✅ Scrollable results container */}
+      <div
+        ref={resultsContainerRef}
+        className="relative max-h-[500px] overflow-y-auto border rounded-lg p-2 shadow-inner"
+      >
         <ul role="list" className="space-y-4">
           {results.map((result) => {
             if (!result) return null;
@@ -112,6 +160,18 @@ export default function SearchResults({ results, resultStats, onSave }) {
             );
           })}
         </ul>
+
+        {/* ✅ Floating "Back to Top" Button with Slow Fade-Out */}
+        {showBackToTop && (
+          <button
+            onClick={scrollToTop}
+            className={`sticky bottom-2 right-2 bg-blue-500 text-white px-4 py-2 rounded shadow-md hover:bg-blue-600 transition-opacity duration-1000 ease-in-out ${isInteracting ? "opacity-100" : "opacity-0 pointer-events-none"
+              }`}
+            style={{ marginLeft: "auto", display: "block", width: "fit-content" }}
+          >
+            ↑ Back to Top
+          </button>
+        )}
       </div>
     </section>
   );

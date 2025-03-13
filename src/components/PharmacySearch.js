@@ -43,7 +43,7 @@ export default function PharmacySearch() {
 
   return (
     <div className="border p-4 rounded shadow bg-background text-foreground">
-      <h2 className="text-xl font-semibold mb-3">Find Pharmacies by NDC</h2>
+      <h2 className="text-2xl font-semibold mb-4">Find Pharmacies by NDC</h2>
 
       <div className="flex items-center space-x-4 mb-4">
         <input

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { useDashboard } from "@/hooks/useDashboard";
 
@@ -7,6 +7,7 @@ export default function DashboardHeader() {
   const { handleLogout, handleDeleteAccount } = useDashboard();
   const [role, setRole] = useState("user");
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -14,15 +15,34 @@ export default function DashboardHeader() {
     }
   }, []);
 
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    };
+
+    if (menuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [menuOpen]);
+
   // Function to close menu when a link is clicked
   const closeMenu = () => setMenuOpen(false);
 
   return (
-    <header className="bg-primary text-white p-4 flex justify-between items-center">
-      <h1 className="text-3xl font-bold">iChooseRx</h1>
+    <header className="bg-primary text-white h-20 flex justify-between items-center px-10">
+      <h1 className="text-4xl font-bold">iChooseRx</h1>
 
       {/* Menu */}
-      <div className="relative">
+      <div className="relative" ref={menuRef}>
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className="bg-secondary px-4 py-2 rounded-lg text-white font-medium transition-all duration-300"

@@ -11,7 +11,7 @@ export default function UserDashboard() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <main className="grid grid-cols-2 gap-6 h-screen p-6">
+      <main className="grid grid-cols-2 gap-4 p-4 mt-2">
         {/* ✅ Left Column: Saved Drugs & Pharmacy Search */}
         <div className="pr-4 border-r border-borderColor">
           <SavedDrugs
@@ -22,13 +22,16 @@ export default function UserDashboard() {
             handleUpdateNotes={dashboard.handleUpdateNotes}
           />
 
+          {/* ✅ Divider between sections */}
+          <hr className="my-4 border-t border-borderColor" />
+
           {/* ✅ Pharmacy Search BELOW Saved Drugs */}
           <PharmacySearch />
         </div>
 
         {/* ✅ Right Column: Drug Search & Results */}
         <div>
-          <h2 className="text-2xl font-semibold mb-4">
+          <h2 className="text-2xl font-semibold mb-3">
             Search FDA-Approved Drugs By Generic Name
           </h2>
 
@@ -38,7 +41,7 @@ export default function UserDashboard() {
             onSearch={dashboard.handleSearch}
             isLoading={dashboard.loading}
           />
-          <h3 className="text-xl font-semibold mb-4">
+          <h3 className="text-xl font-semibold mb-3">
             Select What You DO NOT Want In Your Drug (Then Click Search)
           </h3>
           <DrugFilter
