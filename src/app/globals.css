@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background:rgb(238, 238, 238);
+  --foreground:rgb(22, 22, 22);
   --primary: #2563eb; /* Blue for buttons */
   --secondary: #16a34a; /* Green for secondary actions */
   --error: #dc2626; /* Red for errors */
@@ -17,8 +17,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: rgb(3, 3, 3);
-     --foreground:rgb(211, 211, 211); /* Lighter gray to reduce harsh contrast */
+    --background: rgb(10, 10, 10);
+    --foreground: rgb(222, 222, 222); /* Lighter gray to reduce harsh contrast */
     --primary: rgb(51, 129, 255); /* Slightly lighter blue */
     --secondary: rgb(24, 182, 82); /* Slightly lighter green */
     --error: rgb(251, 101, 101); /* Slightly lighter red */
@@ -48,40 +48,38 @@ button:hover {
   opacity: 0.9;
 }
 
-/* Ensure all typed text is black for all input fields */
-input {
-  background-color: var(--background); /* Dynamic background */
-  color: var(--foreground); /* Dynamic text color */
-  border: 1px solid var(--border-color); /* Use the border color from root variables */
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Light Mode Placeholder */
-:root input::placeholder {
-  color: rgb(75, 75, 75) !important; /* Almost black for light mode */
-}
-
-/* Dark Mode Placeholder */
-.dark input::placeholder {
-  color: rgb(149, 149, 149) !important; /* Lighter gray for dark mode */
-}
-
-/* Apply Geist Mono to code blocks or other elements */
-code, pre {
-  font-family: var(--font-geist-mono);
-}
-
-body {
-  background: var(--background) !important; /* Ensure background is applied */
-  color: var(--foreground);
-  font-family: var(--font-geist-sans);
-}
-
 /* Improve font rendering */
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+
+/* ✅ Softer Light Mode Hover */
+:root {
+  --upload-hover-light:rgb(218, 217, 246); /* Soft near-white for hover in light mode */
+  --upload-hover-dark: #1f2937; /* Dark gray for hover in dark mode */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --upload-hover-light:rgb(92, 91, 125); /* Adjusted for dark mode */
+    --upload-hover-dark: #111827;
+  }
+}
+
+/* ✅ Ensure Default Background is Set */
+.dropzone {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* ✅ Force the Light Mode Hover Effect */
+.dropzone:hover {
+  background-color: var(--upload-hover-light) !important;
+}
+
+html:not(.dark) .dropzone:hover {
+  background-color: var(--upload-hover-light) !important;
 }

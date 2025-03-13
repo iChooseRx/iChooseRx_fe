@@ -197,3 +197,18 @@ export const sendInvitation = async ({ email, role }) => {
   return response.data;
 };
 
+// ✅ Request Password Reset (Rails)
+export const requestPasswordReset = async (email) => {
+  const response = await api.post('/password_resets', { email });
+  return response.data;
+};
+
+// ✅ Reset Password (Rails)
+export const resetPassword = async (token, password, passwordConfirmation) => {
+  const response = await api.patch('/password_resets', {
+    token,
+    password,
+    password_confirmation: passwordConfirmation
+  });
+  return response.data;
+};
