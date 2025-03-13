@@ -67,7 +67,9 @@ code, pre {
 }
 
 body {
-  background: var(--background) !important; /* Ensure background is applied */
+  background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans);
+  transition: background 0.3s ease, color 0.3s ease;
 }
+
