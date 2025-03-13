@@ -43,7 +43,7 @@ export default function PharmacySearch() {
 
   return (
     <div className="border p-4 rounded shadow bg-background text-foreground">
-      <h2 className="text-xl font-semibold mb-3">Find Pharmacies by NDC</h2>
+      <h2 className="text-2xl font-semibold mb-4">Find Pharmacies by NDC</h2>
 
       <div className="flex items-center space-x-4 mb-4">
         <input
@@ -66,24 +66,27 @@ export default function PharmacySearch() {
       {error && <p className="text-red-500">{error}</p>}
 
       {pharmacies.length > 0 && (
-        <ul className="mt-4 space-y-2">
-          {pharmacies.map((pharmacy) => (
-            <li key={pharmacy.id} className="border p-2 rounded bg-background text-foreground transition-colors">
-              <strong>{pharmacy.name}</strong>
-              {isValid(pharmacy.stock_status) && <> - Availability: {pharmacy.stock_status}</>}
+        // ✅ Scrollable pharmacy list
+        <div className="max-h-[400px] overflow-y-auto border rounded-lg p-2 shadow-inner">
+          <ul className="mt-4 space-y-2">
+            {pharmacies.map((pharmacy) => (
+              <li key={pharmacy.id} className="border p-2 rounded bg-background text-foreground transition-colors">
+                <strong>{pharmacy.name}</strong>
+                {isValid(pharmacy.stock_status) && <> - Availability: {pharmacy.stock_status}</>}
 
-              <br />
-              {isValid(pharmacy.form) && <>Form: {pharmacy.form} | </>}
-              {isValid(pharmacy.strength) && <>Strength: {pharmacy.strength} | </>}
+                <br />
+                {isValid(pharmacy.form) && <>Form: {pharmacy.form} | </>}
+                {isValid(pharmacy.strength) && <>Strength: {pharmacy.strength} | </>}
 
-              {/* ✅ Show additional pharmacy details only if valid */}
-              {isValid(pharmacy.street_address) && (
-                <p>📍 Address: {pharmacy.street_address}, {pharmacy.city}, {pharmacy.state} {pharmacy.zip_code}</p>
-              )}
-              {isValid(pharmacy.phone) && <p>📞 Phone: {pharmacy.phone}</p>}
-            </li>
-          ))}
-        </ul>
+                {/* ✅ Show additional pharmacy details only if valid */}
+                {isValid(pharmacy.street_address) && (
+                  <p>📍 Address: {pharmacy.street_address}, {pharmacy.city}, {pharmacy.state} {pharmacy.zip_code}</p>
+                )}
+                {isValid(pharmacy.phone) && <p>📞 Phone: {pharmacy.phone}</p>}
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );

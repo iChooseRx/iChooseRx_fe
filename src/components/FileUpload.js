@@ -95,10 +95,10 @@ const FileUpload = () => {
       {/* Drag and Drop Area */}
       <div
         {...getRootProps()}
-        className="border-2 border-dashed border-primary p-10 rounded-lg text-center cursor-pointer transition hover:bg-gray-100 dark:hover:bg-gray-800"
+        className="border-2 border-dashed border-primary p-10 rounded-lg text-center cursor-pointer dropzone"
       >
         <input {...getInputProps()} />
-        <p className="text-lg text-gray-700 dark:text-gray-300">
+        <p className="text-lg text-foreground">
           📂 Drag & drop a file here, or click to select one.
         </p>
       </div>

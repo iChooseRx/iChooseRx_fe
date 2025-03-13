@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link'; // Import Link for navigation
+import Link from 'next/link';
 import { loginUser } from '@/services/api';
 
 export default function LoginPage() {
@@ -16,12 +16,10 @@ export default function LoginPage() {
     try {
       const userData = await loginUser({ email, password });
 
-      // ✅ Store user ID and role
       localStorage.setItem("auth_token", userData.auth_token);
-      localStorage.setItem("user_id", userData.user.id);  // 🆕 Save user ID
+      localStorage.setItem("user_id", userData.user.id);
       localStorage.setItem("user_role", userData.user.role);
 
-      // Redirect to dashboard
       router.push('/dashboard');
     } catch (err) {
       setError('Invalid email or password.');
@@ -58,6 +56,11 @@ export default function LoginPage() {
         Don’t have an account?{' '}
         <Link href="/signup" className="text-primary hover:underline">
           Sign up here
+        </Link>
+      </p>
+      <p className="mt-2 text-sm">
+        <Link href="/forgot-password" className="text-primary hover:underline">
+          Forgot Password?
         </Link>
       </p>
     </main>
