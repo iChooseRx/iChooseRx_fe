@@ -18,7 +18,7 @@ export default function PharmacyDashboard() {
           📊 Uploaded Files
         </h2>
         <p className="text-foreground">
-          Here, you'll see a list of all uploaded files once implemented.
+
         </p>
       </div>
     </div>
