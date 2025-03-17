@@ -38,14 +38,14 @@ export default function DashboardHeader() {
   const closeMenu = () => setMenuOpen(false);
 
   return (
-    <header className="bg-primary text-white h-20 flex justify-between items-center px-10">
+    <header className="h-20 flex justify-between items-center px-10 bg-primary text-white">
       <h1 className="text-4xl font-bold">iChooseRx</h1>
 
       {/* Menu */}
       <div className="relative" ref={menuRef}>
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="bg-secondary px-4 py-2 rounded-lg text-white font-medium transition-all duration-300"
+          className="btn-secondary px-4 py-2 rounded-lg font-medium transition-all duration-300"
         >
           Menu
         </button>
