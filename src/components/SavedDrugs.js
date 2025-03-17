@@ -4,12 +4,20 @@ import DrugNotes from "./DrugNotes";
 
 export default function SavedDrugs({ drugs, onDelete, notesByDrug, setNotesByDrug, handleUpdateNotes }) {
   const [expandedDrugId, setExpandedDrugId] = useState(null);
+  const [isExpanded, setIsExpanded] = useState(true); // ✅ Controls the entire saved drugs section
 
   if (!drugs || drugs.length === 0) {
     return (
       <section role="region" aria-labelledby="saved-drugs" className="text-foreground bg-background">
-        <h2 id="saved-drugs" className="text-2xl font-semibold mb-4">
+        <h2 id="saved-drugs" className="text-2xl font-semibold mb-4 flex justify-between items-center">
           Saved Drugs
+          <button
+            onClick={() => setIsExpanded((prev) => !prev)}
+            className="text-blue-500 hover:text-blue-600 text-xl"
+            aria-label={isExpanded ? "Collapse saved drugs" : "Expand saved drugs"}
+          >
+            {isExpanded ? "−" : "+"}
+          </button>
         </h2>
         <p>No saved drugs found.</p>
       </section>
@@ -22,12 +30,23 @@ export default function SavedDrugs({ drugs, onDelete, notesByDrug, setNotesByDru
 
   return (
     <section role="region" aria-labelledby="saved-drugs" className="text-foreground bg-background">
-      <h2 id="saved-drugs" className="text-2xl font-semibold mb-4">
+      {/* ✅ Title with Expand/Collapse Button */}
+      <h2 id="saved-drugs" className="text-2xl font-semibold mb-4 flex items-center">
         Saved Drugs
+        <button
+          onClick={() => setIsExpanded((prev) => !prev)}
+          className="ml-3 text-blue-500 hover:text-blue-600 text-4xl font-bold"
+          aria-label={isExpanded ? "Collapse saved drugs" : "Expand saved drugs"}
+        >
+          {isExpanded ? "−" : "+"}
+        </button>
       </h2>
 
-      {/* Scrollable container */}
-      <div className="max-h-[500px] overflow-y-auto border rounded-lg p-2 shadow-inner">
+      {/* ✅ Expandable Scrollable Container */}
+      <div
+        className={`overflow-y-auto border rounded-lg p-2 shadow-inner transition-all duration-300 ${isExpanded ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0 pointer-events-none"
+          }`}
+      >
         <ul role="list" className="space-y-4">
           {drugs.map((drug) => {
             const {
@@ -45,7 +64,7 @@ export default function SavedDrugs({ drugs, onDelete, notesByDrug, setNotesByDru
               package_ndc,
             } = drug;
 
-            const isExpanded = expandedDrugId === id;
+            const isExpandedDrug = expandedDrugId === id;
 
             return (
               <li
@@ -59,11 +78,11 @@ export default function SavedDrugs({ drugs, onDelete, notesByDrug, setNotesByDru
                     <button
                       onClick={() => toggleDrugExpansion(id)}
                       className="ml-2 text-blue-500 hover:text-blue-600"
-                      aria-expanded={isExpanded}
+                      aria-expanded={isExpandedDrug}
                       aria-controls={`saved-drug-details-${id}`}
-                      aria-label={isExpanded ? "Collapse details" : "Expand details"}
+                      aria-label={isExpandedDrug ? "Collapse details" : "Expand details"}
                     >
-                      {isExpanded ? "- details" : "+ details"}
+                      {isExpandedDrug ? "- details" : "+ details"}
                     </button>
                   </h3>
                 </div>
@@ -77,7 +96,7 @@ export default function SavedDrugs({ drugs, onDelete, notesByDrug, setNotesByDru
                   Delete
                 </button>
 
-                {isExpanded && (
+                {isExpandedDrug && (
                   <div id={`saved-drug-details-${id}`} className="mt-4" tabIndex="0">
                     <p><strong>Generic Name:</strong> {generic_name || "N/A"}</p>
                     {substance_name && substance_name.length > 0 && (
