@@ -2,84 +2,101 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Light mode defaults */
 :root {
-  --background:rgb(250, 250, 250);
-  --foreground:rgb(22, 22, 22);
-  --primary: #2563eb; /* Blue for buttons */
-  --secondary: #16a34a; /* Green for secondary actions */
-  --error: #dc2626; /* Red for errors */
+  --background: #ffffff;
+  --foreground: #171717;
+  --primary: #2563eb;
+  --secondary: #16a34a;
+  --error: #dc2626;
   --border-color: rgb(111, 157, 249);
 
-  /* Geist Fonts */
-  --font-geist-sans: "GeistSans", sans-serif;
-  --font-geist-mono: "GeistMono", monospace;
+  /* Hover helpers */
+  --hover-bg: #f8fafc;
+  --dropzone-hover-bg: #f0f4f8;
 }
 
+/* Dark mode overrides (via prefers-color-scheme fallback) */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: rgb(10, 10, 10);
-    --foreground: rgb(222, 222, 222); /* Lighter gray to reduce harsh contrast */
-    --primary: rgb(51, 129, 255); /* Slightly lighter blue */
-    --secondary: rgb(24, 182, 82); /* Slightly lighter green */
-    --error: rgb(251, 101, 101); /* Slightly lighter red */
-    --border-color: rgb(102, 150, 226);
+    --background: #0a0a0a;
+    --foreground: #dedede;
+    --primary: #3381ff;
+    --secondary: #18b652;
+    --error: #fb6565;
+    --border-color: #6696e2;
+
+    --hover-bg: #2c2c3d;
+    --dropzone-hover-bg: #1e293b;
   }
 }
 
-/* Apply Geist Sans globally with a default weight */
+/* Base Typography */
 body {
   font-family: var(--font-geist-sans);
-  font-weight: 400; /* Set to a normal weight */
-  background: var(--background) !important;
+  font-weight: 400;
+  background: var(--background);
   color: var(--foreground);
-}
-
-/* Apply Geist Mono to code blocks */
-code, pre {
-  font-family: var(--font-geist-mono);
-  font-weight: 400; /* Ensure it’s not too bold */
-}
-
-button {
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-button:hover {
-  opacity: 0.9;
-}
-
-/* Improve font rendering */
-body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
-/* ✅ Softer Light Mode Hover */
-:root {
-  --upload-hover-light:rgb(218, 217, 246); /* Soft near-white for hover in light mode */
-  --upload-hover-dark: #1f2937; /* Dark gray for hover in dark mode */
+code, pre {
+  font-family: var(--font-geist-mono);
+  font-weight: 400;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --upload-hover-light:rgb(92, 91, 125); /* Adjusted for dark mode */
-    --upload-hover-dark: #111827;
-  }
+/* Universal Buttons */
+button {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+button:hover {
+  opacity: 0.9;
+}
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+.btn-secondary {
+  background: var(--secondary);
+  color: white;
 }
 
-/* ✅ Ensure Default Background is Set */
+/* Inputs */
+.input-field {
+  background: var(--background);
+  color: var(--foreground);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  transition: all 0.3s ease;
+}
+.input-field:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--primary);
+}
+
+/* Dropzone */
 .dropzone {
-  background-color: var(--background) !important;
-  color: var(--foreground) !important;
-  transition: background-color 0.3s ease-in-out;
+  background-color: var(--background);
+  color: var(--foreground);
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
-
-/* ✅ Force the Light Mode Hover Effect */
 .dropzone:hover {
-  background-color: var(--upload-hover-light) !important;
+  background-color: var(--dropzone-hover-bg);
 }
 
-html:not(.dark) .dropzone:hover {
-  background-color: var(--upload-hover-light) !important;
+/* Utilities */
+.text-success {
+  color: var(--secondary);
+}
+.text-error {
+  color: var(--error);
+}
+.text-foreground {
+  color: var(--foreground);
+}
+.border-borderColor {
+  border-color: var(--border-color);
 }

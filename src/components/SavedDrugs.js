@@ -4,7 +4,7 @@ import DrugNotes from "./DrugNotes";
 
 export default function SavedDrugs({ drugs, onDelete, notesByDrug, setNotesByDrug, handleUpdateNotes }) {
   const [expandedDrugId, setExpandedDrugId] = useState(null);
-  const [isExpanded, setIsExpanded] = useState(true); // ✅ Controls the entire saved drugs section
+  const [isExpanded, setIsExpanded] = useState(true);
 
   if (!drugs || drugs.length === 0) {
     return (
@@ -13,7 +13,7 @@ export default function SavedDrugs({ drugs, onDelete, notesByDrug, setNotesByDru
           Saved Drugs
           <button
             onClick={() => setIsExpanded((prev) => !prev)}
-            className="text-blue-500 hover:text-blue-600 text-xl"
+            className="ml-3 text-blue-500 hover:text-blue-600 text-xl"
             aria-label={isExpanded ? "Collapse saved drugs" : "Expand saved drugs"}
           >
             {isExpanded ? "−" : "+"}
@@ -30,7 +30,6 @@ export default function SavedDrugs({ drugs, onDelete, notesByDrug, setNotesByDru
 
   return (
     <section role="region" aria-labelledby="saved-drugs" className="text-foreground bg-background">
-      {/* ✅ Title with Expand/Collapse Button */}
       <h2 id="saved-drugs" className="text-2xl font-semibold mb-4 flex items-center">
         Saved Drugs
         <button
@@ -42,9 +41,8 @@ export default function SavedDrugs({ drugs, onDelete, notesByDrug, setNotesByDru
         </button>
       </h2>
 
-      {/* ✅ Expandable Scrollable Container */}
       <div
-        className={`overflow-y-auto border rounded-lg p-2 shadow-inner transition-all duration-300 ${isExpanded ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0 pointer-events-none"
+        className={`overflow-y-auto border-borderColor border rounded-lg p-2 shadow-inner transition-all duration-300 ${isExpanded ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0 pointer-events-none"
           }`}
       >
         <ul role="list" className="space-y-4">
@@ -69,7 +67,7 @@ export default function SavedDrugs({ drugs, onDelete, notesByDrug, setNotesByDru
             return (
               <li
                 key={id}
-                className="border p-4 rounded shadow transition-colors bg-background text-foreground"
+                className="border-borderColor border p-4 rounded shadow transition-colors bg-background text-foreground"
                 role="listitem"
               >
                 <div className="flex justify-between items-center">
@@ -87,7 +85,6 @@ export default function SavedDrugs({ drugs, onDelete, notesByDrug, setNotesByDru
                   </h3>
                 </div>
 
-                {/* Delete Drug Button */}
                 <button
                   onClick={() => onDelete(id)}
                   className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 mt-2"
@@ -127,7 +124,6 @@ export default function SavedDrugs({ drugs, onDelete, notesByDrug, setNotesByDru
                     <p><strong>Product NDC:</strong> {product_ndc || "N/A"}</p>
                     <p><strong>Package NDC:</strong> {package_ndc || "N/A"}</p>
 
-                    {/* ✅ DrugNotes Component */}
                     <DrugNotes
                       drugId={id}
                       initialNotes={drug.notes || ""}

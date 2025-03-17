@@ -10,11 +10,9 @@ import {
   ResponsiveContainer
 } from "recharts";
 
-/**
- * Displays a bar chart comparing total vs. filtered results.
- */
 export default function ResultsChart({ resultStats }) {
-  // Prepare data for Recharts
+  if (!resultStats) return null;
+
   const chartData = [
     {
       name: "Results",
@@ -23,32 +21,30 @@ export default function ResultsChart({ resultStats }) {
     },
   ];
 
-  if (!resultStats) return null;
-
   return (
-    <div style={{ width: "100%", height: 150 }} className="mb-4">
+    <div className="mb-4 w-full h-[150px]">
       <ResponsiveContainer>
         <BarChart data={chartData} layout="vertical">
           <YAxis
             type="category"
             dataKey="name"
             tick={{ fill: "var(--foreground)" }}
-            axisLine={{ stroke: "var(--foreground)" }}
-            tickLine={{ stroke: "var(--foreground)" }}
+            axisLine={{ stroke: "var(--border-color)" }}
+            tickLine={{ stroke: "var(--border-color)" }}
           />
           <XAxis
             type="number"
             domain={[0, "dataMax + 10"]}
             tick={{ fill: "var(--foreground)" }}
-            axisLine={{ stroke: "var(--foreground)" }}
-            tickLine={{ stroke: "var(--foreground)" }}
+            axisLine={{ stroke: "var(--border-color)" }}
+            tickLine={{ stroke: "var(--border-color)" }}
           />
           <Tooltip
             cursor={{ fill: "transparent" }}
             contentStyle={{
               backgroundColor: "var(--background)",
               color: "var(--foreground)",
-              border: "1px solid var(--foreground)",
+              border: "1px solid var(--border-color)",
               fontWeight: "bold",
             }}
             labelStyle={{ color: "var(--foreground)", fontWeight: "bold" }}
@@ -56,24 +52,24 @@ export default function ResultsChart({ resultStats }) {
           <Bar
             dataKey="totalResults"
             name="Total Results"
-            fill="#e74c3c"
+            fill="var(--error)" /* using your global red color */
             barSize={20}
             radius={[0, 4, 4, 0]}
           />
           <Bar
             dataKey="filteredResults"
             name="Filtered Results"
-            fill="#2ecc71"
+            fill="var(--secondary)" /* using your global green color */
             barSize={20}
             radius={[0, 4, 4, 0]}
           />
           <Legend
             content={() => (
-              <div className="text-center font-bold" style={{ color: "var(--foreground)" }}>
-                <span style={{ color: "#e74c3c", marginRight: "10px" }}>
+              <div className="text-center font-bold text-foreground">
+                <span className="mr-4" style={{ color: "var(--error)" }}>
                   Total Results: {resultStats?.total_results || 0}
                 </span>
-                <span style={{ color: "#2ecc71" }}>
+                <span style={{ color: "var(--secondary)" }}>
                   Filtered Results: {resultStats?.filtered_results || 0}
                 </span>
               </div>

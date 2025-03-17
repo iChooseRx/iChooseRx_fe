@@ -37,7 +37,7 @@
    ```sh
    rails s  # Backend (runs on http://localhost:5001)
    npm run dev  # Next.js frontend (Runs on http://localhost:3000)
-   python main.py  # Python microservice
+   python app.py  # Python microservice
    python watch_pharmacy_data.py # (Optional) If using the microservice file watcher:
    ```
 
