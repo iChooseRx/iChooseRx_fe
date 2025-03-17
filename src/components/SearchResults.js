@@ -72,10 +72,22 @@ export default function SearchResults({ results, resultStats, onSave }) {
             const isExpanded = expandedSearchId === uniqueId;
 
             return (
-              <li key={uniqueId} className={`border border-borderColor p-4 rounded shadow bg-background text-foreground transition-colors ${isExpanded ? "shadow-lg" : ""}`} role="listitem">
+              <li
+                key={uniqueId}
+                className={`list-item ${isExpanded ? "shadow-lg" : ""}`}
+                role="listitem"
+              >
                 <div className="flex justify-between items-center">
                   <h3 className="font-bold text-lg">
                     {result.brand_name || "Unknown Brand"}
+                    {result.verified_at_pharmacy && (
+                      <span className="ml-2 text-sm text-green-600">
+                        ✅ Verified at Pharmacy ({new Date(result.verified_at_pharmacy).toLocaleDateString()})
+                      </span>
+                    )}
+                    {!result.verified_at_pharmacy && result.awaiting_verification && (
+                      <span className="ml-2 text-sm text-yellow-600">⏳ Pending Verification</span>
+                    )}
                     <button
                       onClick={() => handleToggleExpand(uniqueId)}
                       className="ml-2 text-blue-500 hover:text-blue-600"
@@ -96,7 +108,11 @@ export default function SearchResults({ results, resultStats, onSave }) {
                 </button>
 
                 {isExpanded && (
-                  <div id={`drug-details-${uniqueId}`} className="mt-4" tabIndex="0">
+                  <div
+                    id={`drug-details-${uniqueId}`}
+                    className="mt-4 collapsible-container open"
+                    tabIndex="0"
+                  >
                     <p><strong>Generic Name:</strong> {result.generic_name || "N/A"}</p>
                     {result.substance_name && result.substance_name.length > 0 && (
                       <div>
@@ -126,7 +142,8 @@ export default function SearchResults({ results, resultStats, onSave }) {
                     <p><strong>Product NDC:</strong> {result.product_ndc || "N/A"}</p>
                     <p><strong>Package NDC:</strong> {result.package_ndc || "N/A"}</p>
                   </div>
-                )}
+                )
+                }
               </li>
             );
           })}
@@ -142,6 +159,6 @@ export default function SearchResults({ results, resultStats, onSave }) {
           </button>
         )}
       </div>
-    </section>
+    </section >
   );
 }

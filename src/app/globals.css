@@ -16,7 +16,7 @@
   --dropzone-hover-bg: #f0f4f8;
 }
 
-/* Dark mode overrides (via prefers-color-scheme fallback) */
+/* Dark mode overrides */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -100,3 +100,38 @@ button:hover {
 .border-borderColor {
   border-color: var(--border-color);
 }
+
+/* Collapsible sections */
+.collapsible-container {
+  transition: max-height 0.4s ease, opacity 0.4s ease;
+  overflow: hidden;
+}
+
+.collapsible-container.open {
+  max-height: 9999px; /* Unrestrict height in open state */
+  opacity: 1;
+}
+
+.collapsible-container.closed {
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Apply to all list items for saved drugs and pharmacies */
+.list-item {
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  background: var(--background);
+  color: var(--foreground);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Subtle hover feedback */
+.list-item:hover {
+  background-color: var(--hover-bg);
+  transform: translateY(-1px); /* subtle lift effect */
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
