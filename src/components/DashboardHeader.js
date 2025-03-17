@@ -59,11 +59,21 @@ export default function DashboardHeader() {
           <ul className="flex flex-col p-2">
             <li>
               <Link
-                href="/dashboard/user"
+                href="/dashboard/search"
                 className="block px-4 py-2 hover:bg-gray-200 rounded"
                 onClick={closeMenu}
               >
-                Drug Search Dashboard
+                Drug Search
+              </Link>
+            </li>
+
+            <li>
+              <Link
+                href="/dashboard/saved"
+                className="block px-4 py-2 hover:bg-gray-200 rounded"
+                onClick={closeMenu}
+              >
+                Saved Drugs & Pharmacies
               </Link>
             </li>
 
