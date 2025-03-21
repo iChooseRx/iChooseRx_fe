@@ -83,11 +83,13 @@ export function useDashboard() {
       console.error("❌ Error fetching saved drugs:", error.message);
     }
   };
+  const [hasSearched, setHasSearched] = useState(false);
 
   const handleSearch = async (e) => {
     e?.preventDefault();
     if (!drugName.trim()) return;
 
+    setHasSearched(true);
     setError("");
     setLoading(true);
     setSelectedDrug(null);
@@ -186,6 +188,7 @@ export function useDashboard() {
     handleDeleteAccount,
     handleSaveDrug,
     handleDeleteDrug,
-    handleUpdateNotes
+    handleUpdateNotes,
+    hasSearched
   };
 }

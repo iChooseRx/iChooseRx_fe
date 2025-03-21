@@ -212,3 +212,74 @@ export const resetPassword = async (token, password, passwordConfirmation) => {
   });
   return response.data;
 };
+
+// ✅ Submit Pharmacy Availability Report (Rails)
+export const reportPharmacyAvailability = async ({ ndc_numbers, pharmacy, notes }) => {
+  try {
+    const response = await api.post("/drug_reports", {
+      drug_report: {
+        ndc_numbers,
+        pharmacy,
+        notes
+      }
+    });
+    console.log("✅ Pharmacy report submitted:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("❌ Error submitting pharmacy report:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+// ✅ Get Pending Drug Reports (Admin)
+export const fetchPendingReports = async () => {
+  try {
+    const response = await api.get("/admin/drug_reports");
+    return response.data;
+  } catch (error) {
+    console.error("❌ Error fetching pending reports:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+// ✅ Approve a specific NDC inside a report (Admin)
+export const approveNDC = async ({ reportId, ndc, pharmacy_id, drug_name }) => {
+  try {
+    const response = await api.patch(`/admin/drug_reports/${reportId}/approve_ndc`, {
+      ndc,
+      pharmacy_id
+    });
+    return response.data;
+  } catch (error) {
+    console.error("❌ Error approving NDC:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+// ✅ Deny a specific NDC inside a report (Admin)
+export const denyNDC = async ({ reportId, ndc }) => {
+  try {
+    const response = await api.patch(`/admin/drug_reports/${reportId}/deny_ndc`, { ndc });
+    return response.data;
+  } catch (error) {
+    console.error("❌ Error denying NDC:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+// ✅ Update Drug Report (Admin)
+export const updateDrugReport = async (reportId, updates) => {
+  try {
+    const response = await api.patch(`/admin/drug_reports/${reportId}`, {
+      drug_report: updates
+    });
+    return response.data;
+  } catch (error) {
+    console.error("❌ Error updating report:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+
+
+

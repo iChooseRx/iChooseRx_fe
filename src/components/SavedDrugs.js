@@ -1,19 +1,24 @@
 "use client";
 import React, { useState } from "react";
 import DrugNotes from "./DrugNotes";
+import ReportPharmacyForm from "./ReportPharmacyForm";
 
 export default function SavedDrugs({ drugs, onDelete, notesByDrug, setNotesByDrug, handleUpdateNotes }) {
   const [expandedDrugId, setExpandedDrugId] = useState(null);
+  const [activeReportFormId, setActiveReportFormId] = useState(null);
 
   const toggleDrugExpansion = (drugId) => {
     setExpandedDrugId((prev) => (prev === drugId ? null : drugId));
+  };
+
+  const toggleReportForm = (drugId) => {
+    setActiveReportFormId((prev) => (prev === drugId ? null : drugId));
   };
 
   return (
     <section className="border-borderColor border p-4 rounded shadow bg-background text-foreground min-h-[550px]">
       <h2 className="text-2xl font-semibold mb-4">Saved Drugs</h2>
 
-      {/* Conditional rendering for empty vs non-empty state */}
       <div className="border-borderColor border rounded-lg shadow-inner transition-all min-h-[300px] max-h-[400px] overflow-y-auto p-2 flex flex-col">
         {(!drugs || drugs.length === 0) ? (
           <p className="text-gray-500 italic self-center my-auto">No saved drugs found.</p>
@@ -36,26 +41,18 @@ export default function SavedDrugs({ drugs, onDelete, notesByDrug, setNotesByDru
               } = drug;
 
               const isExpandedDrug = expandedDrugId === id;
+              const isFormVisible = activeReportFormId === id;
 
               return (
                 <li key={id} className="list-item" role="listitem">
                   <div className="flex justify-between items-center">
                     <h3 className="font-bold text-lg">
                       {brand_name || "Unknown Brand"}
-                      {drug.verified_at_pharmacy && (
-                        <span className="ml-2 text-sm text-green-600">
-                          ✅ Verified ({new Date(drug.verified_at_pharmacy).toLocaleDateString()})
-                        </span>
-                      )}
-                      {!drug.verified_at_pharmacy && drug.awaiting_verification && (
-                        <span className="ml-2 text-sm text-yellow-600">⏳ Pending Verification</span>
-                      )}
                       <button
                         onClick={() => toggleDrugExpansion(id)}
                         className="ml-2 text-blue-500 hover:text-blue-600"
                         aria-expanded={isExpandedDrug}
                         aria-controls={`saved-drug-details-${id}`}
-                        aria-label={isExpandedDrug ? "Collapse details" : "Expand details"}
                       >
                         {isExpandedDrug ? "- details" : "+ details"}
                       </button>
@@ -106,13 +103,19 @@ export default function SavedDrugs({ drugs, onDelete, notesByDrug, setNotesByDru
                         initialNotes={drug.notes || ""}
                         onSave={handleUpdateNotes}
                       />
+
                       <button
-                        onClick={() => handleReportAvailability(drug)}
+                        onClick={() => toggleReportForm(id)}
                         className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 mt-4"
-                        aria-label={`Report availability for ${brand_name || "Unknown Brand"}`}
                       >
-                        📍 Report Pharmacy Availability
+                        {isFormVisible ? "Close Pharmacy Report" : "📍 Report Pharmacy Availability"}
                       </button>
+
+                      {isFormVisible && (
+                        <div className="mt-4">
+                          <ReportPharmacyForm productNdc={product_ndc} brandName={brand_name} />
+                        </div>
+                      )}
                     </div>
                   )}
                 </li>
