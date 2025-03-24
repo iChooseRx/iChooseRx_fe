@@ -26,13 +26,12 @@ export default function SearchPage() {
         setSelectedFilters={dashboard.setSelectedFilters}
       />
 
-      {dashboard.searchResults.length > 0 && (
-        <SearchResults
-          results={dashboard.searchResults}
-          resultStats={dashboard.resultStats}
-          onSave={dashboard.handleSaveDrug}
-        />
-      )}
+      <SearchResults
+        results={dashboard.searchResults}
+        resultStats={dashboard.resultStats}
+        onSave={dashboard.handleSaveDrug}
+        hasSearched={dashboard.hasSearched}
+      />
     </div>
   );
 }

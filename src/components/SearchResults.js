@@ -2,14 +2,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import ResultsChart from "./ResultsChart";
 
-export default function SearchResults({ results, resultStats, onSave }) {
+export default function SearchResults({ results, resultStats, onSave, hasSearched }) {
   const [expandedSearchId, setExpandedSearchId] = useState(null);
   const resultsContainerRef = useRef(null);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [isInteracting, setIsInteracting] = useState(true);
   const timeoutRef = useRef(null);
-
-  if (!results || results.length === 0) return null;
 
   const handleToggleExpand = (id) => {
     setExpandedSearchId((prev) => (prev === id ? null : id));
@@ -55,6 +53,40 @@ export default function SearchResults({ results, resultStats, onSave }) {
     };
   }, []);
 
+  // --- FALLBACK HANDLING ---
+  if (!hasSearched) return null;
+
+  const total = resultStats?.total_results ?? 0;
+  const filtered = resultStats?.filtered_results ?? 0;
+
+  if (total === 0) {
+    return (
+      <div className="text-center py-10 text-gray-600">
+        <p>🔍 No drugs found matching your search terms.</p>
+        <p className="text-sm mt-1">Try adjusting your spelling or searching by generic name.</p>
+      </div>
+    );
+  }
+
+  if (total > 0 && filtered === 0) {
+    return (
+      <div className="text-center py-10 text-gray-600">
+        <p>⚠️ No results match your selected filters.</p>
+        <p className="text-sm mt-1">Try loosening your filters or modifying your search.</p>
+      </div>
+    );
+  }
+
+  if (results.length === 0) {
+    return (
+      <div className="text-center py-10 text-gray-600">
+        <p>⚠️ No visible results with your current query and filters.</p>
+        <p className="text-sm mt-1">Try changing your search input or removing some filters.</p>
+      </div>
+    );
+  }
+
+  // --- MAIN RESULTS ---
   return (
     <section role="region" aria-labelledby="search-results">
       <h2 id="search-results" className="text-xl font-semibold mb-4">
@@ -63,16 +95,22 @@ export default function SearchResults({ results, resultStats, onSave }) {
 
       <ResultsChart resultStats={resultStats} />
 
-      <div ref={resultsContainerRef} className="relative max-h-[500px] overflow-y-auto border border-borderColor rounded-lg p-2 shadow-inner">
+      <div
+        ref={resultsContainerRef}
+        className="relative max-h-[500px] overflow-y-auto border border-borderColor rounded-lg p-2 shadow-inner"
+      >
         <ul role="list" className="space-y-4">
           {results.map((result) => {
             if (!result) return null;
-
             const uniqueId = result.id;
             const isExpanded = expandedSearchId === uniqueId;
 
             return (
-              <li key={uniqueId} className={`border border-borderColor p-4 rounded shadow bg-background text-foreground transition-colors ${isExpanded ? "shadow-lg" : ""}`} role="listitem">
+              <li
+                key={uniqueId}
+                className={`list-item ${isExpanded ? "shadow-lg" : ""}`}
+                role="listitem"
+              >
                 <div className="flex justify-between items-center">
                   <h3 className="font-bold text-lg">
                     {result.brand_name || "Unknown Brand"}
@@ -96,7 +134,11 @@ export default function SearchResults({ results, resultStats, onSave }) {
                 </button>
 
                 {isExpanded && (
-                  <div id={`drug-details-${uniqueId}`} className="mt-4" tabIndex="0">
+                  <div
+                    id={`drug-details-${uniqueId}`}
+                    className="mt-4 collapsible-container open"
+                    tabIndex="0"
+                  >
                     <p><strong>Generic Name:</strong> {result.generic_name || "N/A"}</p>
                     {result.substance_name && result.substance_name.length > 0 && (
                       <div>
