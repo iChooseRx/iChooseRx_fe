@@ -157,15 +157,9 @@ export const searchDrugs = async (drugName, filterParams = "") => {
 
 // ✅ Search Pharmacies by NDC (Rails)
 export const searchPharmaciesByNDC = async (ndc) => {
-  if (!ndc) {
-    throw new Error("NDC number is required.");
-  }
-
   try {
-    const response = await api.get(`/pharmacy_searches?ndc=${encodeURIComponent(ndc)}`);
-    console.log("Pharmacy Search API Request URL:", response.config.url);
-    console.log("Pharmacy Search API Response:", response.data);
-    return response.data;
+    const response = await api.get(`/pharmacy_searches?ndc=${ndc}`);
+    return response.data; // keep it as an object
   } catch (error) {
     console.error("Error fetching pharmacies:", error.response?.data || error.message);
     throw error;
@@ -279,6 +273,58 @@ export const updateDrugReport = async (reportId, updates) => {
     throw error;
   }
 };
+
+// ✅ Get Pharmacy Unavailability Reports (Admin)
+export const fetchUnavailabilityReports = async () => {
+  try {
+    const response = await api.get("/admin/pharmacy_unavailability_reports");
+    return response.data;
+  } catch (error) {
+    console.error("❌ Error fetching unavailability reports:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+// ✅ Approve Pharmacy Unavailability Report (Admin)
+export const approveUnavailabilityReport = async (reportId) => {
+  try {
+    const response = await api.patch(`/admin/pharmacy_unavailability_reports/${reportId}/approve`);
+    return response.data;
+  } catch (error) {
+    console.error("❌ Error approving unavailability report:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+// ✅ Deny Pharmacy Unavailability Report (Admin)
+export const denyUnavailabilityReport = async (reportId) => {
+  try {
+    const response = await api.delete(`/admin/pharmacy_unavailability_reports/${reportId}`);
+    return response.data;
+  } catch (error) {
+    console.error("❌ Error denying unavailability report:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+// ✅ Report NDC Unavailable (User)
+export const reportNdcUnavailable = async ({ pharmacy_id, ndc }) => {
+  try {
+    const response = await api.post("/pharmacy_unavailability_reports", {
+      pharmacy_unavailability_report: {
+        pharmacy_id,
+        ndc
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error("❌ Error reporting NDC unavailability:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+
+
 
 
 

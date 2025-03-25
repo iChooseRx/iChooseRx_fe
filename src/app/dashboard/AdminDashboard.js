@@ -7,7 +7,13 @@ import {
   approveNDC,
   denyNDC,
   updateDrugReport,
+  fetchUnavailabilityReports,
+  approveUnavailabilityReport,
+  denyUnavailabilityReport,
 } from "@/services/api";
+import PhoneInput from "@/components/PhoneInput";
+import { formatPhone } from "@/utils/formatters";
+
 
 export default function AdminDashboard() {
   const [email, setEmail] = useState("");
@@ -15,11 +21,14 @@ export default function AdminDashboard() {
   const [message, setMessage] = useState("");
   const [reports, setReports] = useState([]);
   const [reportsMessage, setReportsMessage] = useState("");
+  const [unavailabilityReports, setUnavailabilityReports] = useState([]);
+  const [unavailabilityMessage, setUnavailabilityMessage] = useState("");
   const [editingReportId, setEditingReportId] = useState(null);
   const [actionMessage, setActionMessage] = useState("");
 
   useEffect(() => {
     loadPendingReports();
+    loadUnavailabilityReports();
   }, []);
 
   async function loadPendingReports() {
@@ -28,6 +37,17 @@ export default function AdminDashboard() {
       setReports(data.data);
     } catch (error) {
       setReportsMessage("Failed to load pending reports.");
+    }
+  }
+
+  async function loadUnavailabilityReports() {
+    try {
+      const data = await fetchUnavailabilityReports();
+      setUnavailabilityReports(data.data || []);
+      console.log("Unavailability Reports fetched:", data);
+    } catch (error) {
+      setUnavailabilityReports([]);
+      setUnavailabilityMessage("Failed to load unavailability reports.");
     }
   }
 
@@ -57,14 +77,33 @@ export default function AdminDashboard() {
   }
 
   async function handleUpdateReport(report) {
+    // Only include the fields that are actually editable
+    const safeAttributes = {
+      notes: report.notes,
+      ndc_numbers: report.ndc_numbers,
+      pharmacy_details: report.pharmacy_details,
+      verified: report.verified ?? false, // default to false if undefined
+    };
+
     try {
-      await updateDrugReport(report.id, report);
+      await updateDrugReport(report.id, safeAttributes);
       setReportsMessage("Report updated successfully.");
       setEditingReportId(null);
       await loadPendingReports();
     } catch (error) {
       setReportsMessage("Failed to update report.");
     }
+  }
+
+  async function handleApproveUnavailability(reportId) {
+    await approveUnavailabilityReport(reportId);
+    await loadUnavailabilityReports();
+  }
+
+  async function handleDenyUnavailability(reportId) {
+    if (!confirm("Are you sure you want to deny this report?")) return;
+    await denyUnavailabilityReport(reportId);
+    await loadUnavailabilityReports();
   }
 
   async function handleInvite(e) {
@@ -162,17 +201,30 @@ export default function AdminDashboard() {
                       <label className="block text-sm font-semibold">Pharmacy Details:</label>
                       <div className="grid grid-cols-2 gap-2">
                         {["name", "street_address", "city", "state", "zip_code", "phone"].map((field) => (
-                          <input
-                            key={field}
-                            type="text"
-                            placeholder={field}
-                            value={rep.attributes.pharmacy_details?.[field] || ""}
-                            onChange={(e) => {
-                              rep.attributes.pharmacy_details[field] = e.target.value;
-                              setReports([...reports]);
-                            }}
-                            className="input-field w-full col-span-1"
-                          />
+                          field === "phone" ? (
+                            <PhoneInput
+                              key={field}
+                              name={field}
+                              value={rep.attributes.pharmacy_details?.[field] || ""}
+                              onChange={(e) => {
+                                rep.attributes.pharmacy_details[field] = e.target.value;
+                                setReports([...reports]);
+                              }}
+                              className="col-span-1"
+                            />
+                          ) : (
+                            <input
+                              key={field}
+                              type="text"
+                              placeholder={field}
+                              value={rep.attributes.pharmacy_details?.[field] || ""}
+                              onChange={(e) => {
+                                rep.attributes.pharmacy_details[field] = e.target.value;
+                                setReports([...reports]);
+                              }}
+                              className="input-field w-full col-span-1"
+                            />
+                          )
                         ))}
                       </div>
                     </div>
@@ -216,6 +268,43 @@ export default function AdminDashboard() {
             ))}
           </div>
         )}
+      </section>
+
+      <hr className="my-6 border-t border-borderColor" />
+      {/* Pending Unavailability Reports */}
+      <section>
+        <h3 className="text-xl font-semibold mb-2">Pharmacy Unavailability Reports</h3>
+        {unavailabilityMessage && <p className="text-error text-sm mb-2">{unavailabilityMessage}</p>}
+        <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2 custom-scroll">
+          {unavailabilityReports.length === 0 ? (
+            <p className="text-gray-500 italic">No unavailability reports yet.</p>
+          ) : (
+            unavailabilityReports.map((report) => (
+              <div key={report.id} className="report-card space-y-2">
+                <p><strong>User:</strong> {report.attributes.user_email}</p>
+                <p><strong>NDC:</strong> {report.attributes.ndc}</p>
+                <p><strong>Pharmacy:</strong> {report.attributes.pharmacy_details.name}</p>
+                <p><strong>Address:</strong> {report.attributes.pharmacy_details.address}</p>
+                <p><strong>Phone:</strong> {formatPhone(report.attributes.pharmacy_details.phone)}</p>
+                <p><strong>Reported At:</strong> {report.attributes.reported_at}</p>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleApproveUnavailability(report.id)}
+                    className="btn-secondary px-3 py-1 rounded"
+                  >
+                    Approve & Remove NDC
+                  </button>
+                  <button
+                    onClick={() => handleDenyUnavailability(report.id)}
+                    className="bg-red-500 text-white px-3 py-1 rounded"
+                  >
+                    Deny Report
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
       </section>
     </div>
   );

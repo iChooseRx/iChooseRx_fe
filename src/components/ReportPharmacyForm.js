@@ -1,6 +1,9 @@
 "use client";
 import { useState } from "react";
 import { reportPharmacyAvailability } from "../services/api";
+import PhoneInput from "@/components/PhoneInput";
+import { formatPhone } from "@/utils/formatters";
+
 
 export default function ReportPharmacyForm({ brandName }) {
   const [formData, setFormData] = useState({
@@ -32,7 +35,7 @@ export default function ReportPharmacyForm({ brandName }) {
           .filter((ndc) => ndc.length > 0),
         pharmacy: {
           name: formData.pharmacyName,
-          phone: formData.phone,
+          phone: formatPhone(formData.phone),
           street_address: formData.streetAddress,
           city: formData.city,
           state: formData.state,
@@ -112,12 +115,9 @@ export default function ReportPharmacyForm({ brandName }) {
       </div>
       <div>
         <label className="block text-sm font-semibold mb-1">Phone</label>
-        <input
-          type="text"
-          name="phone"
+        <PhoneInput
           value={formData.phone}
           onChange={handleChange}
-          className="input-field w-full"
         />
       </div>
 
@@ -126,7 +126,7 @@ export default function ReportPharmacyForm({ brandName }) {
         <label className="block text-sm font-semibold mb-1">
           Input <strong>NDC Numbers</strong> (comma-separated) from <strong>How Supplied</strong> Field
         </label>
-        <p className="text-sm text-gray-900 mb-1">
+        <p className="block text-sm font-semibold mb-1">
           ℹ️ If <strong>How Supplied</strong> field is empty, use <strong>Package NDC</strong> for report please. ℹ️
         </p>
         <textarea
@@ -157,6 +157,6 @@ export default function ReportPharmacyForm({ brandName }) {
       </button>
 
       {error && <p className="text-error text-sm mt-2">{error}</p>}
-    </form>
+    </form >
   );
 }
