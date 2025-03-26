@@ -52,14 +52,14 @@ export default function ResultsChart({ resultStats }) {
           <Bar
             dataKey="totalResults"
             name="Total Results"
-            fill="var(--error)" /* using your global red color */
+            fill="var(--error)"
             barSize={20}
             radius={[0, 4, 4, 0]}
           />
           <Bar
             dataKey="filteredResults"
             name="Filtered Results"
-            fill="var(--secondary)" /* using your global green color */
+            fill="var(--secondary)"
             barSize={20}
             radius={[0, 4, 4, 0]}
           />

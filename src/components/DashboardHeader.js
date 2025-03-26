@@ -15,7 +15,6 @@ export default function DashboardHeader() {
     }
   }, []);
 
-  // Close menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -34,7 +33,6 @@ export default function DashboardHeader() {
     };
   }, [menuOpen]);
 
-  // Function to close menu when a link is clicked
   const closeMenu = () => setMenuOpen(false);
 
   return (

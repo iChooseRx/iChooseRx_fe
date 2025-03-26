@@ -22,7 +22,6 @@ export default function SavedPage() {
 
       <hr className="my-6 border-t border-borderColor" />
 
-      {/* Just call the component directly now */}
       <PharmacySearch />
     </div>
   );

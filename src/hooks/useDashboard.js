@@ -23,7 +23,7 @@ export function useDashboard() {
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [notesByDrug, setNotesByDrug] = useState({});
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // ✅ Track Auth Status
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const FILTER_CATEGORIES = [
     { key: "artificial_colors", label: "Artificial Colors" },
@@ -38,7 +38,6 @@ export function useDashboard() {
     { key: "potentially_harmful_additives", label: "Other Potentially Harmful Additives" },
   ];
 
-  // ✅ Run only when the auth token is present
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
     if (token) {
@@ -74,11 +73,11 @@ export function useDashboard() {
 
       const formattedDrugs = savedDrugs.data.map((r) => ({
         id: r.id,
-        notes: r.attributes?.notes || "", // ✅ Prevent undefined errors
+        notes: r.attributes?.notes || "",
         ...r.attributes
       }));
 
-      setDrugs(formattedDrugs); // ✅ Set correct state
+      setDrugs(formattedDrugs);
     } catch (error) {
       console.error("❌ Error fetching saved drugs:", error.message);
     }
@@ -153,7 +152,6 @@ export function useDashboard() {
     try {
       await updateSaveddrugNotes(id, notes);
 
-      // ✅ Update local state instead of refetching all drugs
       setDrugs((prev) =>
         prev.map((d) => (d.id === id ? { ...d, notes } : d))
       );

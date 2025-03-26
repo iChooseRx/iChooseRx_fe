@@ -77,12 +77,11 @@ export default function AdminDashboard() {
   }
 
   async function handleUpdateReport(report) {
-    // Only include the fields that are actually editable
     const safeAttributes = {
       notes: report.notes,
       ndc_numbers: report.ndc_numbers,
       pharmacy_details: report.pharmacy_details,
-      verified: report.verified ?? false, // default to false if undefined
+      verified: report.verified ?? false,
     };
 
     try {

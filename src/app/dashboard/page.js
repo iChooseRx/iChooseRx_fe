@@ -17,7 +17,7 @@ export default function DashboardPage() {
       } else if (storedRole === "pharmacy") {
         router.push("/dashboard/pharmacy");
       } else {
-        router.push("/dashboard/search"); // 👈 go to search by default
+        router.push("/dashboard/search");
       }
     }
   }, [router]);

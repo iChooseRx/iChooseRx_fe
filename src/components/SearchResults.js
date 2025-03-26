@@ -53,7 +53,6 @@ export default function SearchResults({ results, resultStats, onSave, hasSearche
     };
   }, []);
 
-  // --- FALLBACK HANDLING ---
   if (!hasSearched) return null;
 
   const total = resultStats?.total_results ?? 0;
@@ -86,7 +85,6 @@ export default function SearchResults({ results, resultStats, onSave, hasSearche
     );
   }
 
-  // --- MAIN RESULTS ---
   return (
     <section role="region" aria-labelledby="search-results">
       <h2 id="search-results" className="text-xl font-semibold mb-4">

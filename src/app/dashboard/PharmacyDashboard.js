@@ -4,7 +4,6 @@ import FileUpload from "@/components/FileUpload";
 export default function PharmacyDashboard() {
   return (
     <div className="p-6">
-      {/* Improved Title */}
       <h1 className="text-3xl font-bold text-primary mb-6">
         🏥 Pharmacy Dashboard
       </h1>

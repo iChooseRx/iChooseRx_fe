@@ -11,7 +11,7 @@ export default function PharmacySearch() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [reportMessage, setReportMessage] = useState("");
-  const [searched, setSearched] = useState(false); // Track if user has searched
+  const [searched, setSearched] = useState(false);
 
   const isValid = (value) => {
     return value && value.trim() !== "" && !value.toLowerCase().includes("unknown") && value !== "000-000-0000";

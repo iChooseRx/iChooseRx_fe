@@ -3,7 +3,6 @@ import axios from "axios";
 // 🔹 Rails Backend API (Default)
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL,
-  // withCredentials: true, // Enable cookies for session handling
 });
 
 // Attach token to every request
@@ -26,7 +25,7 @@ export default api;
 
 // ✅ Get Saved Drugs (Rails)
 export const getSaveddrugs = async () => {
-  const token = localStorage.getItem("auth_token"); // ✅ Get stored token
+  const token = localStorage.getItem("auth_token");
 
   if (!token) {
     console.error("❌ No auth token found in localStorage");
@@ -36,7 +35,7 @@ export const getSaveddrugs = async () => {
   try {
     const response = await api.get("/saved_drugs", {
       headers: {
-        Authorization: `Bearer ${token}` // ✅ Attach token
+        Authorization: `Bearer ${token}`
       }
     });
     console.log("📥 API Response from /saved_drugs:", response.data);
@@ -67,15 +66,15 @@ export const deleteSaveddrug = async (id) => {
 
 // ✅ Create User (Rails)
 export const createUser = async (userData) => {
-  console.log("📡 API Request Payload:", JSON.stringify(userData, null, 2)); // 🔍 Debug log before sending request
+  console.log("📡 API Request Payload:", JSON.stringify(userData, null, 2));
   try {
     const response = await api.post("/users", userData);
     console.log("✅ User created successfully:", response.data);
 
     if (response.data.auth_token) {
-      localStorage.setItem("auth_token", response.data.auth_token); // ✅ Store token
-      localStorage.setItem("user_id", response.data.user.id); // ✅ Store user ID
-      localStorage.setItem("user_role", response.data.user.role); // ✅ Store user role
+      localStorage.setItem("auth_token", response.data.auth_token);
+      localStorage.setItem("user_id", response.data.user.id);
+      localStorage.setItem("user_role", response.data.user.role);
     } else {
       console.warn("❌ No auth token returned after signup");
     }
@@ -93,7 +92,7 @@ export const loginUser = async (credentials) => {
 
   if (response.data.user) {
     localStorage.setItem("auth_token", response.data.auth_token);
-    localStorage.setItem("user_id", response.data.user.id); // ✅ Store user ID
+    localStorage.setItem("user_id", response.data.user.id);
     localStorage.setItem("user_role", response.data.user.role);
   } else {
     console.error("❌ Error: No user object returned from API");
@@ -106,13 +105,13 @@ export const loginUser = async (credentials) => {
 // ✅ Logout User (Rails)
 export const logoutUser = async () => {
   try {
-    await api.delete("/logout"); // Call API to signal logout
+    await api.delete("/logout");
   } catch (error) {
     console.error("Logout failed:", error);
   }
-  localStorage.removeItem("auth_token"); // ✅ Remove token locally
-  localStorage.removeItem("user_role"); // ✅ Remove role
-  window.location.href = "/login"; // ✅ Redirect to login page
+  localStorage.removeItem("auth_token");
+  localStorage.removeItem("user_role");
+  window.location.href = "/login";
 };
 
 // ✅ Delete User Account (Rails)
@@ -122,7 +121,7 @@ export const deleteAccount = async (userId) => {
     return;
   }
 
-  const token = localStorage.getItem("auth_token"); // ✅ Retrieve JWT Token
+  const token = localStorage.getItem("auth_token");
   if (!token) {
     console.error("❌ No auth token found in localStorage");
     return;
@@ -133,7 +132,7 @@ export const deleteAccount = async (userId) => {
   try {
     const response = await api.delete(`/users/${userId}`, {
       headers: {
-        Authorization: `Bearer ${token}` // ✅ Send token with request
+        Authorization: `Bearer ${token}`
       }
     });
 
@@ -159,7 +158,7 @@ export const searchDrugs = async (drugName, filterParams = "") => {
 export const searchPharmaciesByNDC = async (ndc) => {
   try {
     const response = await api.get(`/pharmacy_searches?ndc=${ndc}`);
-    return response.data; // keep it as an object
+    return response.data;
   } catch (error) {
     console.error("Error fetching pharmacies:", error.response?.data || error.message);
     throw error;

@@ -108,7 +108,7 @@ button:hover {
 }
 
 .collapsible-container.open {
-  max-height: 9999px; /* Unrestrict height in open state */
+  max-height: 9999px;
   opacity: 1;
 }
 
@@ -131,7 +131,7 @@ button:hover {
 /* Subtle hover feedback */
 .list-item:hover {
   background-color: var(--hover-bg);
-  transform: translateY(-1px); /* subtle lift effect */
+  transform: translateY(-1px);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 }
 
@@ -146,7 +146,7 @@ button:hover {
 
 .report-card:hover {
   background-color: var(--hover-bg);
-  transform: translateY(-1px); /* subtle lift effect */
+  transform: translateY(-1px);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 }
 
