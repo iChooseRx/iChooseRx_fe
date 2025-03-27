@@ -1,10 +1,17 @@
 "use client";
+
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useDashboard } from "@/hooks/useDashboard";
 
 export default function DashboardHeader() {
-  const { handleLogout, handleDeleteAccount } = useDashboard();
+  const pathname = usePathname();
+  const isDashboardPage = pathname?.startsWith("/dashboard");
+
+  // ✅ Only call hook when on dashboard pages
+  const dashboard = isDashboardPage ? useDashboard() : null;
+
   const [role, setRole] = useState("user");
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
@@ -35,6 +42,9 @@ export default function DashboardHeader() {
 
   const closeMenu = () => setMenuOpen(false);
 
+  const handleLogout = dashboard?.handleLogout;
+  const handleDeleteAccount = dashboard?.handleDeleteAccount;
+
   return (
     <header className="h-20 flex justify-between items-center px-10 bg-primary text-white">
       <h1 className="text-4xl font-bold">iChooseRx</h1>
@@ -50,8 +60,7 @@ export default function DashboardHeader() {
 
         {/* Dropdown */}
         <div
-          className={`absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg transition-transform duration-300 origin-top ${menuOpen ? "scale-y-100" : "scale-y-0"
-            }`}
+          className={`absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg transition-transform duration-300 origin-top ${menuOpen ? "scale-y-100" : "scale-y-0"}`}
           style={{ transformOrigin: "top" }}
         >
           <ul className="flex flex-col p-2">
@@ -100,28 +109,42 @@ export default function DashboardHeader() {
             )}
 
             <li>
-              <button
-                onClick={() => {
-                  handleLogout();
-                  closeMenu();
-                }}
-                className="w-full text-left px-4 py-2 hover:bg-gray-200 rounded"
+              <Link
+                href="/user-how-to"
+                className="block px-4 py-2 hover:bg-gray-200 rounded"
+                onClick={closeMenu}
               >
-                Logout
-              </button>
+                User: How To
+              </Link>
             </li>
 
-            <li>
-              <button
-                onClick={() => {
-                  handleDeleteAccount();
-                  closeMenu();
-                }}
-                className="w-full text-left px-4 py-2 hover:bg-gray-200 rounded text-red-600"
-              >
-                Delete Account
-              </button>
-            </li>
+            {handleLogout && (
+              <li>
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    closeMenu();
+                  }}
+                  className="w-full text-left px-4 py-2 hover:bg-gray-200 rounded"
+                >
+                  Logout
+                </button>
+              </li>
+            )}
+
+            {handleDeleteAccount && (
+              <li>
+                <button
+                  onClick={() => {
+                    handleDeleteAccount();
+                    closeMenu();
+                  }}
+                  className="w-full text-left px-4 py-2 hover:bg-gray-200 rounded text-red-600"
+                >
+                  Delete Account
+                </button>
+              </li>
+            )}
           </ul>
         </div>
       </div>
