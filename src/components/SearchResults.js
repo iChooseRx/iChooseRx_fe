@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import ResultsChart from "./ResultsChart";
 
-export default function SearchResults({ results, resultStats, onSave, hasSearched }) {
+export default function SearchResults({ results, resultStats, onSave, hasSearched, isLoading }) {
   const [expandedSearchId, setExpandedSearchId] = useState(null);
   const resultsContainerRef = useRef(null);
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -53,7 +53,15 @@ export default function SearchResults({ results, resultStats, onSave, hasSearche
     };
   }, []);
 
-  if (!hasSearched) return null;
+  if (!hasSearched && !isLoading) return null;
+
+  if (isLoading) {
+    return (
+      <div className="text-center py-10 text-gray-600 animate-pulse">
+        <p>Loading results...</p>
+      </div>
+    );
+  }
 
   const total = resultStats?.total_results ?? 0;
   const filtered = resultStats?.filtered_results ?? 0;

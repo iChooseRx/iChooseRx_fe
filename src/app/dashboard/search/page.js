@@ -31,6 +31,7 @@ export default function SearchPage() {
         resultStats={dashboard.resultStats}
         onSave={dashboard.handleSaveDrug}
         hasSearched={dashboard.hasSearched}
+        isLoading={dashboard.loading}
       />
     </div>
   );
