@@ -8,6 +8,7 @@ import { loginUser } from '@/services/api';
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const router = useRouter();
 
@@ -31,25 +32,40 @@ export default function LoginPage() {
       {/* Matrix Background Layer */}
       <MatrixBackground />
 
-      {/* Login Form Container (Stays Exactly as You Designed It) */}
       <div className="relative z-10 w-full max-w-sm p-6 rounded-lg">
         <h1 className="text-2xl font-bold mb-4 text-center">Login to iChooseRx</h1>
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
           {error && <p className="text-error">{error}</p>}
+
+          {/* Email Input */}
           <input
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="px-4 py-2 border border-borderColor rounded"
+            className="px-4 py-2 border border-borderColor rounded text-black dark:text-white bg-white dark:bg-zinc-900"
           />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="px-4 py-2 border border-borderColor rounded"
-          />
+
+          {/* Password Input with Show/Hide Toggle */}
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-2 border border-borderColor rounded text-black dark:text-white bg-white dark:bg-zinc-900 pr-16"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
+          </div>
+
+          {/* Login Button */}
           <button
             type="submit"
             className="px-6 py-2 bg-primary text-white rounded hover:bg-blue-600"
@@ -57,6 +73,8 @@ export default function LoginPage() {
             Login
           </button>
         </form>
+
+        {/* Links */}
         <p className="mt-4 text-sm font-bold text-center">
           Don’t have an account?{' '}
           <Link href="/signup" className="text-primary hover:underline">
