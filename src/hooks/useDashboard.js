@@ -94,16 +94,21 @@ export function useDashboard() {
     setSelectedDrug(null);
     setExpandedSearchId(null);
 
-    try {
-      const filterParams = selectedFilters.map((f) => `filters[]=${encodeURIComponent(f)}`).join("&");
-      const { data, meta } = await searchDrugs(drugName, filterParams);
-      setSearchResults(data.map((item) => ({ id: item.id, ...item.attributes })));
-      setResultStats(meta);
-    } catch (err) {
-      setError("Failed to fetch drug data. Please try again.");
-    } finally {
+    const filterParams = selectedFilters
+      .map((f) => `filters[]=${encodeURIComponent(f)}`)
+      .join("&");
+
+    const { data, error } = await searchDrugs(drugName, filterParams);
+
+    if (error) {
+      setError(error); // this could now be your rate limit message
       setLoading(false);
+      return;
     }
+
+    setSearchResults(data.data.map((item) => ({ id: item.id, ...item.attributes })));
+    setResultStats(data.meta);
+    setLoading(false);
   };
 
   const handleLogout = async () => {
