@@ -148,11 +148,19 @@ export const deleteAccount = async (userId) => {
 export const searchDrugs = async (drugName, filterParams = "") => {
   const queryString = `drug_name=${encodeURIComponent(drugName)}${filterParams ? `&${filterParams}` : ""
     }`;
-  const response = await api.get(`/drug_searches?${queryString}`);
-  console.log("API Request URL:", response.config.url);
-  console.log("API Response:", response.data);
-  return response.data;
+
+  try {
+    const response = await api.get(`/drug_searches?${queryString}`);
+    return { data: response.data, error: null };
+  } catch (error) {
+    if (error.response?.status === 429) {
+      return { data: null, error: error.response.data.error };
+    } else {
+      return { data: null, error: "Failed to fetch drug data. Please try again." };
+    }
+  }
 };
+
 
 // ✅ Search Pharmacies by NDC (Rails)
 export const searchPharmaciesByNDC = async (ndc) => {
@@ -321,10 +329,3 @@ export const reportNdcUnavailable = async ({ pharmacy_id, ndc }) => {
     throw error;
   }
 };
-
-
-
-
-
-
-

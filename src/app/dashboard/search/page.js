@@ -18,6 +18,8 @@ export default function SearchPage() {
         isLoading={dashboard.loading}
       />
 
+      {dashboard.error && <div className="error-box">{dashboard.error}</div>}
+
       <h3 className="text-xl font-semibold mb-4">Select What You DO NOT Want In Your Drug</h3>
 
       <DrugFilter
