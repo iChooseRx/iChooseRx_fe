@@ -9,7 +9,6 @@ export default function DashboardHeader() {
   const pathname = usePathname();
   const isDashboardPage = pathname?.startsWith("/dashboard");
 
-  // ✅ Only call hook when on dashboard pages
   const dashboard = isDashboardPage ? useDashboard() : null;
 
   const [role, setRole] = useState("user");

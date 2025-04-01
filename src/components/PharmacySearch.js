@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { searchPharmaciesByNDC, reportNdcUnavailable } from "../services/api";
 import { formatPhone } from "@/utils/formatters";
-
+import { insertAdsInResults } from "@/components/ads";
+import AdSlot from "@/components/ads/AdSlot";
 
 export default function PharmacySearch() {
   const [ndc, setNdc] = useState("");
@@ -57,10 +58,10 @@ export default function PharmacySearch() {
 
   return (
     <>
-      <section className="border-borderColor border p-4 rounded shadow bg-background text-foreground min-h-[550px]">
-        <h2 className="text-2xl font-semibold mb-4">Find Pharmacies by NDC</h2>
+      <section className="border-borderColor border p-4 rounded shadow bg-background text-foreground min-h-[420px]">
+        <h2 className="text-2xl font-semibold mb-2">Find Pharmacies by NDC</h2>
 
-        <div className="flex items-center space-x-4 mb-4">
+        <div className="flex items-center space-x-4 mb-2">
           <input
             type="text"
             placeholder="Enter NDC number"
@@ -82,41 +83,53 @@ export default function PharmacySearch() {
         {reportMessage && <p className="text-success mb-2">{reportMessage}</p>}
 
         {/* Results */}
-        <div className="border-borderColor border rounded-lg shadow-inner transition-all min-h-[300px] max-h-[400px] overflow-y-auto p-2 flex items-center justify-center">
+        <div className="border-borderColor border rounded-lg shadow-inner transition-all min-h-[200px] max-h-[400px] overflow-y-auto p-2 flex items-center justify-center">
           {pharmacies.length > 0 ? (
             <ul className="space-y-2 w-full">
-              {pharmacies.map((pharmacy) => (
-                <li key={pharmacy.id} className="list-item space-y-1">
-                  <strong>{pharmacy.name}</strong>
-                  {isValid(pharmacy.stock_status) && <> - Availability: {pharmacy.stock_status}</>}
-                  <br />
-                  {isValid(pharmacy.form) && <>Form: {pharmacy.form} | </>}
-                  {isValid(pharmacy.strength) && <>Strength: {pharmacy.strength} | </>}
-                  {isValid(pharmacy.street_address) && (
-                    <p>📍 {pharmacy.street_address}, {pharmacy.city}, {pharmacy.state} {pharmacy.zip_code}</p>
-                  )}
-                  {isValid(pharmacy.phone) && <p>📞 {formatPhone(pharmacy.phone)}</p>}
+              {insertAdsInResults(
+                pharmacies.map((pharmacy) => (
+                  <li key={pharmacy.id} className="list-item space-y-1">
+                    <strong>{pharmacy.name}</strong>
+                    {isValid(pharmacy.stock_status) && <> - Availability: {pharmacy.stock_status}</>}
+                    <br />
+                    {isValid(pharmacy.form) && <>Form: {pharmacy.form} | </>}
+                    {isValid(pharmacy.strength) && <>Strength: {pharmacy.strength} | </>}
+                    {isValid(pharmacy.street_address) && (
+                      <p>📍 {pharmacy.street_address}, {pharmacy.city}, {pharmacy.state} {pharmacy.zip_code}</p>
+                    )}
+                    {isValid(pharmacy.phone) && <p>📞 {formatPhone(pharmacy.phone)}</p>}
 
-                  <button
-                    onClick={() => handleReportUnavailable(pharmacy)}
-                    className="text-sm mt-2 btn-secondary px-2 py-1 rounded"
-                  >
-                    Report NDC Unavailable
-                  </button>
-                </li>
-              ))}
+                    <button
+                      onClick={() => handleReportUnavailable(pharmacy)}
+                      className="text-sm mt-2 btn-secondary px-2 py-1 rounded"
+                    >
+                      Report NDC Unavailable
+                    </button>
+                  </li>
+                )),
+                3,
+                "pharmacy-results"
+              )}
             </ul>
           ) : (
             <>
-              {searched && !loading && (
-                <p className="text-gray-500 italic">No pharmacies found for this NDC.</p>
+              {searched && pharmacies.length === 0 && !loading && (
+                <div className="w-full space-y-4">
+                  <p className="text-gray-500 italic text-center">No pharmacies found for this NDC.</p>
+                  <AdSlot position="pharmacy-fallback-after-search" className="h-24" />
+                </div>
               )}
               {!searched && !loading && (
-                <p className="text-gray-500 italic">No search results yet</p>
+                <div className="w-full space-y-4">
+                  <p className="text-gray-500 italic text-center">No search results yet</p>
+                  <AdSlot position="pharmacy-fallback-1" className="h-24" />
+                  <AdSlot position="pharmacy-fallback-2" className="h-24" />
+                </div>
               )}
             </>
           )}
         </div>
+        <AdSlot position="pharmacy-bottom" className="h-24 mt-2" />
       </section>
     </>
   );

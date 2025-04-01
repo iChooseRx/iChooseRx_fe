@@ -7,7 +7,7 @@ export default function SearchBar({ drugName, setDrugName, onSearch, isLoading }
   }
 
   return (
-    <div className="flex items-center space-x-4 mb-6">
+    <div className="flex items-center space-x-4 mb-2">
       <input
         type="text"
         value={drugName}

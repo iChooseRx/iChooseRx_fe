@@ -5,7 +5,7 @@ export default function DashboardLayout({ children }) {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <DashboardHeader />
-      <main className="p-4">{children}</main>
+      <main className="p-2">{children}</main>
     </div>
   );
 }
