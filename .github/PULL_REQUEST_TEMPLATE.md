@@ -33,7 +33,7 @@
    ```sh
    rails db:migrate
    ```
-3️⃣ **Run the application on local server http://localhost:3000/signup OR /login OR /dashboard (if already logged)**:  
+3️⃣ **Run the application on local server http://localhost:3000/signup OR / OR /dashboard (if already logged)**:  
    ```sh
    rails s  # Backend (runs on http://localhost:5001)
    npm run dev  # Next.js frontend (Runs on http://localhost:3000)

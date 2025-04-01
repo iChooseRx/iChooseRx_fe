@@ -22,7 +22,7 @@ export default function ResetPasswordPage() {
       setSuccess(response.message);
       // Clear errors, redirect after a brief delay
       setErrors([]);
-      setTimeout(() => router.push('/login'), 2000);
+      setTimeout(() => router.push('/'), 2000);
     } catch (err) {
       if (err.response?.status === 422) {
         // Rails validation failures

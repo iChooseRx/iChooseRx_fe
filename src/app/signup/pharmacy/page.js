@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createUser } from "@/services/api";
+import WhyPharmaciesMatter from "@/components/WhyPharmaciesMatter";
 
 export default function PharmacySignup() {
   const [form, setForm] = useState({
@@ -73,9 +74,10 @@ export default function PharmacySignup() {
   }
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-background text-foreground">
-      <h1 className="text-2xl font-bold mb-4">Pharmacy Account Signup</h1>
-
+    <main className="min-h-screen max-h-screen overflow-y-auto flex flex-col items-center justify-start px-4 py-6 bg-background text-foreground">
+      <h1 className="text-2xl sm:text-xl font-bold mb-4 text-center">
+        Pharmacy Account Signup
+      </h1>
       {error && <p className="text-error">{error}</p>}
 
       <form onSubmit={handleSubmit} className="flex flex-col space-y-4 w-full max-w-md">
@@ -95,6 +97,7 @@ export default function PharmacySignup() {
           {loading ? "Creating Account..." : "Sign Up"}
         </button>
       </form>
+      <WhyPharmaciesMatter />
     </main>
   );
 }
