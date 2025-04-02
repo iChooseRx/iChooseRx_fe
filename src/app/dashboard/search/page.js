@@ -5,6 +5,7 @@ import DrugFilter from "@/components/Filters";
 import SearchResults from "@/components/SearchResults";
 import { AdBelowHeader } from "@/components/ads";
 import { AdSlot } from "@/components/ads";
+import TimeBasedAdGateModal from "@/components/ads/TimeBasedAdGateModal";
 
 export default function SearchPage() {
   const dashboard = useDashboard();
@@ -47,6 +48,7 @@ export default function SearchPage() {
           isLoading={dashboard.loading}
         />
       </div>
+      <TimeBasedAdGateModal />
     </>
   );
 }
