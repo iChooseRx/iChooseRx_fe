@@ -3,6 +3,7 @@ import { useDashboard } from "@/hooks/useDashboard";
 import SavedDrugs from "@/components/SavedDrugs";
 import PharmacySearch from "@/components/PharmacySearch";
 import { AdBelowHeader } from "@/components/ads";
+import TimeBasedAdGateModal from "@/components/ads/TimeBasedAdGateModal";
 
 export default function SavedPage() {
   const dashboard = useDashboard();

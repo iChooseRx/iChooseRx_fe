@@ -5,37 +5,49 @@ import { useSessionTimer } from "@/context/SessionTimerContext";
 import AdSlot from "./AdSlot";
 
 export default function TimeBasedAdGateModal() {
-  const { elapsedTime } = useSessionTimer();
-  const [showModal, setShowModal] = useState(false);
+  const {
+    elapsedTime,
+    lastModalClosedTime,
+    showModal,
+    setShowModal,
+    setLastModalClosedTime
+  } = useSessionTimer();
+
   const [countdown, setCountdown] = useState(10);
 
-  // ⏳ Trigger after total 3 minutes
+  // ⏳ Show modal every X seconds from the last time it was closed
   useEffect(() => {
-    if (elapsedTime >= 180 && !showModal) {
+    const now = Date.now();
+    const secondsSinceLastClose = Math.floor((now - lastModalClosedTime) / 1000);
+
+    if (secondsSinceLastClose >= 180 && !showModal) {
       setShowModal(true);
+      setCountdown(10);
     }
-  }, [elapsedTime, showModal]);
+  }, [elapsedTime, lastModalClosedTime, showModal, setShowModal]);
 
-  // ⏲️ Countdown after showing
+  // ⏲️ Start countdown
   useEffect(() => {
-    if (showModal && countdown > 0) {
-      const interval = setInterval(() => {
-        setCountdown((prev) => {
-          if (prev <= 1) {
-            clearInterval(interval);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-      return () => clearInterval(interval);
-    }
-  }, [showModal, countdown]);
+    if (!showModal) return;
+    setCountdown(10);
 
-  // ✅ Dismiss only after countdown
+    const interval = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [showModal]);
+
   const handleClose = () => {
     if (countdown === 0) {
       setShowModal(false);
+      setLastModalClosedTime(Date.now());
     }
   };
 
