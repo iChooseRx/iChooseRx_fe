@@ -111,7 +111,7 @@ export const logoutUser = async () => {
   }
   localStorage.removeItem("auth_token");
   localStorage.removeItem("user_role");
-  window.location.href = "/login";
+  window.location.href = "/";
 };
 
 // ✅ Delete User Account (Rails)

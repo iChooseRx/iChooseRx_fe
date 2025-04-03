@@ -117,7 +117,7 @@ export function useDashboard() {
     localStorage.removeItem("user_role");
     localStorage.removeItem("user_id");
     alert("Logged out successfully!");
-    window.location.href = "/login";
+    window.location.href = "/";
   };
 
   const handleDeleteAccount = async () => {

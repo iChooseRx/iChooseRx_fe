@@ -22,7 +22,7 @@ export default function ResultsChart({ resultStats }) {
   ];
 
   return (
-    <div className="mb-4 w-full h-[150px]">
+    <div className="mb-0 w-full h-[150px]">
       <ResponsiveContainer>
         <BarChart data={chartData} layout="vertical">
           <YAxis

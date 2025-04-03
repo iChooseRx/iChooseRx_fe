@@ -2,40 +2,42 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link'; // Import Link for navigation
+import Link from 'next/link';
 import { createUser } from '@/services/api';
+import WhyIChooseRx from '@/components/WhyIChooseRx';
 
 export default function SignupPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [error, setError] = useState('');
+  const [agreedToWhy, setAgreedToWhy] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await createUser({ email, password, password_confirmation: passwordConfirmation });
-      router.push('/login');
+      router.push('/');
     } catch (err) {
       setError('Error creating account. Please try again.');
     }
   };
 
   return (
-    <main className="h-screen flex flex-col items-center justify-center bg-background text-foreground">
-      {/* Sign up heading */}
+    <main className="min-h-screen max-h-screen overflow-y-auto flex flex-col items-center justify-start px-4 py-6 bg-background text-foreground">
       <h1 className="text-2xl font-bold mb-4">Sign up for iChooseRx</h1>
 
-      {/* Signup Form */}
-      <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+      <form onSubmit={handleSubmit} className="flex flex-col space-y-4 w-full max-w-md">
         {error && <p className="text-error">{error}</p>}
+
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="px-4 py-2 border border-borderColor rounded"
+          disabled={!agreedToWhy}
         />
         <input
           type="password"
@@ -43,6 +45,7 @@ export default function SignupPage() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="px-4 py-2 border border-borderColor rounded"
+          disabled={!agreedToWhy}
         />
         <input
           type="password"
@@ -50,33 +53,41 @@ export default function SignupPage() {
           value={passwordConfirmation}
           onChange={(e) => setPasswordConfirmation(e.target.value)}
           className="px-4 py-2 border border-borderColor rounded"
+          disabled={!agreedToWhy}
         />
+
+        <label className="flex items-start text-sm space-x-2">
+          <input
+            type="checkbox"
+            checked={agreedToWhy}
+            onChange={(e) => setAgreedToWhy(e.target.checked)}
+            className="mt-1"
+          />
+          <span>
+            I’ve read and understand <strong>Why iChooseRx Exists</strong> and how this platform is intended to be used.
+          </span>
+        </label>
+
         <button
           type="submit"
-          className="px-6 py-2 bg-secondary text-white rounded hover:bg-green-700"
+          disabled={!agreedToWhy}
+          className={`px-6 py-2 rounded text-white transition ${agreedToWhy
+            ? 'bg-secondary hover:bg-green-700'
+            : 'bg-gray-400 cursor-not-allowed'
+            }`}
         >
           Sign Up
         </button>
       </form>
 
-      {/* Already have an account */}
       <p className="mt-4 text-sm">
         Already have an account?{' '}
-        <Link href="/login" className="text-primary hover:underline">
+        <Link href="/" className="text-primary hover:underline">
           Log in here
         </Link>
       </p>
 
-      {/* Why iChooseRx Is Essential section */}
-      <h3 className="mt-6 text-md font-semibold text-center max-w-2lg">
-        Why iChooseRx Is Essential:
-        <br />
-        For those who <strong>WANT</strong> cleaner drug choices to support holistic health.
-        <br />
-        For those who <strong>NEED</strong> cleaner drug choices due to allergies, sensitivities, or medical conditions.
-        <br />
-        Helps you find FDA approved drugs that align with your health goals, whether you’re managing chronic conditions or living a clean-conscious lifestyle.
-      </h3>
+      <WhyIChooseRx />
     </main>
   );
 }

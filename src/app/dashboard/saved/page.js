@@ -2,27 +2,36 @@
 import { useDashboard } from "@/hooks/useDashboard";
 import SavedDrugs from "@/components/SavedDrugs";
 import PharmacySearch from "@/components/PharmacySearch";
+import { AdBelowHeader } from "@/components/ads";
+import TimeBasedAdGateModal from "@/components/ads/TimeBasedAdGateModal";
 
 export default function SavedPage() {
   const dashboard = useDashboard();
 
   return (
-    <div className="min-h-screen bg-background text-foreground p-4">
-      <h2 className="text-3xl font-semibold mb-4">Your Saved Drugs & Find a Pharmacy</h2>
+    <>
+      <AdBelowHeader />
 
-      <section className="mb-8 min-h-[300px]">
-        <SavedDrugs
-          drugs={dashboard.drugs}
-          onDelete={dashboard.handleDeleteDrug}
-          notesByDrug={dashboard.notesByDrug}
-          setNotesByDrug={dashboard.setNotesByDrug}
-          handleUpdateNotes={dashboard.handleUpdateNotes}
-        />
-      </section>
+      <div className="min-h-screen bg-background text-foreground px-1">
+        <h2 className="text-3xl font-semibold mb-2">
+          Your Saved Drugs & Find a Pharmacy
+        </h2>
 
-      <hr className="my-6 border-t border-borderColor" />
+        <section className="min-h-[300px]">
+          <SavedDrugs
+            drugs={dashboard.drugs}
+            onDelete={dashboard.handleDeleteDrug}
+            notesByDrug={dashboard.notesByDrug}
+            setNotesByDrug={dashboard.setNotesByDrug}
+            handleUpdateNotes={dashboard.handleUpdateNotes}
+          />
+        </section>
 
-      <PharmacySearch />
-    </div>
+        <hr className="my-2 border-t border-borderColor" />
+
+        <PharmacySearch />
+      </div>
+      <TimeBasedAdGateModal />
+    </>
   );
 }
