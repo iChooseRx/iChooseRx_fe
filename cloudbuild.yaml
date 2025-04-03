@@ -1,7 +1,13 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-docker.pkg.dev/$PROJECT_ID/ichooserx-frontend:$COMMIT_SHA', '.']
+    args:
+      [
+        'build',
+        '-t',
+        'us-docker.pkg.dev/$PROJECT_ID/ichooserx-frontend/ichooserx-frontend:$COMMIT_SHA',
+        '.'
+      ]
 images:
-  - 'us-docker.pkg.dev/$PROJECT_ID/ichooserx-frontend:$COMMIT_SHA'
+  - 'us-docker.pkg.dev/$PROJECT_ID/ichooserx-frontend/ichooserx-frontend:$COMMIT_SHA'
 options:
   logging: CLOUD_LOGGING_ONLY
