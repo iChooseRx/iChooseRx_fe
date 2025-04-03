@@ -20,7 +20,7 @@ export default function TimeBasedAdGateModal() {
     const now = Date.now();
     const secondsSinceLastClose = Math.floor((now - lastModalClosedTime) / 1000);
 
-    if (secondsSinceLastClose >= 180 && !showModal) {
+    if (secondsSinceLastClose >= 240 && !showModal) {
       setShowModal(true);
       setCountdown(10);
     }
