@@ -42,10 +42,23 @@ export default function SearchResults({ results, resultStats, onSave, hasSearche
 
   useEffect(() => {
     const container = resultsContainerRef.current;
+
+    const handleScroll = () => {
+      if (container) {
+        setShowBackToTop(container.scrollTop > 200);
+      }
+      resetInteractionTimer();
+    };
+
+    const handleMouseMove = () => {
+      resetInteractionTimer();
+    };
+
     if (container) {
       container.addEventListener("mousemove", handleMouseMove);
       container.addEventListener("scroll", handleScroll);
     }
+
     return () => {
       if (container) {
         container.removeEventListener("mousemove", handleMouseMove);

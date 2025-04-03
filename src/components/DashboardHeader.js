@@ -9,7 +9,7 @@ export default function DashboardHeader() {
   const pathname = usePathname();
   const isDashboardPage = pathname?.startsWith("/dashboard");
 
-  const dashboard = isDashboardPage ? useDashboard() : null;
+  const dashboard = useDashboard();
 
   const [role, setRole] = useState("user");
   const [menuOpen, setMenuOpen] = useState(false);
@@ -41,8 +41,8 @@ export default function DashboardHeader() {
 
   const closeMenu = () => setMenuOpen(false);
 
-  const handleLogout = dashboard?.handleLogout;
-  const handleDeleteAccount = dashboard?.handleDeleteAccount;
+  const handleLogout = isDashboardPage ? dashboard?.handleLogout : null;
+  const handleDeleteAccount = isDashboardPage ? dashboard?.handleDeleteAccount : null;
 
   return (
     <header className="h-20 flex justify-between items-center px-10 bg-primary text-white">

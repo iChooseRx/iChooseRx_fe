@@ -1,10 +1,19 @@
 "use client";
-import { useState, useEffect } from "react";
+
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createUser } from "@/services/api";
 import WhyPharmaciesMatter from "@/components/WhyPharmaciesMatter";
 
-export default function PharmacySignup() {
+export default function PharmacySignupPage() {
+  return (
+    <Suspense fallback={<p className="text-center text-gray-500">Loading signup form...</p>}>
+      <PharmacySignupForm />
+    </Suspense>
+  );
+}
+
+function PharmacySignupForm() {
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -16,11 +25,12 @@ export default function PharmacySignup() {
     zip_code: "",
     pharmacy_phone: "",
   });
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const invitationToken = searchParams.get("invitation_token"); // ✅ Get token from URL
+  const invitationToken = searchParams.get("invitation_token");
 
   useEffect(() => {
     if (!invitationToken) {
@@ -42,11 +52,11 @@ export default function PharmacySignup() {
         role: "pharmacy",
         password: form.password,
         password_confirmation: form.password_confirmation,
-        invitation_token: invitationToken
-      }
+        invitation_token: invitationToken,
+      },
     };
 
-    console.log("📤 Sending request to API:", JSON.stringify(requestData, null, 2)); // 🔍 Debug log
+    console.log("📤 Sending request to API:", JSON.stringify(requestData, null, 2));
 
     try {
       const response = await createUser(requestData);
@@ -62,7 +72,7 @@ export default function PharmacySignup() {
         throw new Error("❌ No auth token received");
       }
     } catch (err) {
-      console.error("❌ Error in handleSubmit:", err); // 🔍 Debugging log for errors
+      console.error("❌ Error in handleSubmit:", err);
       setError("❌ Failed to create account. Please check your details.");
     } finally {
       setLoading(false);
@@ -78,14 +88,13 @@ export default function PharmacySignup() {
       <h1 className="text-2xl sm:text-xl font-bold mb-4 text-center">
         Pharmacy Account Signup
       </h1>
+
       {error && <p className="text-error">{error}</p>}
 
       <form onSubmit={handleSubmit} className="flex flex-col space-y-4 w-full max-w-md">
         <input type="email" name="email" placeholder="Email" onChange={handleChange} className="px-4 py-2 border rounded" required />
         <input type="password" name="password" placeholder="Password" onChange={handleChange} className="px-4 py-2 border rounded" required />
         <input type="password" name="password_confirmation" placeholder="Confirm Password" onChange={handleChange} className="px-4 py-2 border rounded" required />
-
-        {/* Pharmacy Details */}
         <input type="text" name="pharmacy_name" placeholder="Pharmacy Name" onChange={handleChange} className="px-4 py-2 border rounded" required />
         <input type="text" name="street_address" placeholder="Street Address" onChange={handleChange} className="px-4 py-2 border rounded" required />
         <input type="text" name="city" placeholder="City" onChange={handleChange} className="px-4 py-2 border rounded" required />
@@ -97,6 +106,7 @@ export default function PharmacySignup() {
           {loading ? "Creating Account..." : "Sign Up"}
         </button>
       </form>
+
       <WhyPharmaciesMatter />
     </main>
   );
