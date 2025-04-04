@@ -66,9 +66,9 @@ export const deleteSaveddrug = async (id) => {
 
 // ✅ Create User (Rails)
 export const createUser = async (userData) => {
-  console.log("📡 API Request Payload:", JSON.stringify(userData, null, 2));
+  console.log("📡 API Request Payload:", JSON.stringify({ user: userData }, null, 2));  // Debug: Log the payload being sent
   try {
-    const response = await api.post("/users", userData);
+    const response = await api.post("/users", { user: userData });
     console.log("✅ User created successfully:", response.data);
 
     if (response.data.auth_token) {
