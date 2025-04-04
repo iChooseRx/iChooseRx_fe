@@ -17,6 +17,7 @@ COPY . .
 
 # Debug: Print the injected env var
 RUN echo "🔍 Backend API URL is: $NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL"
+RUN echo "🧪 Next.js env during build: $(node -p 'process.env.NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL')"
 
 # Will embed NEXT_PUBLIC_* into the built static files
 RUN npm run build

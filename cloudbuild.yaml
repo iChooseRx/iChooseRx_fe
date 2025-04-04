@@ -9,19 +9,17 @@ steps:
         'NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL=${_NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL}',
         '.'
       ]
-    secretEnv: ['_NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL']
-
-images:
-  - 'us-docker.pkg.dev/$PROJECT_ID/ichooserx-frontend/ichooserx-frontend:$COMMIT_SHA'
-
 availableSecrets:
   secretManager:
     - versionName: "projects/ichooserx/secrets/NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL/versions/latest"
       env: "_NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL"
 
 substitutions:
-  _NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL: "DUMMY_WILL_BE_OVERRIDDEN"
+  _NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL: "https://ichooserx-api-387898904134.us-central1.run.app/api/v1"
+
+images:
+  - 'us-docker.pkg.dev/$PROJECT_ID/ichooserx-frontend/ichooserx-frontend:$COMMIT_SHA'
 
 options:
-  substitutionOption: ALLOW_LOOSE
   logging: CLOUD_LOGGING_ONLY
+  substitutionOption: ALLOW_LOOSE
