@@ -31,3 +31,4 @@ availableSecrets:
   secretManager:
     - versionName: "projects/ichooserx/secrets/NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL/versions/latest"
       env: "NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL"# Trigger test
+# trigger retry
