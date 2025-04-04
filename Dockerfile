@@ -15,6 +15,9 @@ ENV NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL=$NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Debug: Print the injected env var
+RUN echo "🔍 Backend API URL is: $NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL"
+
 # Will embed NEXT_PUBLIC_* into the built static files
 RUN npm run build
 
