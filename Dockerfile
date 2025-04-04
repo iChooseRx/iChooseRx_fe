@@ -1,10 +1,10 @@
-# 🔹 1. Install dependencies
+# 1. Install dependencies
 FROM node:20-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json* ./
 RUN npm install
 
-# 🔹 2. Build the app with env variable passed in
+# 2. Build the app with env variable passed in
 FROM node:20-alpine AS builder
 WORKDIR /app
 
@@ -18,7 +18,7 @@ COPY . .
 # Will embed NEXT_PUBLIC_* into the built static files
 RUN npm run build
 
-# 🔹 3. Final image for serving the app
+# 3. Final image for serving the app
 FROM node:20-alpine AS runner
 WORKDIR /app
 
