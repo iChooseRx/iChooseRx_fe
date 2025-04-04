@@ -1,5 +1,6 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
+    secretEnv: ['_NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL']
     args:
       [
         'build',
@@ -9,6 +10,7 @@ steps:
         'NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL=${_NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL}',
         '.'
       ]
+
 availableSecrets:
   secretManager:
     - versionName: "projects/ichooserx/secrets/NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL/versions/latest"
