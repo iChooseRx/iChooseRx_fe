@@ -5,10 +5,10 @@ steps:
     args:
       - '-c'
       - |
-        echo "🔐 Injected Secret: $NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL"
+        echo "🔐 Secret available: $NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL"
         docker build \
           --build-arg NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL="$NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL" \
-          -t us-docker.pkg.dev/${PROJECT_ID}/ichooserx-frontend/ichooserx-frontend:${COMMIT_SHA} \
+          -t "us-docker.pkg.dev/${PROJECT_ID}/ichooserx-frontend/ichooserx-frontend:${COMMIT_SHA}" \
           .
 
 images:
