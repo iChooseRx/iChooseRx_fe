@@ -1,15 +1,14 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
     secretEnv: ['NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL']
+    entrypoint: 'bash'
     args:
-      [
-        'build',
-        '-t',
-        'us-docker.pkg.dev/$PROJECT_ID/ichooserx-frontend/ichooserx-frontend:$COMMIT_SHA',
-        '--build-arg',
-        'NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL=$NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL',
-        '.'
-      ]
+      - '-c'
+      - |
+        docker build \
+          --build-arg NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL=$NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL \
+          -t us-docker.pkg.dev/$PROJECT_ID/ichooserx-frontend/ichooserx-frontend:$COMMIT_SHA \
+          .
 
 images:
   - 'us-docker.pkg.dev/$PROJECT_ID/ichooserx-frontend/ichooserx-frontend:$COMMIT_SHA'
