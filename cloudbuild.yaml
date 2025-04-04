@@ -27,7 +27,7 @@ steps:
 options:
   logging: CLOUD_LOGGING_ONLY
 
-secrets:
-  - kmsKeyName: projects/ichooserx/locations/global/keyRings/cloudbuild/cryptoKeys/default
-    secretEnv:
-      NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL: projects/ichooserx/secrets/NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL/versions/latest
+availableSecrets:
+  secretManager:
+    - versionName: "projects/ichooserx/secrets/NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL/versions/latest"
+      env: "NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL"
