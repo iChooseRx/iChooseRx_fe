@@ -1,23 +1,27 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    secretEnv: ['NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL']
-    entrypoint: 'bash'
     args:
-      - '-c'
-      - |
-        echo "🔐 Secret available: $NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL"
-        docker build \
-          --build-arg NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL="$NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL" \
-          -t "us-docker.pkg.dev/${PROJECT_ID}/ichooserx-frontend/ichooserx-frontend:${COMMIT_SHA}" \
-          .
+      [
+        'build',
+        '-t',
+        'us-docker.pkg.dev/$PROJECT_ID/ichooserx-frontend/ichooserx-frontend:$COMMIT_SHA',
+        '--build-arg',
+        'NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL=${_NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL}',
+        '.'
+      ]
+    secretEnv: ['_NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL']
 
 images:
-  - 'us-docker.pkg.dev/${PROJECT_ID}/ichooserx-frontend/ichooserx-frontend:${COMMIT_SHA}'
+  - 'us-docker.pkg.dev/$PROJECT_ID/ichooserx-frontend/ichooserx-frontend:$COMMIT_SHA'
 
 availableSecrets:
   secretManager:
     - versionName: "projects/ichooserx/secrets/NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL/versions/latest"
-      env: "NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL"
+      env: "_NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL"
+
+substitutions:
+  _NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL: "DUMMY_WILL_BE_OVERRIDDEN"
 
 options:
+  substitutionOption: ALLOW_LOOSE
   logging: CLOUD_LOGGING_ONLY
