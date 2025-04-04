@@ -1,13 +1,22 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
+    secretEnv: ['NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL']
     args:
       [
         'build',
         '-t',
         'us-docker.pkg.dev/$PROJECT_ID/ichooserx-frontend/ichooserx-frontend:$COMMIT_SHA',
+        '--build-arg', 'NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL=$NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL',
         '.'
       ]
+
 images:
   - 'us-docker.pkg.dev/$PROJECT_ID/ichooserx-frontend/ichooserx-frontend:$COMMIT_SHA'
+
+secrets:
+  - kmsKeyName: projects/ichooserx/locations/global/keyRings/cloudbuild/cryptoKeys/default
+    secretEnv:
+      NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL: projects/ichooserx/secrets/NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL/versions/latest
+
 options:
   logging: CLOUD_LOGGING_ONLY
