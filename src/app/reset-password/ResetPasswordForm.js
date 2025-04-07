@@ -54,7 +54,7 @@ export default function ResetPasswordForm() {
             <input
               id="password"
               type={showPassword ? 'text' : 'password'}
-              className="px-4 py-2 border border-gray-300 rounded w-full"
+              className="px-4 py-2 border border-borderColor rounded w-full text-black dark:text-white bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -75,7 +75,7 @@ export default function ResetPasswordForm() {
             <input
               id="confirm"
               type={showConfirm ? 'text' : 'password'}
-              className="px-4 py-2 border border-gray-300 rounded w-full"
+              className="px-4 py-2 border border-borderColor rounded w-full text-black dark:text-white bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
               required

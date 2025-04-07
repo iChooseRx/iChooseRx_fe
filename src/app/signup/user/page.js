@@ -36,15 +36,16 @@ export default function SignupPage() {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="px-4 py-2 border border-borderColor rounded"
+          className="px-4 py-2 border border-borderColor rounded text-black dark:text-white bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary"
           disabled={!agreedToWhy}
         />
+
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="px-4 py-2 border border-borderColor rounded"
+          className="px-4 py-2 border border-borderColor rounded text-black dark:text-white bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary"
           disabled={!agreedToWhy}
         />
         <input
@@ -52,7 +53,7 @@ export default function SignupPage() {
           placeholder="Confirm Password"
           value={passwordConfirmation}
           onChange={(e) => setPasswordConfirmation(e.target.value)}
-          className="px-4 py-2 border border-borderColor rounded"
+          className="px-4 py-2 border border-borderColor rounded text-black dark:text-white bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary"
           disabled={!agreedToWhy}
         />
 

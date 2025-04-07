@@ -92,15 +92,24 @@ function PharmacySignupForm() {
       {error && <p className="text-error">{error}</p>}
 
       <form onSubmit={handleSubmit} className="flex flex-col space-y-4 w-full max-w-md">
-        <input type="email" name="email" placeholder="Email" onChange={handleChange} className="px-4 py-2 border rounded" required />
-        <input type="password" name="password" placeholder="Password" onChange={handleChange} className="px-4 py-2 border rounded" required />
-        <input type="password" name="password_confirmation" placeholder="Confirm Password" onChange={handleChange} className="px-4 py-2 border rounded" required />
-        <input type="text" name="pharmacy_name" placeholder="Pharmacy Name" onChange={handleChange} className="px-4 py-2 border rounded" required />
-        <input type="text" name="street_address" placeholder="Street Address" onChange={handleChange} className="px-4 py-2 border rounded" required />
-        <input type="text" name="city" placeholder="City" onChange={handleChange} className="px-4 py-2 border rounded" required />
-        <input type="text" name="state" placeholder="State" onChange={handleChange} className="px-4 py-2 border rounded" required />
-        <input type="text" name="zip_code" placeholder="Zip Code" onChange={handleChange} className="px-4 py-2 border rounded" required />
-        <input type="text" name="pharmacy_phone" placeholder="Phone Number" onChange={handleChange} className="px-4 py-2 border rounded" required />
+        <input type="email" name="email" placeholder="Email" onChange={handleChange} className="px-4 py-2 border border-borderColor rounded text-black dark:text-white bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+          required />
+        <input type="password" name="password" placeholder="Password" onChange={handleChange} className="px-4 py-2 border border-borderColor rounded text-black dark:text-white bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+          required />
+        <input type="password" name="password_confirmation" placeholder="Confirm Password" onChange={handleChange} className="px-4 py-2 border border-borderColor rounded text-black dark:text-white bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+          required />
+        <input type="text" name="pharmacy_name" placeholder="Pharmacy Name" onChange={handleChange} className="px-4 py-2 border border-borderColor rounded text-black dark:text-white bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+          required />
+        <input type="text" name="street_address" placeholder="Street Address" onChange={handleChange} className="px-4 py-2 border border-borderColor rounded text-black dark:text-white bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+          required />
+        <input type="text" name="city" placeholder="City" onChange={handleChange} className="px-4 py-2 border border-borderColor rounded text-black dark:text-white bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+          required />
+        <input type="text" name="state" placeholder="State" onChange={handleChange} className="px-4 py-2 border border-borderColor rounded text-black dark:text-white bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+          required />
+        <input type="text" name="zip_code" placeholder="Zip Code" onChange={handleChange} className="px-4 py-2 border border-borderColor rounded text-black dark:text-white bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+          required />
+        <input type="text" name="pharmacy_phone" placeholder="Phone Number" onChange={handleChange} className="px-4 py-2 border border-borderColor rounded text-black dark:text-white bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+          required />
 
         <button type="submit" className="px-6 py-2 bg-primary text-white rounded hover:bg-blue-600">
           {loading ? "Creating Account..." : "Sign Up"}

@@ -12,11 +12,17 @@ export default function ForgotPasswordPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setMessage('');
+
     try {
-      await requestPasswordReset(email);
-      setMessage('Password reset instructions have been sent to your email.');
+      const data = await requestPasswordReset(email);
+      setMessage(data.message || 'Password reset instructions have been sent.');
     } catch (err) {
-      setError('Failed to send reset instructions. Please try again.');
+      // If error response includes useful info
+      const errorMsg =
+        err?.response?.data?.error || 'Failed to send reset instructions. Please try again.';
+      setError(errorMsg);
     }
   };
 
