@@ -1,9 +1,10 @@
-"use client";
+'use client';
 
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createUser } from "@/services/api";
 import WhyPharmaciesMatter from "@/components/WhyPharmaciesMatter";
+import PhoneInput from "@/components/PhoneInput";
 
 export default function PharmacySignupPage() {
   return (
@@ -26,6 +27,8 @@ function PharmacySignupForm() {
     pharmacy_phone: "",
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -56,8 +59,6 @@ function PharmacySignupForm() {
       },
     };
 
-    console.log("📤 Sending request to API:", JSON.stringify(requestData, null, 2));
-
     try {
       const response = await createUser(requestData);
 
@@ -80,43 +81,122 @@ function PharmacySignupForm() {
   };
 
   if (!invitationToken) {
-    return <p className="text-red-500 text-center">Invalid or expired invitation.</p>;
+    return <p className="text-error text-center">Invalid or expired invitation.</p>;
   }
 
   return (
     <main className="min-h-screen max-h-screen overflow-y-auto flex flex-col items-center justify-start px-4 py-6 bg-background text-foreground">
-      <h1 className="text-2xl sm:text-xl font-bold mb-4 text-center">
-        Pharmacy Account Signup
-      </h1>
+      <h1 className="text-2xl sm:text-xl font-bold mb-4 text-center">Pharmacy Account Signup</h1>
 
-      {error && <p className="text-error">{error}</p>}
+      {error && <div className="error-box">{error}</div>}
 
       <form onSubmit={handleSubmit} className="flex flex-col space-y-4 w-full max-w-md">
-        <input type="email" name="email" placeholder="Email" onChange={handleChange} className="px-4 py-2 border border-borderColor rounded text-black dark:text-white bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-          required />
-        <input type="password" name="password" placeholder="Password" onChange={handleChange} className="px-4 py-2 border border-borderColor rounded text-black dark:text-white bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-          required />
-        <input type="password" name="password_confirmation" placeholder="Confirm Password" onChange={handleChange} className="px-4 py-2 border border-borderColor rounded text-black dark:text-white bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-          required />
-        <input type="text" name="pharmacy_name" placeholder="Pharmacy Name" onChange={handleChange} className="px-4 py-2 border border-borderColor rounded text-black dark:text-white bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-          required />
-        <input type="text" name="street_address" placeholder="Street Address" onChange={handleChange} className="px-4 py-2 border border-borderColor rounded text-black dark:text-white bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-          required />
-        <input type="text" name="city" placeholder="City" onChange={handleChange} className="px-4 py-2 border border-borderColor rounded text-black dark:text-white bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-          required />
-        <input type="text" name="state" placeholder="State" onChange={handleChange} className="px-4 py-2 border border-borderColor rounded text-black dark:text-white bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-          required />
-        <input type="text" name="zip_code" placeholder="Zip Code" onChange={handleChange} className="px-4 py-2 border border-borderColor rounded text-black dark:text-white bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-          required />
-        <input type="text" name="pharmacy_phone" placeholder="Phone Number" onChange={handleChange} className="px-4 py-2 border border-borderColor rounded text-black dark:text-white bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-          required />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          onChange={handleChange}
+          className="input-field w-full"
+          required
+        />
 
-        <button type="submit" className="px-6 py-2 bg-primary text-white rounded hover:bg-blue-600">
+        {/* Password */}
+        <div className="relative">
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            placeholder="Password"
+            onChange={handleChange}
+            className="input-field w-full pr-16"
+            required
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+            aria-label={showPassword ? "Hide password" : "Show password"}
+          >
+            {showPassword ? "Hide" : "Show"}
+          </button>
+        </div>
+
+        {/* Confirm Password */}
+        <div className="relative">
+          <input
+            type={showPasswordConfirmation ? "text" : "password"}
+            name="password_confirmation"
+            placeholder="Confirm Password"
+            onChange={handleChange}
+            className="input-field w-full pr-16"
+            required
+          />
+          <button
+            type="button"
+            onClick={() => setShowPasswordConfirmation((prev) => !prev)}
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+            aria-label={showPasswordConfirmation ? "Hide password" : "Show password"}
+          >
+            {showPasswordConfirmation ? "Hide" : "Show"}
+          </button>
+        </div>
+
+        <input
+          type="text"
+          name="pharmacy_name"
+          placeholder="Pharmacy Name"
+          onChange={handleChange}
+          className="input-field w-full"
+          required
+        />
+        <input
+          type="text"
+          name="street_address"
+          placeholder="Street Address"
+          onChange={handleChange}
+          className="input-field w-full"
+          required
+        />
+        <input
+          type="text"
+          name="city"
+          placeholder="City"
+          onChange={handleChange}
+          className="input-field w-full"
+          required
+        />
+        <input
+          type="text"
+          name="state"
+          placeholder="State"
+          onChange={handleChange}
+          className="input-field w-full"
+          required
+        />
+        <input
+          type="text"
+          name="zip_code"
+          placeholder="Zip Code"
+          onChange={handleChange}
+          className="input-field w-full"
+          required
+        />
+        <PhoneInput
+          name="pharmacy_phone"
+          value={form.pharmacy_phone}
+          onChange={handleChange}
+        />
+        <button
+          type="submit"
+          className="btn-primary px-6 py-2 rounded"
+          disabled={loading}
+        >
           {loading ? "Creating Account..." : "Sign Up"}
         </button>
       </form>
 
-      <WhyPharmaciesMatter />
+      <div className="mt-10 w-full max-w-2xl">
+        <WhyPharmaciesMatter />
+      </div>
     </main>
   );
 }
