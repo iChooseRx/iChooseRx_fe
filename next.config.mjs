@@ -1,16 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    optimizeCss: true, // Optimize global CSS (removes unused styles)
+    optimizeCss: true,
   },
-  reactStrictMode: true, // Helps catch React issues in development
+  reactStrictMode: true,
   images: {
-    unoptimized: false, // Use Next.js image optimization
+    unoptimized: false,
   },
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production', // Remove console logs in production
+    removeConsole: process.env.NODE_ENV === 'production',
   },
-  compress: true, // Enable gzip and Brotli compression
+  compress: true,
+  output: 'standalone', // 🔥 Highly recommended for Cloud Run/Docker
 };
 
 export default nextConfig;
