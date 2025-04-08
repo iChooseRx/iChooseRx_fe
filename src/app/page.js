@@ -9,7 +9,7 @@ export default function LandingPage() {
       <MatrixBackground />
 
       <div className="relative z-10 w-full max-w-2xl rounded-xl shadow-lg">
-        <div className="bg-[color:var(--background)]/95 dark:bg-[color:var(--background)]/90 p-8 rounded-xl backdrop-blur-sm border border-borderColor">
+        <div className="bg-[color:var(--background)] dark:bg-[color:var(--background)] p-8 rounded-xl border border-borderColor">
 
           <h1 className="text-4xl sm:text-5xl font-bold mb-6 leading-tight">
             Your Meds, Your Choice.

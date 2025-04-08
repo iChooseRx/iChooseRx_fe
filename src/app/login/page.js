@@ -32,7 +32,7 @@ export default function LoginPage() {
     <main className="relative h-screen flex flex-col items-center justify-center bg-background text-foreground">
       <MatrixBackground />
       <div className="relative z-10 w-full max-w-sm rounded-xl shadow-lg">
-        <div className="bg-[color:var(--background)]/95 dark:bg-[color:var(--background)]/90 p-6 rounded-xl backdrop-blur-sm border border-borderColor">
+        <div className="bg-[color:var(--background)] dark:bg-[color:var(--background)] p-6 rounded-xl border border-borderColor">
 
           <h1 className="text-2xl font-bold mb-4 text-center">Login to iChooseRx</h1>
 
