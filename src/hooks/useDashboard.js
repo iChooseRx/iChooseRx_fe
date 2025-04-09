@@ -40,7 +40,7 @@ export function useDashboard() {
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
     if (token) {
-      setIsAuthenticated(true); // Currently unused, but reserved for future UI logic
+      setIsAuthenticated(true); // Currently unused, but reserved for future UI logic and premium user features
       fetchDrugs();
     } else {
       console.warn("⚠️ No auth token found, skipping API calls.");

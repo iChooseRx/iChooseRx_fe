@@ -7,7 +7,6 @@ import DashboardHeader from "@/components/DashboardHeader";
 export default function UserHowToPage() {
   const [isReady, setIsReady] = useState(false);
 
-  // Prevent Next.js hydration mismatch errors on first render
   useEffect(() => {
     setIsReady(true);
   }, []);
