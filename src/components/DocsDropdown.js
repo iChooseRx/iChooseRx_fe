@@ -33,8 +33,8 @@ export default function DocsDropdown() {
       </button>
 
       <div
-        className={`absolute left-0 mt-2 w-56 bg-white text-black rounded-lg shadow-lg z-50 transition-transform duration-300 origin-top-left ${isOpen ? "scale-y-100" : "scale-y-0"}`}
-        style={{ transformOrigin: "top" }}
+        className={`absolute right-0 mt-2 w-56 max-w-[calc(100vw-2rem)] bg-white text-black rounded-lg shadow-lg transition-transform duration-300 origin-top-right z-50 ${isOpen ? "scale-y-100" : "scale-y-0"}`}
+        style={{ transformOrigin: "top right" }}
       >
         <ul className="flex flex-col p-2">
           <li>

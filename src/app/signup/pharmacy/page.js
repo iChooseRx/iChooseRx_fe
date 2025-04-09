@@ -197,7 +197,7 @@ function PharmacySignupForm() {
           </button>
         </form>
 
-        <div className="mt-10 w-full max-w-2xl">
+        <div className="mt-4 w-full max-w-2xl">
           <WhyPharmaciesMatter />
         </div>
       </main>

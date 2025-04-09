@@ -118,7 +118,7 @@ export default function SignupPage() {
           </Link>
         </p>
 
-        <div className="mt-10 w-full max-w-2xl">
+        <div className="mt-4 w-full max-w-2xl">
           <WhyIChooseRx />
         </div>
       </main>

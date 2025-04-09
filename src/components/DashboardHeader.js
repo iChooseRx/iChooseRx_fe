@@ -8,7 +8,6 @@ import DocsDropdown from "@/components/DocsDropdown";
 
 export default function DashboardHeader() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   const pathname = usePathname();
   const isDashboardPage = pathname?.startsWith("/dashboard");
 
@@ -53,7 +52,7 @@ export default function DashboardHeader() {
     <header className="h-20 flex justify-between items-center px-10 bg-primary text-white">
       <h1 className="text-4xl font-bold">iChooseRx</h1>
 
-      {/* Menu */}
+      {/* Menu Section */}
       <div className="flex space-x-4 items-center">
         <DocsDropdown />
         <div className="relative" ref={menuRef}>
@@ -72,45 +71,74 @@ export default function DashboardHeader() {
             <ul className="flex flex-col p-2">
               {isLoggedIn ? (
                 <>
-                  {/* Role-based dashboard links */}
                   <li>
-                    <Link href="/dashboard/search" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
+                    <Link
+                      href="/"
+                      onClick={closeMenu}
+                      className="block px-4 py-2 hover:bg-gray-200 rounded"
+                    >
+                      Home
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/dashboard/search"
+                      onClick={closeMenu}
+                      className="block px-4 py-2 hover:bg-gray-200 rounded"
+                    >
                       Drug Search
                     </Link>
                   </li>
                   <li>
-                    <Link href="/dashboard/saved" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
+                    <Link
+                      href="/dashboard/saved"
+                      onClick={closeMenu}
+                      className="block px-4 py-2 hover:bg-gray-200 rounded"
+                    >
                       Saved Drugs & Pharmacies
                     </Link>
                   </li>
                   {(role === "pharmacy" || role === "admin") && (
                     <li>
-                      <Link href="/dashboard/pharmacy" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
+                      <Link
+                        href="/dashboard/pharmacy"
+                        onClick={closeMenu}
+                        className="block px-4 py-2 hover:bg-gray-200 rounded"
+                      >
                         Upload Dashboard
                       </Link>
                     </li>
                   )}
                   {role === "admin" && (
                     <li>
-                      <Link href="/dashboard/admin" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
+                      <Link
+                        href="/dashboard/admin"
+                        onClick={closeMenu}
+                        className="block px-4 py-2 hover:bg-gray-200 rounded"
+                      >
                         Admin Dashboard
                       </Link>
                     </li>
                   )}
-
-                  {/* Public & utility links */}
                   <li>
-                    <Link href="/user-how-to" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
-                      User: How To
-                    </Link>
-                  </li>
-                  <li>
-                    <button onClick={() => { handleLogout(); closeMenu(); }} className="w-full text-left px-4 py-2 hover:bg-gray-200 rounded">
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        closeMenu();
+                      }}
+                      className="w-full text-left px-4 py-2 hover:bg-gray-200 rounded"
+                    >
                       Logout
                     </button>
                   </li>
                   <li>
-                    <button onClick={() => { handleDeleteAccount(); closeMenu(); }} className="w-full text-left px-4 py-2 hover:bg-gray-200 rounded text-red-600">
+                    <button
+                      onClick={() => {
+                        handleDeleteAccount();
+                        closeMenu();
+                      }}
+                      className="w-full text-left px-4 py-2 hover:bg-gray-200 rounded text-red-600"
+                    >
                       Delete Account
                     </button>
                   </li>
@@ -118,12 +146,29 @@ export default function DashboardHeader() {
               ) : (
                 <>
                   <li>
-                    <Link href="/login" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
+                    <Link
+                      href="/"
+                      onClick={closeMenu}
+                      className="block px-4 py-2 hover:bg-gray-200 rounded"
+                    >
+                      Home
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/login"
+                      onClick={closeMenu}
+                      className="block px-4 py-2 hover:bg-gray-200 rounded"
+                    >
                       Login
                     </Link>
                   </li>
                   <li>
-                    <Link href="/signup/user" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
+                    <Link
+                      href="/signup/user"
+                      onClick={closeMenu}
+                      className="block px-4 py-2 hover:bg-gray-200 rounded"
+                    >
                       Create Account
                     </Link>
                   </li>
