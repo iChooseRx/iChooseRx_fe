@@ -6,6 +6,8 @@ import { usePathname } from "next/navigation";
 import { useDashboard } from "@/hooks/useDashboard";
 
 export default function DashboardHeader() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const pathname = usePathname();
   const isDashboardPage = pathname?.startsWith("/dashboard");
 
@@ -17,6 +19,8 @@ export default function DashboardHeader() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
+      const token = localStorage.getItem("auth_token");
+      setIsLoggedIn(!!token);
       setRole(localStorage.getItem("user_role") || "user");
     }
   }, []);
@@ -41,8 +45,8 @@ export default function DashboardHeader() {
 
   const closeMenu = () => setMenuOpen(false);
 
-  const handleLogout = isDashboardPage ? dashboard?.handleLogout : null;
-  const handleDeleteAccount = isDashboardPage ? dashboard?.handleDeleteAccount : null;
+  const handleLogout = dashboard?.handleLogout ?? (() => { });
+  const handleDeleteAccount = dashboard?.handleDeleteAccount ?? (() => { });
 
   return (
     <header className="h-20 flex justify-between items-center px-10 bg-primary text-white">
@@ -63,86 +67,69 @@ export default function DashboardHeader() {
           style={{ transformOrigin: "top" }}
         >
           <ul className="flex flex-col p-2">
-            <li>
-              <Link
-                href="/dashboard/search"
-                className="block px-4 py-2 hover:bg-gray-200 rounded"
-                onClick={closeMenu}
-              >
-                Drug Search
-              </Link>
-            </li>
+            {isLoggedIn ? (
+              <>
+                {/* Role-based dashboard links */}
+                <li>
+                  <Link href="/dashboard/search" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
+                    Drug Search
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/dashboard/saved" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
+                    Saved Drugs & Pharmacies
+                  </Link>
+                </li>
+                {(role === "pharmacy" || role === "admin") && (
+                  <li>
+                    <Link href="/dashboard/pharmacy" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
+                      Upload Dashboard
+                    </Link>
+                  </li>
+                )}
+                {role === "admin" && (
+                  <li>
+                    <Link href="/dashboard/admin" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
+                      Admin Dashboard
+                    </Link>
+                  </li>
+                )}
 
-            <li>
-              <Link
-                href="/dashboard/saved"
-                className="block px-4 py-2 hover:bg-gray-200 rounded"
-                onClick={closeMenu}
-              >
-                Saved Drugs & Pharmacies
-              </Link>
-            </li>
-
-            {(role === "pharmacy" || role === "admin") && (
-              <li>
-                <Link
-                  href="/dashboard/pharmacy"
-                  className="block px-4 py-2 hover:bg-gray-200 rounded"
-                  onClick={closeMenu}
-                >
-                  Upload Dashboard
-                </Link>
-              </li>
-            )}
-
-            {role === "admin" && (
-              <li>
-                <Link
-                  href="/dashboard/admin"
-                  className="block px-4 py-2 hover:bg-gray-200 rounded"
-                  onClick={closeMenu}
-                >
-                  Admin Dashboard
-                </Link>
-              </li>
-            )}
-
-            <li>
-              <Link
-                href="/user-how-to"
-                className="block px-4 py-2 hover:bg-gray-200 rounded"
-                onClick={closeMenu}
-              >
-                User: How To
-              </Link>
-            </li>
-
-            {handleLogout && (
-              <li>
-                <button
-                  onClick={() => {
-                    handleLogout();
-                    closeMenu();
-                  }}
-                  className="w-full text-left px-4 py-2 hover:bg-gray-200 rounded"
-                >
-                  Logout
-                </button>
-              </li>
-            )}
-
-            {handleDeleteAccount && (
-              <li>
-                <button
-                  onClick={() => {
-                    handleDeleteAccount();
-                    closeMenu();
-                  }}
-                  className="w-full text-left px-4 py-2 hover:bg-gray-200 rounded text-red-600"
-                >
-                  Delete Account
-                </button>
-              </li>
+                {/* Public & utility links */}
+                <li>
+                  <Link href="/user-how-to" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
+                    User: How To
+                  </Link>
+                </li>
+                <li>
+                  <button onClick={() => { handleLogout(); closeMenu(); }} className="w-full text-left px-4 py-2 hover:bg-gray-200 rounded">
+                    Logout
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => { handleDeleteAccount(); closeMenu(); }} className="w-full text-left px-4 py-2 hover:bg-gray-200 rounded text-red-600">
+                    Delete Account
+                  </button>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link href="/user-how-to" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
+                    User: How To
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/login" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
+                    Login
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/signup/user" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
+                    Create Account
+                  </Link>
+                </li>
+              </>
             )}
           </ul>
         </div>
