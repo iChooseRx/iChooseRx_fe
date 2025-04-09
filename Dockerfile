@@ -1,11 +1,11 @@
 # 1. Install dependencies
-FROM node:20-alpine AS deps
+FROM node:22.14.0-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json* ./
 RUN npm install
 
 # 2. Build the app with env variable passed in
-FROM node:20-alpine AS builder
+FROM node:22.14.0-alpine AS builder
 WORKDIR /app
 
 # Accept the API URL during build
@@ -23,7 +23,7 @@ RUN echo "🧪 Next.js env during build: $(node -p 'process.env.NEXT_PUBLIC_ICHO
 RUN npm run build
 
 # 3. Final image for serving the app
-FROM node:20-alpine AS runner
+FROM node:22.14.0-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
