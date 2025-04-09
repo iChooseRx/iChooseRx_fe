@@ -66,7 +66,7 @@ export default function DashboardHeader() {
 
           {/* Dropdown */}
           <div
-            className={`absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg transition-transform duration-300 origin-top ${menuOpen ? "scale-y-100" : "scale-y-0"}`}
+            className={`absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg z-50 transition-transform duration-300 origin-top ${menuOpen ? "scale-y-100" : "scale-y-0"}`}
             style={{ transformOrigin: "top" }}
           >
             <ul className="flex flex-col p-2">

@@ -9,7 +9,7 @@ export default function LandingPage() {
     <>
       <DashboardHeader />
 
-      <main className="relative h-screen flex flex-col items-center justify-center px-6 text-center bg-background text-foreground overflow-hidden">
+      <main className="relative h-screen w-full overflow-x-hidden flex flex-col items-center justify-center px-6 text-center bg-background text-foreground">
         <MatrixBackground />
 
         <div className="relative z-10 w-full max-w-2xl rounded-xl shadow-lg">
