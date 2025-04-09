@@ -116,6 +116,9 @@ export default function PharmacySearch() {
               {searched && pharmacies.length === 0 && !loading && (
                 <div className="w-full space-y-4">
                   <p className="text-gray-500 italic text-center">No pharmacies found for this NDC.</p>
+                  <p className="text-sm text-gray-500 text-center">
+                    Sponsored listings may appear here based on availability and pharmacy participation.
+                  </p>
                   <AdSlot position="pharmacy-fallback-after-search" className="h-24" />
                 </div>
               )}
@@ -129,6 +132,9 @@ export default function PharmacySearch() {
             </>
           )}
         </div>
+        <p className="text-sm text-gray-500 text-center">
+          Sponsored listings may appear here based on availability and pharmacy participation.
+        </p>
         <AdSlot position="pharmacy-bottom" className="h-24 mt-2" />
       </section>
     </>

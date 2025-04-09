@@ -15,17 +15,6 @@ export default function SearchResults({ results, resultStats, onSave, hasSearche
     setExpandedSearchId((prev) => (prev === id ? null : id));
   };
 
-  const handleScroll = () => {
-    if (resultsContainerRef.current) {
-      setShowBackToTop(resultsContainerRef.current.scrollTop > 200);
-    }
-    resetInteractionTimer();
-  };
-
-  const handleMouseMove = () => {
-    resetInteractionTimer();
-  };
-
   const resetInteractionTimer = () => {
     setIsInteracting(true);
     clearTimeout(timeoutRef.current);
@@ -117,6 +106,9 @@ export default function SearchResults({ results, resultStats, onSave, hasSearche
       <ResultsChart resultStats={resultStats} />
 
       <AdSlot position="below-results-chart" className="h-24 mt-0 mb-2" />
+      <p className="text-xs text-gray-500 text-center mb-2">
+        Sponsored suggestions based on your search may appear here.
+      </p>
 
       <div
         ref={resultsContainerRef}

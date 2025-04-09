@@ -21,8 +21,6 @@ export default function SavedPage() {
           <SavedDrugs
             drugs={dashboard.drugs}
             onDelete={dashboard.handleDeleteDrug}
-            notesByDrug={dashboard.notesByDrug}
-            setNotesByDrug={dashboard.setNotesByDrug}
             handleUpdateNotes={dashboard.handleUpdateNotes}
           />
         </section>

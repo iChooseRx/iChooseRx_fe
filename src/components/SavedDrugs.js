@@ -5,7 +5,7 @@ import ReportPharmacyForm from "./ReportPharmacyForm";
 import { insertAdsInResults } from "@/components/ads";
 import AdSlot from "@/components/ads/AdSlot";
 
-export default function SavedDrugs({ drugs, onDelete, notesByDrug, setNotesByDrug, handleUpdateNotes }) {
+export default function SavedDrugs({ drugs, onDelete, handleUpdateNotes }) {
   const [expandedDrugId, setExpandedDrugId] = useState(null);
   const [activeReportFormId, setActiveReportFormId] = useState(null);
 
@@ -23,7 +23,13 @@ export default function SavedDrugs({ drugs, onDelete, notesByDrug, setNotesByDru
 
       <div className="border-borderColor border rounded-lg shadow-inner transition-all min-h-[300px] max-h-[400px] overflow-y-auto p-2 flex flex-col">
         {(!drugs || drugs.length === 0) ? (
-          <p className="text-gray-500 italic self-center my-auto">No saved drugs found.</p>
+          <div className="flex flex-col items-center justify-center flex-1 text-center">
+            <p className="text-gray-500 italic">No saved drugs found.</p>
+            <AdSlot position="saved-drugs-empty" className="h-24 mt-4" />
+            <p className="text-xs text-gray-400 mt-1">
+              Ads may appear here to support access to iChooseRx as a free tool.
+            </p>
+          </div>
         ) : (
           <ul role="list" className="space-y-4">
             {insertAdsInResults(

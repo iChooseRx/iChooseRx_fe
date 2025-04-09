@@ -21,8 +21,7 @@ export function useDashboard() {
   const [loading, setLoading] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState([]);
-  const [notesByDrug, setNotesByDrug] = useState({});
-
+  // Future use: track user auth status for premium features or conditional UI
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const FILTER_CATEGORIES = [
@@ -41,7 +40,7 @@ export function useDashboard() {
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
     if (token) {
-      setIsAuthenticated(true);
+      setIsAuthenticated(true); // Currently unused, but reserved for future UI logic
       fetchDrugs();
     } else {
       console.warn("⚠️ No auth token found, skipping API calls.");
@@ -101,7 +100,7 @@ export function useDashboard() {
     const { data, error } = await searchDrugs(drugName, filterParams);
 
     if (error) {
-      setError(error); // this could now be your rate limit message
+      setError(error);
       setLoading(false);
       return;
     }
@@ -182,8 +181,6 @@ export function useDashboard() {
     isDarkMode,
     selectedFilters,
     setSelectedFilters,
-    notesByDrug,
-    setNotesByDrug,
     FILTER_CATEGORIES,
     fetchDrugs,
     handleSearch,

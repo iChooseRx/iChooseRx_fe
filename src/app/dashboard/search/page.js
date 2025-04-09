@@ -28,8 +28,6 @@ export default function SearchPage() {
 
         {dashboard.error && <div className="error-box">{dashboard.error}</div>}
 
-        <AdSlot position="below-search-bar" className="h-24 mb-1" />
-
         <h3 className="text-xl font-semibold mb-2">
           Select What You DO NOT Want In Your Drug
         </h3>
@@ -40,6 +38,8 @@ export default function SearchPage() {
           setSelectedFilters={dashboard.setSelectedFilters}
         />
 
+        <AdSlot position="below-filters" className="h-24 my-4" />
+
         <SearchResults
           results={dashboard.searchResults}
           resultStats={dashboard.resultStats}
@@ -48,6 +48,7 @@ export default function SearchPage() {
           isLoading={dashboard.loading}
         />
       </div>
+
       <TimeBasedAdGateModal />
     </>
   );
