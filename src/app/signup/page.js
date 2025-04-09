@@ -1,6 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import DashboardHeader from "@/components/DashboardHeader";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -9,5 +10,10 @@ export default function SignupPage() {
     router.replace("/signup/user");
   }, [router]);
 
-  return <p>Redirecting...</p>;
+  return (
+    <>
+      <DashboardHeader />
+      <p>Redirecting...</p>;
+    </>
+  );
 }

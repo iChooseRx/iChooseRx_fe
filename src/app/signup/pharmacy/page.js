@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { createUser } from "@/services/api";
 import WhyPharmaciesMatter from "@/components/WhyPharmaciesMatter";
 import PhoneInput from "@/components/PhoneInput";
+import DashboardHeader from "@/components/DashboardHeader";
 
 export default function PharmacySignupPage() {
   return (
@@ -85,118 +86,121 @@ function PharmacySignupForm() {
   }
 
   return (
-    <main className="min-h-screen max-h-screen overflow-y-auto flex flex-col items-center justify-start px-4 py-6 bg-background text-foreground">
-      <h1 className="text-2xl sm:text-xl font-bold mb-4 text-center">Pharmacy Account Signup</h1>
+    <>
+      <DashboardHeader />
+      <main className="min-h-screen max-h-screen overflow-y-auto flex flex-col items-center justify-start px-4 py-6 bg-background text-foreground">
+        <h1 className="text-2xl sm:text-xl font-bold mb-4 text-center">Pharmacy Account Signup</h1>
 
-      {error && <div className="error-box">{error}</div>}
+        {error && <div className="error-box">{error}</div>}
 
-      <form onSubmit={handleSubmit} className="flex flex-col space-y-4 w-full max-w-md">
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          onChange={handleChange}
-          className="input-field w-full"
-          required
-        />
-
-        {/* Password */}
-        <div className="relative">
+        <form onSubmit={handleSubmit} className="flex flex-col space-y-4 w-full max-w-md">
           <input
-            type={showPassword ? "text" : "password"}
-            name="password"
-            placeholder="Password"
+            type="email"
+            name="email"
+            placeholder="Email"
             onChange={handleChange}
-            className="input-field w-full pr-16"
+            className="input-field w-full"
             required
           />
-          <button
-            type="button"
-            onClick={() => setShowPassword((prev) => !prev)}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
-            aria-label={showPassword ? "Hide password" : "Show password"}
-          >
-            {showPassword ? "Hide" : "Show"}
-          </button>
-        </div>
 
-        {/* Confirm Password */}
-        <div className="relative">
+          {/* Password */}
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Password"
+              onChange={handleChange}
+              className="input-field w-full pr-16"
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
+          </div>
+
+          {/* Confirm Password */}
+          <div className="relative">
+            <input
+              type={showPasswordConfirmation ? "text" : "password"}
+              name="password_confirmation"
+              placeholder="Confirm Password"
+              onChange={handleChange}
+              className="input-field w-full pr-16"
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowPasswordConfirmation((prev) => !prev)}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+              aria-label={showPasswordConfirmation ? "Hide password" : "Show password"}
+            >
+              {showPasswordConfirmation ? "Hide" : "Show"}
+            </button>
+          </div>
+
           <input
-            type={showPasswordConfirmation ? "text" : "password"}
-            name="password_confirmation"
-            placeholder="Confirm Password"
+            type="text"
+            name="pharmacy_name"
+            placeholder="Pharmacy Name"
             onChange={handleChange}
-            className="input-field w-full pr-16"
+            className="input-field w-full"
             required
           />
+          <input
+            type="text"
+            name="street_address"
+            placeholder="Street Address"
+            onChange={handleChange}
+            className="input-field w-full"
+            required
+          />
+          <input
+            type="text"
+            name="city"
+            placeholder="City"
+            onChange={handleChange}
+            className="input-field w-full"
+            required
+          />
+          <input
+            type="text"
+            name="state"
+            placeholder="State"
+            onChange={handleChange}
+            className="input-field w-full"
+            required
+          />
+          <input
+            type="text"
+            name="zip_code"
+            placeholder="Zip Code"
+            onChange={handleChange}
+            className="input-field w-full"
+            required
+          />
+          <PhoneInput
+            name="pharmacy_phone"
+            value={form.pharmacy_phone}
+            onChange={handleChange}
+          />
           <button
-            type="button"
-            onClick={() => setShowPasswordConfirmation((prev) => !prev)}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
-            aria-label={showPasswordConfirmation ? "Hide password" : "Show password"}
+            type="submit"
+            className="btn-primary px-6 py-2 rounded"
+            disabled={loading}
           >
-            {showPasswordConfirmation ? "Hide" : "Show"}
+            {loading ? "Creating Account..." : "Sign Up"}
           </button>
+        </form>
+
+        <div className="mt-10 w-full max-w-2xl">
+          <WhyPharmaciesMatter />
         </div>
-
-        <input
-          type="text"
-          name="pharmacy_name"
-          placeholder="Pharmacy Name"
-          onChange={handleChange}
-          className="input-field w-full"
-          required
-        />
-        <input
-          type="text"
-          name="street_address"
-          placeholder="Street Address"
-          onChange={handleChange}
-          className="input-field w-full"
-          required
-        />
-        <input
-          type="text"
-          name="city"
-          placeholder="City"
-          onChange={handleChange}
-          className="input-field w-full"
-          required
-        />
-        <input
-          type="text"
-          name="state"
-          placeholder="State"
-          onChange={handleChange}
-          className="input-field w-full"
-          required
-        />
-        <input
-          type="text"
-          name="zip_code"
-          placeholder="Zip Code"
-          onChange={handleChange}
-          className="input-field w-full"
-          required
-        />
-        <PhoneInput
-          name="pharmacy_phone"
-          value={form.pharmacy_phone}
-          onChange={handleChange}
-        />
-        <button
-          type="submit"
-          className="btn-primary px-6 py-2 rounded"
-          disabled={loading}
-        >
-          {loading ? "Creating Account..." : "Sign Up"}
-        </button>
-      </form>
-
-      <div className="mt-10 w-full max-w-2xl">
-        <WhyPharmaciesMatter />
-      </div>
-    </main>
+      </main>
+    </>
   );
 }
