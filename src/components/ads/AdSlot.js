@@ -3,10 +3,17 @@ import React from "react";
 export default function AdSlot({ position, className = "", children }) {
   return (
     <div
-      className={`ad-slot text-xs text-center py-2 bg-gray-100 dark:bg-gray-800 text-gray-600 rounded ${className}`}
+      className={`ad-slot ${className}`}
       data-ad-position={position}
     >
-      {children ?? `Ad Placeholder – ${position}`}
+      {children ?? (
+        <>
+          <p className="font-medium">Sponsored Message – {position}</p>
+          <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-1">
+            This ad space supports the mission of iChooseRx to help users make informed, conscious choices about their medications.
+          </p>
+        </>
+      )}
     </div>
   );
 }

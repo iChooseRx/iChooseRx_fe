@@ -29,7 +29,7 @@ export default function TimeBasedAdGateModal() {
   // ⏲️ Start countdown
   useEffect(() => {
     if (!showModal) return;
-    setCountdown(10);
+    setCountdown(5);
 
     const interval = setInterval(() => {
       setCountdown((prev) => {
