@@ -197,3 +197,7 @@ button:hover {
   font-size: 0.875rem;
   text-align: center;
 }
+
+canvas {
+  z-index: 0 !important;
+}

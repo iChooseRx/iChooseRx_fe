@@ -15,8 +15,9 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "iChooseRx",
-  description: "Conscious drug search and pharmacy finder",
+  title: "iChooseRx | Conscious Drug Search & Pharmacy Finder",
+  description:
+    "Search FDA-approved drugs that align with your values. Filter out FD&C dyes, sweeteners, gluten, added sugar & more. Compare NDCs and find pharmacies.",
 };
 
 export default function RootLayout({ children }) {
@@ -30,8 +31,10 @@ export default function RootLayout({ children }) {
           crossOrigin="anonymous"
         ></script>
       </head>
-      <body className="antialiased bg-background text-foreground">
-        {children}
+      <body className="antialiased bg-background text-foreground overflow-x-hidden">
+        <div className="relative z-10">
+          {children}
+        </div>
       </body>
     </html>
   );

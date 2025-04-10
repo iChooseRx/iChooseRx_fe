@@ -27,14 +27,14 @@ export default function DocsDropdown() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="btn-secondary px-4 py-2 rounded-lg font-medium transition-all duration-300"
+        className="btn-secondary px-2 sm:px-4 py-2 text-sm sm:text-base rounded-lg font-medium transition-all duration-300"
       >
         Docs
       </button>
 
       <div
-        className={`absolute right-0 mt-2 w-56 max-w-[calc(100vw-2rem)] bg-white text-black rounded-lg shadow-lg transition-transform duration-300 origin-top-right z-50 ${isOpen ? "scale-y-100" : "scale-y-0"}`}
-        style={{ transformOrigin: "top right" }}
+        className={`absolute right-0 mt-2 sm:w-56 w-48 max-w-[calc(100vw-1rem)] bg-white text-black rounded-lg shadow-lg transition-transform duration-300 origin-top-right z-50 ${isOpen ? "scale-y-100" : "scale-y-0"}`}
+        style={{ transformOrigin: "top" }}
       >
         <ul className="flex flex-col p-2">
           <li>

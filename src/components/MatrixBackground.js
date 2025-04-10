@@ -80,6 +80,7 @@ export default function MatrixBackground() {
     <canvas
       ref={canvasRef}
       className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none"
+      style={{ zIndex: 0 }}
     />
   );
 }
