@@ -29,7 +29,7 @@ export default function ForgotPasswordPage() {
   return (
     <main className="h-screen flex flex-col items-center justify-center bg-background text-foreground">
       <h1 className="text-2xl font-bold mb-4">Forgot Password?</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+      <form onSubmit={handleSubmit} className="flex flex-col space-y-4 w-full max-w-sm">
         {message && <p className="text-green-500">{message}</p>}
         {error && <p className="text-error">{error}</p>}
         <input
@@ -37,11 +37,11 @@ export default function ForgotPasswordPage() {
           placeholder="Enter your email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="px-4 py-2 border border-borderColor rounded"
+          className="input-field w-full"
         />
         <button
           type="submit"
-          className="px-6 py-2 bg-primary text-white rounded hover:bg-blue-600"
+          className="btn-primary"
         >
           Send Reset Link
         </button>

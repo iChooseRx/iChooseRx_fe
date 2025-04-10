@@ -20,7 +20,7 @@ export default function SearchBar({ drugName, setDrugName, onSearch, isLoading }
       />
       <button
         onClick={onSearch}
-        className="btn-primary px-4 py-2 rounded"
+        className="btn-primary"
         disabled={isLoading}
         aria-label="Search"
       >

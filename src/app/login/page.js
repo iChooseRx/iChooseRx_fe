@@ -76,7 +76,7 @@ export default function LoginPage() {
                 </button>
               </div>
 
-              <button type="submit" className="btn-primary px-6 py-2 rounded">
+              <button type="submit" className="btn-primary">
                 Login
               </button>
             </form>

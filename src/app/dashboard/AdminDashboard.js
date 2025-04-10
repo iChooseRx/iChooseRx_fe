@@ -145,7 +145,7 @@ export default function AdminDashboard() {
               <option value="2">Admin</option>
             </select>
           </div>
-          <button type="submit" className="btn-primary px-4 py-2 rounded">Send Invite</button>
+          <button type="submit" className="btn-primary">Send Invite</button>
         </form>
       </section>
 
@@ -166,7 +166,7 @@ export default function AdminDashboard() {
                   <h4 className="text-lg font-semibold">#{index + 1} - Reported At: {rep.attributes.reported_at}</h4>
                   <button
                     onClick={() => setEditingReportId(editingReportId === rep.id ? null : rep.id)}
-                    className="btn-secondary px-2 py-1 text-sm"
+                    className="btn-secondary text-sm px-2 py-1"
                   >
                     {editingReportId === rep.id ? "Close Edit" : "Edit Report"}
                   </button>
@@ -243,13 +243,13 @@ export default function AdminDashboard() {
                       <div className="flex gap-2 items-center">
                         <button
                           onClick={() => handleApproveNDC(rep, ndc)}
-                          className="btn-secondary px-3 py-1 rounded"
+                          className="btn-secondary px-3 py-1"
                         >
                           Approve
                         </button>
                         <button
                           onClick={() => handleDenyNDC(rep.id, ndc)}
-                          className="bg-red-500 text-white px-3 py-1 rounded"
+                          className="btn-danger"
                         >
                           Deny
                         </button>
@@ -289,13 +289,13 @@ export default function AdminDashboard() {
                 <div className="flex gap-2">
                   <button
                     onClick={() => handleApproveUnavailability(report.id)}
-                    className="btn-secondary px-3 py-1 rounded"
+                    className="btn-secondary px-3 py-1"
                   >
                     Approve & Remove NDC
                   </button>
                   <button
                     onClick={() => handleDenyUnavailability(report.id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded"
+                    className="btn-danger"
                   >
                     Deny Report
                   </button>
