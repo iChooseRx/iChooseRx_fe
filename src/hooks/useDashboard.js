@@ -82,12 +82,18 @@ export function useDashboard() {
     }
   };
   const [hasSearched, setHasSearched] = useState(false);
+  const [lastSearchedFilters, setLastSearchedFilters] = useState([]);
+
+  const filtersHaveChanged =
+    hasSearched &&
+    JSON.stringify(selectedFilters) !== JSON.stringify(lastSearchedFilters);
 
   const handleSearch = async (e) => {
     e?.preventDefault();
     if (!drugName.trim()) return;
 
     setHasSearched(true);
+    setLastSearchedFilters(selectedFilters);
     setError("");
     setLoading(true);
     setSelectedDrug(null);
@@ -189,6 +195,7 @@ export function useDashboard() {
     handleSaveDrug,
     handleDeleteDrug,
     handleUpdateNotes,
-    hasSearched
+    hasSearched,
+    filtersHaveChanged
   };
 }

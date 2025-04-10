@@ -95,7 +95,7 @@ const FileUpload = () => {
           </p>
           <button
             onClick={handleUpload}
-            className="btn-primary px-4 py-2 rounded mt-3"
+            className="btn-primary mt-3"
           >
             🚀 Upload File
           </button>

@@ -36,7 +36,7 @@ export default function MenuDropdown() {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className="btn-secondary px-3 sm:px-4 py-2 text-sm sm:text-base rounded-lg font-medium transition-all duration-300"
+        className="btn-secondary btn-nav"
       >
         Menu
       </button>
@@ -58,8 +58,8 @@ export default function MenuDropdown() {
               {role === "admin" && (
                 <li><Link href="/dashboard/admin" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">Admin Dashboard</Link></li>
               )}
-              <li><button onClick={() => { handleLogout(); closeMenu(); }} className="w-full text-left px-4 py-2 hover:bg-gray-200 rounded">Logout</button></li>
-              <li><button onClick={() => { handleDeleteAccount(); closeMenu(); }} className="w-full text-left px-4 py-2 hover:bg-gray-200 rounded text-red-600">Delete Account</button></li>
+              <li><button onClick={() => { handleLogout(); closeMenu(); }} className="block w-full text-left px-4 py-2 hover:bg-gray-200 rounded">Logout</button></li>
+              <li><button onClick={() => { handleDeleteAccount(); closeMenu(); }} className="block w-full text-left px-4 py-2 hover:bg-gray-200 rounded text-red-600">Delete Account</button></li>
             </>
           ) : (
             <>

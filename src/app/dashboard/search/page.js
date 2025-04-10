@@ -38,6 +38,18 @@ export default function SearchPage() {
           setSelectedFilters={dashboard.setSelectedFilters}
         />
 
+        {dashboard.filtersHaveChanged && (
+          <div className="w-full flex justify-center mt-4">
+            <button
+              onClick={dashboard.handleSearch}
+              className="btn-primary btn-wide"
+              disabled={dashboard.loading}
+            >
+              Update Search
+            </button>
+          </div>
+        )}
+
         <AdSlot position="below-filters" className="h-24 my-4" />
 
         <SearchResults

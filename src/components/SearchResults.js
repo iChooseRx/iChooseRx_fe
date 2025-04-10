@@ -143,7 +143,7 @@ export default function SearchResults({ results, resultStats, onSave, hasSearche
 
                   <button
                     onClick={() => onSave(result)}
-                    className="btn-primary px-3 py-1 rounded mt-2"
+                    className="btn-primary mt-2"
                     aria-label={`Save drug for ${result.brand_name || "Unknown Brand"}`}
                   >
                     Save
@@ -196,7 +196,7 @@ export default function SearchResults({ results, resultStats, onSave, hasSearche
         {showBackToTop && (
           <button
             onClick={scrollToTop}
-            className={`sticky bottom-2 right-2 btn-primary px-4 py-2 rounded shadow-md transition-opacity duration-1000 ease-in-out ${isInteracting ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+            className={`sticky bottom-2 right-2 btn-primary shadow-md transition-opacity duration-1000 ease-in-out ${isInteracting ? "opacity-100" : "opacity-0 pointer-events-none"}`}
             style={{ marginLeft: "auto", display: "block", width: "fit-content" }}
           >
             ↑ Back to Top

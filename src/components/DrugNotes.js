@@ -57,7 +57,7 @@ export default function DrugNotes({ drugId, initialNotes, onSave }) {
       />
       <button
         onClick={handleSaveNotes}
-        className="btn-primary px-3 py-1 rounded mt-2"
+        className="btn-primary mt-2"
         disabled={saving}
       >
         {saving ? "Saving..." : "Save Notes"}
