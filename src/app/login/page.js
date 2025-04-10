@@ -33,9 +33,9 @@ export default function LoginPage() {
     <>
       <DashboardHeader />
 
-      <main className="relative h-screen w-full overflow-x-hidden flex flex-col items-center justify-center bg-background text-foreground">
+      <main className="h-screen w-full overflow-x-hidden flex flex-col items-center justify-center px-6 text-center bg-background text-foreground">
         <MatrixBackground />
-        <div className="relative z-10 w-full max-w-sm rounded-xl shadow-lg">
+        <div className="z-0 w-full max-w-2xl rounded-xl shadow-lg">
           <div
             style={{ backgroundColor: 'var(--background)' }}
             className="p-8 rounded-xl border border-borderColor"

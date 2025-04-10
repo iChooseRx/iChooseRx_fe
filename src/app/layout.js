@@ -24,17 +24,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <head>
-        {/* ✅ Google AdSense site verification script */}
         <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7308498580001717"
           crossOrigin="anonymous"
         ></script>
       </head>
-      <body className="antialiased bg-background text-foreground overflow-x-hidden">
-        <div className="relative z-10">
-          {children}
-        </div>
+      <body className="relative z-10 antialiased bg-background text-foreground overflow-x-hidden">
+        {children}
       </body>
     </html>
   );
