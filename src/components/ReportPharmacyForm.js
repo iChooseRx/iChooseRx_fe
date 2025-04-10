@@ -152,7 +152,7 @@ export default function ReportPharmacyForm({ brandName }) {
         />
       </div>
 
-      <button type="submit" className="btn-primary px-4 py-2 rounded">
+      <button type="submit" className="btn-primary mt-2">
         Submit Report
       </button>
 

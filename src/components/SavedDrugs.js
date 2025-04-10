@@ -70,7 +70,7 @@ export default function SavedDrugs({ drugs, onDelete, handleUpdateNotes }) {
 
                     <button
                       onClick={() => onDelete(id)}
-                      className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 mt-2"
+                      className="btn-danger mt-2"
                       aria-label={`Delete drug for ${brand_name || "Unknown Brand"}`}
                     >
                       Delete
@@ -115,7 +115,7 @@ export default function SavedDrugs({ drugs, onDelete, handleUpdateNotes }) {
 
                         <button
                           onClick={() => toggleReportForm(id)}
-                          className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 mt-4"
+                          className="btn-secondary mt-4"
                         >
                           {isFormVisible ? "Close Pharmacy Report" : "📍 Report Pharmacy Availability"}
                         </button>

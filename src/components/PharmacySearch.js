@@ -72,7 +72,7 @@ export default function PharmacySearch() {
           />
           <button
             onClick={handleSearch}
-            className="btn-primary px-4 py-2 rounded"
+            className="btn-primary"
             disabled={loading}
           >
             {loading ? "Searching..." : "Search"}
@@ -101,7 +101,7 @@ export default function PharmacySearch() {
 
                     <button
                       onClick={() => handleReportUnavailable(pharmacy)}
-                      className="text-sm mt-2 btn-secondary px-2 py-1 rounded"
+                      className="btn-secondary text-sm mt-2 px-2 py-1"
                     >
                       Report NDC Unavailable
                     </button>
