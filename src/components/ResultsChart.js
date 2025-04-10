@@ -69,8 +69,8 @@ export default function ResultsChart({ resultStats }) {
           />
           <Legend
             content={() => (
-              <div className="text-center font-bold text-foreground">
-                <span className="mr-4" style={{ color: "var(--error)" }}>
+              <div className="flex flex-wrap justify-center gap-x-4 text-sm sm:text-base font-bold text-foreground px-2">
+                <span style={{ color: "var(--error)" }}>
                   Total Results: {resultStats?.total_results || 0}
                 </span>
                 <span style={{ color: "var(--secondary)" }}>
