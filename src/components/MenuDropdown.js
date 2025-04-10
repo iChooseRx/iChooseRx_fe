@@ -36,7 +36,7 @@ export default function MenuDropdown() {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className="btn-secondary px-2 sm:px-4 py-2 text-sm sm:text-base rounded-lg font-medium transition-all duration-300"
+        className="btn-secondary px-3 sm:px-4 py-2 text-sm sm:text-base rounded-lg font-medium transition-all duration-300"
       >
         Menu
       </button>

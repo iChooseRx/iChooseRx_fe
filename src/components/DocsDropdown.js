@@ -27,7 +27,7 @@ export default function DocsDropdown() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="btn-secondary px-2 sm:px-4 py-2 text-sm sm:text-base rounded-lg font-medium transition-all duration-300"
+        className="btn-secondary px-3 sm:px-4 py-2 text-sm sm:text-base rounded-lg font-medium transition-all duration-300"
       >
         Docs
       </button>
