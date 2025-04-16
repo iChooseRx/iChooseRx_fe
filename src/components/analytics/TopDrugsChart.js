@@ -8,6 +8,15 @@ export default function TopDrugsChart({ data }) {
     count
   }));
 
+  // ⛔ Don't render the chart if there's no data
+  if (chartData.length === 0) {
+    return (
+      <div className="bg-muted p-4 rounded shadow-sm text-center text-gray-500 text-sm">
+        No top searched drug data available yet.
+      </div>
+    );
+  }
+
   return (
     <div className="bg-muted p-4 rounded shadow-sm">
       <h3 className="text-lg font-semibold mb-2">Top Searched Drugs</h3>

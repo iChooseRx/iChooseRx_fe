@@ -31,8 +31,10 @@ export const getSaveddrugs = async () => {
     return;
   }
 
+  const requestPath = "/saved_drugs";
+
   try {
-    const response = await api.get("/saved_drugs", {
+    const response = await api.get(requestPath, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -335,10 +337,41 @@ export const fetchSearchAnalytics = async ({ drug_id = "", start = "", end = "" 
     if (start) params.append("start", start);
     if (end) params.append("end", end);
 
-    const response = await api.get(`/admin/search_analytics.json?${params}`);
+    const fullPath = `/admin/search_analytics?${params}`;
+    const response = await api.get(fullPath);
+
     return response.data.data.attributes;
   } catch (error) {
-    console.error("❌ Error fetching search analytics:", error.response?.data || error.message);
+    // Optional: You can log this to a service like Sentry in production
+    console.error("Error fetching search analytics:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+// 📤 Download Search Analytics CSV
+export const downloadSearchAnalyticsCSV = async ({ drug_id = "", start = "", end = "" } = {}) => {
+  try {
+    const params = new URLSearchParams();
+    if (drug_id) params.append("drug_id", drug_id);
+    if (start) params.append("start", start);
+    if (end) params.append("end", end);
+
+    const response = await api.get(`/admin/search_analytics.csv?${params}`, {
+      responseType: "blob",
+    });
+
+    const blob = new Blob([response.data], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `search_analytics_${Date.now()}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(url); // ✅ Clean up the blob URL
+  } catch (error) {
+    // Optionally log to a monitoring service
+    console.error("Error downloading CSV:", error.response?.data || error.message);
     throw error;
   }
 };

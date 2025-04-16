@@ -6,6 +6,7 @@ import TopDrugsChart from "./TopDrugsChart";
 import FilterCombinationTable from "./FilterCombinationTable";
 import DrugFilterBreakdown from "./DrugFilterBreakdown";
 import { fetchSearchAnalytics } from "@/services/api";
+import { downloadSearchAnalyticsCSV } from "@/services/api";
 
 export default function SearchAnalyticsPanel() {
   const [analytics, setAnalytics] = useState(null);
@@ -32,19 +33,19 @@ export default function SearchAnalyticsPanel() {
 
   return (
     <div className="space-y-6">
-      <FilterControls onFilterChange={handleFilterChange} initialFilters={query} />
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <FilterControls onFilterChange={handleFilterChange} initialFilters={query} />
+      </div>
+
       {loading && <p>Loading...</p>}
       {!loading && analytics && (
         <>
-          {!query.drug_id && (
-            <>
-              <TopDrugsChart data={analytics.most_searched_drugs} />
-              <FilterCombinationTable
-                filters={analytics.top_filter_combinations}
-                label="Top Filter Combinations"
-              />
-            </>
-          )}
+          <TopDrugsChart data={analytics.most_searched_drugs} />
+          <FilterCombinationTable
+            filters={analytics.top_filter_combinations}
+            label="Top Filter Combinations"
+          />
+
           {query.drug_id && (
             <DrugFilterBreakdown
               drugName={analytics.drug_id}
