@@ -53,10 +53,25 @@ export default function MenuDropdown() {
               <li><Link href="/dashboard/search" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">Drug Search</Link></li>
               <li><Link href="/dashboard/saved" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">Saved Drugs & Pharmacies</Link></li>
               {(role === "pharmacy" || role === "admin") && (
-                <li><Link href="/dashboard/pharmacy" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">Upload Dashboard</Link></li>
+                <li>
+                  <Link href="/dashboard/pharmacy" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
+                    Upload Dashboard
+                  </Link>
+                </li>
+              )}
+              {(role === "pharmacy" || role === "admin") && (
+                <li>
+                  <Link href="/dashboard/analytics" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
+                    Search Analytics
+                  </Link>
+                </li>
               )}
               {role === "admin" && (
-                <li><Link href="/dashboard/admin" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">Admin Dashboard</Link></li>
+                <li>
+                  <Link href="/dashboard/admin" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
+                    Admin Dashboard
+                  </Link>
+                </li>
               )}
               <li><button onClick={() => { handleLogout(); closeMenu(); }} className="block w-full text-left px-4 py-2 hover:bg-gray-200 rounded">Logout</button></li>
               <li><button onClick={() => { handleDeleteAccount(); closeMenu(); }} className="block w-full text-left px-4 py-2 hover:bg-gray-200 rounded text-red-600">Delete Account</button></li>
