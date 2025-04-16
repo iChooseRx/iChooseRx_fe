@@ -1,5 +1,5 @@
 "use client";
-import AdminDashboard from "@/app/dashboard/AdminDashboard"; // ✅ Correct Import
+import AdminDashboard from "@/app/dashboard/AdminDashboard";
 
 export default function AdminPage() {
   return <AdminDashboard />;

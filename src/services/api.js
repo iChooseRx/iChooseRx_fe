@@ -1,6 +1,6 @@
 import axios from "axios";
 
-// 🔹 Rails Backend API (Default)
+// Rails Backend API
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL,
 });
@@ -14,8 +14,7 @@ api.interceptors.request.use((config) => {
   return config;
 }, (error) => Promise.reject(error));
 
-
-// 🔹 Python Microservice API (Port 8000)
+// Python Microservice API (Port 8000)
 const pythonApi = axios.create({
   baseURL: process.env.NEXT_PUBLIC_PYTHON_MICROSERVICE_URL || "http://localhost:8000",
 });
@@ -23,7 +22,7 @@ const pythonApi = axios.create({
 export { api, pythonApi };
 export default api;
 
-// ✅ Get Saved Drugs (Rails)
+// Get Saved Drugs (Rails)
 export const getSaveddrugs = async () => {
   const token = localStorage.getItem("auth_token");
 
@@ -32,8 +31,10 @@ export const getSaveddrugs = async () => {
     return;
   }
 
+  const requestPath = "/saved_drugs";
+
   try {
-    const response = await api.get("/saved_drugs", {
+    const response = await api.get(requestPath, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -46,25 +47,25 @@ export const getSaveddrugs = async () => {
   }
 };
 
-// ✅ Create a Saved Drug (Rails)
+// Create a Saved Drug (Rails)
 export const createSaveddrug = async (drug) => {
   const response = await api.post("/saved_drugs", { saved_drug: drug });
   return response.data;
 };
 
-// ✅ Update Saved Drug Notes (Rails)
+// Update Saved Drug Notes (Rails)
 export const updateSaveddrugNotes = async (id, notes) => {
   const response = await api.patch(`/saved_drugs/${id}`, { notes });
   return response.data;
 };
 
-// ✅ Delete a Saved Drug (Rails)
+// Delete a Saved Drug (Rails)
 export const deleteSaveddrug = async (id) => {
   const response = await api.delete(`/saved_drugs/${id}`);
   return response.data;
 };
 
-// ✅ Create User (Rails)
+// Create User (Rails)
 export const createUser = async (userData) => {
   console.log("📡 API Request Payload:", JSON.stringify({ user: userData }, null, 2));  // Debug: Log the payload being sent
   try {
@@ -86,7 +87,7 @@ export const createUser = async (userData) => {
   }
 };
 
-// ✅ Login User (Rails)
+// Login User (Rails)
 export const loginUser = async (credentials) => {
   const response = await api.post("/login", credentials);
 
@@ -101,8 +102,7 @@ export const loginUser = async (credentials) => {
   return response.data;
 };
 
-
-// ✅ Logout User (Rails)
+// Logout User (Rails)
 export const logoutUser = async () => {
   try {
     await api.delete("/logout");
@@ -114,7 +114,7 @@ export const logoutUser = async () => {
   window.location.href = "/";
 };
 
-// ✅ Delete User Account (Rails)
+// Delete User Account (Rails)
 export const deleteAccount = async (userId) => {
   if (!userId) {
     console.error("❌ Missing userId when calling deleteAccount");
@@ -144,7 +144,7 @@ export const deleteAccount = async (userId) => {
   }
 };
 
-// ✅ Search FDA-Approved Drugs (Rails)
+// Search FDA-Approved Drugs (Rails)
 export const searchDrugs = async (drugName, filterParams = "") => {
   const queryString = `drug_name=${encodeURIComponent(drugName)}${filterParams ? `&${filterParams}` : ""
     }`;
@@ -161,8 +161,7 @@ export const searchDrugs = async (drugName, filterParams = "") => {
   }
 };
 
-
-// ✅ Search Pharmacies by NDC (Rails)
+// Search Pharmacies by NDC (Rails)
 export const searchPharmaciesByNDC = async (ndc) => {
   try {
     const response = await api.get(`/pharmacy_searches?ndc=${ndc}`);
@@ -173,7 +172,7 @@ export const searchPharmaciesByNDC = async (ndc) => {
   }
 };
 
-// ✅ Upload File to Python Microservice (Port 8000)
+// Upload File to Python Microservice (Port 8000)
 export const uploadPharmacyFile = async (file) => {
   const formData = new FormData();
   formData.append("file", file);
@@ -198,13 +197,13 @@ export const sendInvitation = async ({ email, role }) => {
   return response.data;
 };
 
-// ✅ Request Password Reset (Rails)
+// Request Password Reset (Rails)
 export const requestPasswordReset = async (email) => {
   const response = await api.post('/password_resets', { email });
   return response.data;
 };
 
-// ✅ Reset Password (Rails)
+// Reset Password (Rails)
 export const resetPassword = async (token, password, passwordConfirmation) => {
   const response = await api.patch('/password_resets', {
     token,
@@ -214,7 +213,7 @@ export const resetPassword = async (token, password, passwordConfirmation) => {
   return response.data;
 };
 
-// ✅ Submit Pharmacy Availability Report (Rails)
+// Submit Pharmacy Availability Report (Rails)
 export const reportPharmacyAvailability = async ({ ndc_numbers, pharmacy, notes }) => {
   try {
     const response = await api.post("/drug_reports", {
@@ -232,7 +231,7 @@ export const reportPharmacyAvailability = async ({ ndc_numbers, pharmacy, notes 
   }
 };
 
-// ✅ Get Pending Drug Reports (Admin)
+// Get Pending Drug Reports (Admin)
 export const fetchPendingReports = async () => {
   try {
     const response = await api.get("/admin/drug_reports");
@@ -243,7 +242,7 @@ export const fetchPendingReports = async () => {
   }
 };
 
-// ✅ Approve a specific NDC inside a report (Admin)
+// Approve a specific NDC inside a report (Admin)
 export const approveNDC = async ({ reportId, ndc, pharmacy_id, drug_name }) => {
   try {
     const response = await api.patch(`/admin/drug_reports/${reportId}/approve_ndc`, {
@@ -257,7 +256,7 @@ export const approveNDC = async ({ reportId, ndc, pharmacy_id, drug_name }) => {
   }
 };
 
-// ✅ Deny a specific NDC inside a report (Admin)
+// Deny a specific NDC inside a report (Admin)
 export const denyNDC = async ({ reportId, ndc }) => {
   try {
     const response = await api.patch(`/admin/drug_reports/${reportId}/deny_ndc`, { ndc });
@@ -268,7 +267,7 @@ export const denyNDC = async ({ reportId, ndc }) => {
   }
 };
 
-// ✅ Update Drug Report (Admin)
+// Update Drug Report (Admin)
 export const updateDrugReport = async (reportId, updates) => {
   try {
     const response = await api.patch(`/admin/drug_reports/${reportId}`, {
@@ -281,7 +280,7 @@ export const updateDrugReport = async (reportId, updates) => {
   }
 };
 
-// ✅ Get Pharmacy Unavailability Reports (Admin)
+// Get Pharmacy Unavailability Reports (Admin)
 export const fetchUnavailabilityReports = async () => {
   try {
     const response = await api.get("/admin/pharmacy_unavailability_reports");
@@ -292,7 +291,7 @@ export const fetchUnavailabilityReports = async () => {
   }
 };
 
-// ✅ Approve Pharmacy Unavailability Report (Admin)
+// Approve Pharmacy Unavailability Report (Admin)
 export const approveUnavailabilityReport = async (reportId) => {
   try {
     const response = await api.patch(`/admin/pharmacy_unavailability_reports/${reportId}/approve`);
@@ -303,7 +302,7 @@ export const approveUnavailabilityReport = async (reportId) => {
   }
 };
 
-// ✅ Deny Pharmacy Unavailability Report (Admin)
+// Deny Pharmacy Unavailability Report (Admin)
 export const denyUnavailabilityReport = async (reportId) => {
   try {
     const response = await api.delete(`/admin/pharmacy_unavailability_reports/${reportId}`);
@@ -314,7 +313,7 @@ export const denyUnavailabilityReport = async (reportId) => {
   }
 };
 
-// ✅ Report NDC Unavailable (User)
+// Report NDC Unavailable (User)
 export const reportNdcUnavailable = async ({ pharmacy_id, ndc }) => {
   try {
     const response = await api.post("/pharmacy_unavailability_reports", {
@@ -326,6 +325,53 @@ export const reportNdcUnavailable = async ({ pharmacy_id, ndc }) => {
     return response.data;
   } catch (error) {
     console.error("❌ Error reporting NDC unavailability:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+// Fetch Search Analytics (Rails)
+export const fetchSearchAnalytics = async ({ drug_id = "", start = "", end = "" } = {}) => {
+  try {
+    const params = new URLSearchParams();
+    if (drug_id) params.append("drug_id", drug_id);
+    if (start) params.append("start", start);
+    if (end) params.append("end", end);
+
+    const fullPath = `/admin/search_analytics?${params}`;
+    const response = await api.get(fullPath);
+
+    return response.data.data.attributes;
+  } catch (error) {
+    // Optional: You can log this to a service like Sentry in production
+    console.error("Error fetching search analytics:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+// 📤 Download Search Analytics CSV
+export const downloadSearchAnalyticsCSV = async ({ drug_id = "", start = "", end = "" } = {}) => {
+  try {
+    const params = new URLSearchParams();
+    if (drug_id) params.append("drug_id", drug_id);
+    if (start) params.append("start", start);
+    if (end) params.append("end", end);
+
+    const response = await api.get(`/admin/search_analytics.csv?${params}`, {
+      responseType: "blob",
+    });
+
+    const blob = new Blob([response.data], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `search_analytics_${Date.now()}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(url); // ✅ Clean up the blob URL
+  } catch (error) {
+    // Optionally log to a monitoring service
+    console.error("Error downloading CSV:", error.response?.data || error.message);
     throw error;
   }
 };
