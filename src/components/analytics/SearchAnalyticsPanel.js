@@ -40,11 +40,15 @@ export default function SearchAnalyticsPanel() {
       {loading && <p>Loading...</p>}
       {!loading && analytics && (
         <>
-          <TopDrugsChart data={analytics.most_searched_drugs} />
-          <FilterCombinationTable
-            filters={analytics.top_filter_combinations}
-            label="Top Filter Combinations"
-          />
+          {!query.drug_id && (
+            <>
+              <TopDrugsChart data={analytics.most_searched_drugs} />
+              <FilterCombinationTable
+                filters={analytics.top_filter_combinations}
+                label="Top Filter Combinations"
+              />
+            </>
+          )}
 
           {query.drug_id && (
             <DrugFilterBreakdown

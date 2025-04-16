@@ -5,17 +5,10 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recha
 export default function TopDrugsChart({ data }) {
   const chartData = Object.entries(data || {}).map(([name, count]) => ({
     name,
-    count
+    count,
   }));
 
-  // ⛔ Don't render the chart if there's no data
-  if (chartData.length === 0) {
-    return (
-      <div className="bg-muted p-4 rounded shadow-sm text-center text-gray-500 text-sm">
-        No top searched drug data available yet.
-      </div>
-    );
-  }
+  if (chartData.length === 0) return null;
 
   return (
     <div className="bg-muted p-4 rounded shadow-sm">

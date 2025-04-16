@@ -27,9 +27,9 @@ export default function DrugFilterBreakdown({ drugName, combinations }) {
           </tbody>
         </table>
       ) : (
-        <p className="text-center text-sm text-gray-500">
+        <div className="text-center text-sm text-gray-500">
           No filter combination data available for <em>{drugName}</em>.
-        </p>
+        </div>
       )}
     </div>
   );
