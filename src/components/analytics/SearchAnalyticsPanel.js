@@ -6,7 +6,6 @@ import TopDrugsChart from "./TopDrugsChart";
 import FilterCombinationTable from "./FilterCombinationTable";
 import DrugFilterBreakdown from "./DrugFilterBreakdown";
 import { fetchSearchAnalytics } from "@/services/api";
-import { downloadSearchAnalyticsCSV } from "@/services/api";
 
 export default function SearchAnalyticsPanel() {
   const [analytics, setAnalytics] = useState(null);
@@ -23,7 +22,7 @@ export default function SearchAnalyticsPanel() {
       const data = await fetchSearchAnalytics(query);
       setAnalytics(data);
     } catch (err) {
-      console.error("Failed to load analytics:", err);
+      console.error("❌ Failed to load analytics:", err);
     } finally {
       setLoading(false);
     }
@@ -32,14 +31,21 @@ export default function SearchAnalyticsPanel() {
   const handleFilterChange = (newFilters) => setQuery(newFilters);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-foreground">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <FilterControls onFilterChange={handleFilterChange} initialFilters={query} />
       </div>
 
-      {loading && <p>Loading...</p>}
+      {loading && (
+        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 animate-pulse">
+          <span className="w-4 h-4 rounded-full border-2 border-gray-400 border-t-transparent animate-spin"></span>
+          <span>Loading analytics...</span>
+        </div>
+      )}
+
       {!loading && analytics && (
         <>
+          {/* Summary mode */}
           {!query.drug_id && (
             <>
               <TopDrugsChart data={analytics.most_searched_drugs} />
@@ -50,6 +56,7 @@ export default function SearchAnalyticsPanel() {
             </>
           )}
 
+          {/* Drilldown by drug */}
           {query.drug_id && (
             <DrugFilterBreakdown
               drugName={analytics.drug_id}
