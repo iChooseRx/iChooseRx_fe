@@ -8,61 +8,87 @@ import DrugFilterBreakdown from "./DrugFilterBreakdown";
 import { fetchSearchAnalytics } from "@/services/api";
 
 export default function SearchAnalyticsPanel() {
-  const [analytics, setAnalytics] = useState(null);
+  const [globalAnalytics, setGlobalAnalytics] = useState(null);
+  const [filteredAnalytics, setFilteredAnalytics] = useState(null);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState({ drug_id: "", start: "", end: "" });
 
   useEffect(() => {
-    fetchAnalytics();
+    fetchGlobalAnalytics(); // only once on mount
+  }, []);
+
+  useEffect(() => {
+    if (query.drug_id || query.start || query.end) {
+      fetchFilteredAnalytics(query);
+    } else {
+      setFilteredAnalytics(null); // clear out filtered view if no query
+    }
   }, [query]);
 
-  async function fetchAnalytics() {
+  const fetchGlobalAnalytics = async () => {
+    try {
+      const data = await fetchSearchAnalytics(); // no params
+      setGlobalAnalytics(data);
+    } catch (err) {
+      console.error("Failed to load global analytics:", err);
+    }
+  };
+
+  const fetchFilteredAnalytics = async (filters) => {
     setLoading(true);
     try {
-      const data = await fetchSearchAnalytics(query);
-      setAnalytics(data);
+      const data = await fetchSearchAnalytics(filters);
+      setFilteredAnalytics(data);
     } catch (err) {
-      console.error("❌ Failed to load analytics:", err);
+      console.error("Failed to load filtered analytics:", err);
     } finally {
       setLoading(false);
     }
-  }
+  };
 
-  const handleFilterChange = (newFilters) => setQuery(newFilters);
+  const handleFilterChange = (newFilters) => {
+    setQuery(newFilters);
+  };
+
+  const handleClearSearch = () => {
+    setQuery({ drug_id: "", start: "", end: "" });
+  };
 
   return (
-    <div className="space-y-6 text-foreground">
+    <div className="space-y-6">
+      {/* Filter Controls + Clear Search */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <FilterControls onFilterChange={handleFilterChange} initialFilters={query} />
+        {(query.drug_id || query.start || query.end) && (
+          <button onClick={handleClearSearch} className="btn-secondary whitespace-nowrap">
+            🔄 Clear Search
+          </button>
+        )}
       </div>
 
+      {/* Loading state */}
       {loading && (
-        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 animate-pulse">
-          <span className="w-4 h-4 rounded-full border-2 border-gray-400 border-t-transparent animate-spin"></span>
-          <span>Loading analytics...</span>
-        </div>
+        <p className="text-center text-sm text-gray-500 animate-pulse">
+          Loading analytics...
+        </p>
       )}
 
-      {!loading && analytics && (
-        <>
-          {/* Summary mode */}
-          {!query.drug_id && (
-            <>
-              <TopDrugsChart data={analytics.most_searched_drugs} />
-              <FilterCombinationTable
-                filters={analytics.top_filter_combinations}
-                label="Top Filter Combinations"
-              />
-            </>
-          )}
+      {/* Drug-specific breakdown first */}
+      {filteredAnalytics?.drug_id && (
+        <DrugFilterBreakdown
+          drugName={filteredAnalytics.drug_id}
+          combinations={filteredAnalytics.filter_combinations}
+        />
+      )}
 
-          {/* Drilldown by drug */}
-          {query.drug_id && (
-            <DrugFilterBreakdown
-              drugName={analytics.drug_id}
-              combinations={analytics.filter_combinations}
-            />
-          )}
+      {/* Then always show global analytics */}
+      {globalAnalytics && (
+        <>
+          <TopDrugsChart data={globalAnalytics.most_searched_drugs} />
+          <FilterCombinationTable
+            filters={globalAnalytics.top_filter_combinations}
+            label="Top Filter Combinations"
+          />
         </>
       )}
     </div>
