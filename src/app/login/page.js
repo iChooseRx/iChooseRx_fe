@@ -5,17 +5,21 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { loginUser } from '@/services/api';
 import MatrixBackground from '@/components/MatrixBackground';
-import DashboardHeader from '@/components/DashboardHeader'; // ✅ ADDED
+import DashboardHeader from '@/components/DashboardHeader';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoggingIn(true);
+    setError('');
+
     try {
       const userData = await loginUser({ email, password });
 
@@ -26,6 +30,7 @@ export default function LoginPage() {
       router.push('/dashboard');
     } catch (err) {
       setError('Invalid email or password.');
+      setIsLoggingIn(false); // only unset loading on failure
     }
   };
 
@@ -40,8 +45,11 @@ export default function LoginPage() {
             style={{ backgroundColor: 'var(--background)' }}
             className="p-8 rounded-xl border border-borderColor"
           >
-
             <h1 className="text-2xl font-bold mb-4 text-center">Login to iChooseRx</h1>
+            <h3 className="font-medium text-center text-sm text-gray-500 dark:text-gray-400 mb-6">
+              Just a heads-up: it may take up to 10 seconds for your login to process.
+              Our servers sleep when unused to save costs — thanks for your patience!
+            </h3>
 
             <form
               onSubmit={handleSubmit}
@@ -76,8 +84,19 @@ export default function LoginPage() {
                 </button>
               </div>
 
-              <button type="submit" className="btn-primary">
-                Login
+              <button
+                type="submit"
+                className="btn-primary flex items-center justify-center"
+                disabled={isLoggingIn}
+              >
+                {isLoggingIn ? (
+                  <>
+                    Logging in...
+                    <span className="spinner"></span>
+                  </>
+                ) : (
+                  "Login"
+                )}
               </button>
             </form>
 
