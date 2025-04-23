@@ -24,7 +24,7 @@ export default function TopDrugsChart({ data }) {
         <BarChart
           layout="vertical"
           data={chartData}
-          margin={{ top: 10, right: 20, left: 100, bottom: 10 }}
+          margin={{ top: 10, right: 20, left: 40, bottom: 10 }}
         >
           <XAxis
             type="number"
