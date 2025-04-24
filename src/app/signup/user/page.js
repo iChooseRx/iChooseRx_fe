@@ -44,7 +44,7 @@ export default function SignupPage() {
       <main className="min-h-screen max-h-screen overflow-y-auto flex flex-col items-center justify-start px-4 py-6 bg-background text-foreground">
         <h1 className="text-2xl font-bold mb-4">Sign up for iChooseRx</h1>
         <h3 className="font-medium text-center text-sm text-gray-500 dark:text-gray-400 mb-6">
-          Just a heads-up: it may take up to 10 seconds for your signup to process.
+          Just a heads-up: it may take up to 20 seconds for your signup to process.
           Our servers sleep when unused to save costs — thanks for your patience!
         </h3>
 

@@ -47,7 +47,7 @@ export default function LoginPage() {
           >
             <h1 className="text-2xl font-bold mb-4 text-center">Login to iChooseRx</h1>
             <h3 className="font-medium text-center text-sm text-gray-500 dark:text-gray-400 mb-6">
-              Just a heads-up: it may take up to 10 seconds for your login to process.
+              Just a heads-up: it may take up to 20 seconds for your login to process.
               Our servers sleep when unused to save costs — thanks for your patience!
             </h3>
 
