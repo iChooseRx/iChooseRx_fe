@@ -10,14 +10,19 @@ WORKDIR /app
 
 # Accept the API URL during build
 ARG NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL
+ARG NEXT_PUBLIC_PYTHON_MICROSERVICE_URL
+
 ENV NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL=$NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL
+ENV NEXT_PUBLIC_PYTHON_MICROSERVICE_URL=$NEXT_PUBLIC_PYTHON_MICROSERVICE_URL
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Debug: Print the injected env var
-RUN echo "🔍 Backend API URL is: $NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL"
+RUN echo "🔍 Backend API URL: $NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL"
+RUN echo "🔍 Microservice API URL: $NEXT_PUBLIC_PYTHON_MICROSERVICE_URL"
 RUN echo "🧪 Next.js env during build: $(node -p 'process.env.NEXT_PUBLIC_ICHOOSERX_BE_BASE_URL')"
+RUN echo "🧪 Next.js env during build: $(node -p 'process.env.NEXT_PUBLIC_PYTHON_MICROSERVICE_URL')"
 
 # Will embed NEXT_PUBLIC_* into the built static files
 RUN npm run build
