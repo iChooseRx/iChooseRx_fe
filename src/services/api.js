@@ -14,9 +14,9 @@ api.interceptors.request.use((config) => {
   return config;
 }, (error) => Promise.reject(error));
 
-// Python Microservice API (Port 8000)
+// Python Microservice API
 const pythonApi = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_PYTHON_MICROSERVICE_URL || "http://localhost:8000",
+  baseURL: process.env.NEXT_PUBLIC_PYTHON_MICROSERVICE_URL,
 });
 
 export { api, pythonApi };
@@ -172,7 +172,7 @@ export const searchPharmaciesByNDC = async (ndc) => {
   }
 };
 
-// Upload File to Python Microservice (Port 8000)
+// Upload File to Python Microservice
 export const uploadPharmacyFile = async (file) => {
   const formData = new FormData();
   formData.append("file", file);
