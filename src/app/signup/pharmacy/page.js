@@ -197,6 +197,12 @@ function PharmacySignupForm() {
           </button>
         </form>
 
+        <p className="mt-4 text-xs text-gray-400 dark:text-gray-500">
+          <Link href="/privacy-policy" className="hover:underline">
+            Privacy Policy
+          </Link>
+        </p>
+
         <div className="mt-4 w-full max-w-2xl">
           <WhyPharmaciesMatter />
         </div>

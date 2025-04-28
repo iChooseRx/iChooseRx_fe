@@ -111,6 +111,11 @@ export default function LoginPage() {
                 Forgot Password?
               </Link>
             </p>
+            <p className="mt-4 text-xs text-gray-400 dark:text-gray-500">
+              <Link href="/privacy-policy" className="hover:underline">
+                Privacy Policy
+              </Link>
+            </p>
           </div>
         </div>
       </main>
