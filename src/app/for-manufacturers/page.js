@@ -9,7 +9,7 @@ export default function ForManufacturersPage() {
       <main className="min-h-screen flex flex-col items-center justify-center bg-background text-foreground p-6 text-center">
         <h1 className="text-3xl font-bold mb-6">Connect with Conscious Consumers</h1>
         <p className="text-lg text-gray-500 dark:text-gray-400 max-w-xl mb-8">
-          We're building tools to help manufacturers connect with patients who are actively seeking transparency and alignment with their health values. Full content coming soon!
+          We are building tools to help manufacturers connect with patients who are actively seeking transparency and alignment with their health values. Full content coming soon!
         </p>
 
         <section className="text-left max-w-2xl">
@@ -25,7 +25,7 @@ export default function ForManufacturersPage() {
           <div className="mb-6">
             <h3 className="font-semibold mb-2">Access Anonymous Search Analytics</h3>
             <p className="text-gray-600 dark:text-gray-400">
-              We're developing analytics to help manufacturers understand what users are searching for — anonymously — providing insights into ingredient preferences, trending concerns, and opportunities for future formulations.
+              We are developing analytics to help manufacturers understand what users are searching for — anonymously — providing insights into ingredient preferences, trending concerns, and opportunities for future formulations.
             </p>
           </div>
 
@@ -44,7 +44,7 @@ export default function ForManufacturersPage() {
           </div>
 
           <p className="mt-8 text-sm italic text-gray-400">
-            Stay tuned — we're excited to help build stronger patient-manufacturer connections.
+            Stay tuned — we are excited to help build stronger patient-manufacturer connections.
           </p>
         </section>
       </main>

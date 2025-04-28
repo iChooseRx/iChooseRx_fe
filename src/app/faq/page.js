@@ -9,7 +9,7 @@ export default function PlaceholderPage() {
       <main className="min-h-screen flex flex-col items-center justify-center bg-background text-foreground p-6 text-center">
         <h1 className="text-3xl font-bold mb-6">Page Coming Soon</h1>
         <p className="text-lg text-gray-500 dark:text-gray-400 max-w-xl mb-8">
-          This page is under construction. We're working to add helpful resources and tools to empower your medication and pharmacy choices. Please check back soon for updates!
+          This page is under construction. We are working to add helpful resources and tools to empower your medication and pharmacy choices. Please check back soon for updates!
         </p>
 
         <section className="text-left max-w-2xl">
@@ -25,7 +25,7 @@ export default function PlaceholderPage() {
           <div className="mb-6">
             <h3 className="font-semibold mb-2">Why are some pages still under construction?</h3>
             <p className="text-gray-600 dark:text-gray-400">
-              We're actively expanding iChooseRx to provide detailed information for every filter, pharmacy tool, and feature. Our goal is to deliver high-quality, helpful content.
+              We are actively expanding iChooseRx to provide detailed information for every filter, pharmacy tool, and feature. Our goal is to deliver high-quality, helpful content.
             </p>
           </div>
 
@@ -39,7 +39,7 @@ export default function PlaceholderPage() {
           <div>
             <h3 className="font-semibold mb-2">How can I stay informed about updates?</h3>
             <p className="text-gray-600 dark:text-gray-400">
-              You can follow our updates on the iChooseRx homepage or contact us if you'd like to receive future announcements.
+              You can follow our updates on the iChooseRx homepage, instagram @ichooserx or contact us if you would like to receive future announcements.
             </p>
           </div>
         </section>

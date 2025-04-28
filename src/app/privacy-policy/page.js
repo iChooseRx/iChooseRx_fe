@@ -26,7 +26,7 @@ export default function PrivacyPolicyPage() {
 
           <h2 className="text-2xl font-bold mt-8 mb-4">Third-Party Services</h2>
           <p>
-            We use third-party services like Google AdSense to serve ads. These services may collect information using cookies or similar technologies. You can review Google's privacy practices for more information.
+            We use third-party services like Google AdSense to serve ads. These services may collect information using cookies or similar technologies. You can review Google privacy practices for more information.
           </p>
 
           <h2 className="text-2xl font-bold mt-8 mb-4">Cookies</h2>
@@ -36,7 +36,7 @@ export default function PrivacyPolicyPage() {
 
           <h2 className="text-2xl font-bold mt-8 mb-4">Your Choices</h2>
           <p>
-            You can update or delete your account information at any time by logging into your account settings. If you have questions or requests regarding your data, please contact us.
+            You can delete your account information at any time by logging in and selecting delete account from the menu. If you have questions or requests regarding your data, please contact us.
           </p>
 
           <h2 className="text-2xl font-bold mt-8 mb-4">Changes to This Policy</h2>

@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createUser } from "@/services/api";
+import Link from 'next/link';
 import WhyPharmaciesMatter from "@/components/WhyPharmaciesMatter";
 import PhoneInput from "@/components/PhoneInput";
 import DashboardHeader from "@/components/DashboardHeader";

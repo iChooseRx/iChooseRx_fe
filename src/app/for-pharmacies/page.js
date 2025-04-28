@@ -9,7 +9,7 @@ export default function ForPharmaciesPage() {
       <main className="min-h-screen flex flex-col items-center justify-center bg-background text-foreground p-6 text-center">
         <h1 className="text-3xl font-bold mb-6">Grow Your Pharmacy with iChooseRx</h1>
         <p className="text-lg text-gray-500 dark:text-gray-400 max-w-xl mb-8">
-          We're building tools to help local pharmacies thrive by connecting them with patients actively searching for specific medications. Full content coming soon!
+          We are building tools to help local pharmacies thrive by connecting them with patients actively searching for specific medications. Full content coming soon!
         </p>
 
         <section className="text-left max-w-2xl">
@@ -44,7 +44,7 @@ export default function ForPharmaciesPage() {
           </div>
 
           <p className="mt-8 text-sm italic text-gray-400">
-            Stay tuned — we’re excited to help pharmacies grow and strengthen their role as trusted health allies.
+            Stay tuned — we are excited to help pharmacies grow and strengthen their role as trusted health allies.
           </p>
         </section>
       </main>
