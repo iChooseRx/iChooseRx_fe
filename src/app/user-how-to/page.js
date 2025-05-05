@@ -32,17 +32,30 @@ export default function UserHowToPage() {
         <section className="mb-8">
           <h2 className="text-xl font-semibold mb-2">2. Saving Drugs & Adding Notes</h2>
           <p>
-            Click the <strong>Save</strong> button on any search result to add it to your saved list. Navigate to the saved drugs section (using the menu button at the top right of the page),
-            you can add personal notes to remember why you saved a drug or what to ask your pharmacist, or anything else really.
+            Click the <strong>Save</strong> button on any search result to add it to your saved list. Navigate to the saved drugs section (via the top right menu button) where you can add personal notes — such as what to ask your pharmacist or why you saved that drug.
           </p>
         </section>
 
         <section className="mb-8">
           <h2 className="text-xl font-semibold mb-2">3. Finding the Right NDC</h2>
           <p>
-            When you view drug details (click + details), scroll down to the <strong>Description</strong> field, look for a section like <strong>Inactive Ingredients</strong> make sure to confirm the inactive ingredients match your filters. There will also be a decsciption of each strength of the result. Once you confirm the strength you want matches your wants or needs, scroll down to the <strong>How Supplied</strong> field.
-            This is where you can find the exact NDC that matches the dosage or strength you are looking for. You will see something like this in the <strong>How Supplied</strong> field with all of the strengths <strong>5 mg: White to off white round tablets with T370 debossed on one side and four partial bisects on other side. NDC 43602-982-15</strong>. Add that NDC to the notes of your saved drug for reference. Now you can easily add that NDC to the availability report once you find it in the next step. If there is no NDC in the <strong>How Supplied</strong> field, then it may mean there is only one strength and you may be able to use the <strong>Package NDC</strong> number to find the drug at a pharmacy.
-            Crowdsourcing: Call your local pharmacies (shop local) and ask for a pharmacist, tell them the NDCs you are looking for, in my experiences they will then search and tell you if they have it available. Please report if you found a drug to help us spread awareness and empowerment to our users.
+            After clicking <strong>+ Details</strong> on a drug result:
+          </p>
+          <ul className="list-disc list-inside mb-2">
+            <li>First, read the <strong>Description</strong>: This field may list dosage strengths and other drug info.</li>
+            <li>Then, <strong>Inactive Ingredients</strong>: Check this section to confirm if the formulation aligns with your filters. It may list inactive ingredients per strength if they differ.</li>
+            <li>Then, <strong>How Supplied</strong>: Scroll to this section to find NDCs tied to specific dosages. You'll see lines like:<br />
+              <em>5 mg: White to off-white round tablets with T370 debossed... NDC 43602-982-15</em>
+            </li>
+          </ul>
+          <p>
+            After saving the drug, navigate to the saved drugs page via the menu link, copy the NDC and paste it into the <strong>notes</strong> field of your saved drug with any other helpful notes. That way, you'll have it ready when reporting pharmacy availability.
+          </p>
+          <p className="mt-2">
+            If there's no NDC in the <strong>How Supplied</strong> field, it may mean the drug only comes in one strength — in that case, try using the <strong>Package NDC</strong>.
+          </p>
+          <p className="mt-2">
+            <strong>Crowdsourcing tip:</strong> Call local pharmacies and ask the pharmacist if they carry the NDC you're seeking. If they confirm availability, please report it — your contribution helps others.
           </p>
         </section>
 
