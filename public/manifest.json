@@ -1,0 +1,23 @@
+{
+  "name": "iChooseRx",
+  "short_name": "iChooseRx",
+  "description": "Search FDA-approved drugs that align with your values. Filter out FD&C dyes, sweeteners, gluten, added sugar & more. Compare NDCs and find pharmacies.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1a1a1a",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
