@@ -44,18 +44,18 @@ export default function UserHowToPage() {
           <ul className="list-disc list-inside mb-2">
             <li>First, read the <strong>Description</strong>: This field may list dosage strengths and other drug info.</li>
             <li>Then, <strong>Inactive Ingredients</strong>: Check this section to confirm if the formulation aligns with your filters. It may list inactive ingredients per strength if they differ.</li>
-            <li>Then, <strong>How Supplied</strong>: Scroll to this section to find NDCs tied to specific dosages. You'll see lines like:<br />
+            <li>Then, <strong>How Supplied</strong>: Scroll to this section to find NDCs tied to specific dosages. You will see lines like:<br />
               <em>5 mg: White to off-white round tablets with T370 debossed... NDC 43602-982-15</em>
             </li>
           </ul>
           <p>
-            After saving the drug, navigate to the saved drugs page via the menu link, copy the NDC and paste it into the <strong>notes</strong> field of your saved drug with any other helpful notes. That way, you'll have it ready when reporting pharmacy availability.
+            After saving the drug, navigate to the saved drugs page via the menu link, copy the NDC and paste it into the <strong>notes</strong> field of your saved drug with any other helpful notes. That way, you will have it ready when reporting pharmacy availability.
           </p>
           <p className="mt-2">
-            If there's no NDC in the <strong>How Supplied</strong> field, it may mean the drug only comes in one strength — in that case, try using the <strong>Package NDC</strong>.
+            If there is no NDC in the <strong>How Supplied</strong> field, it may mean the drug only comes in one strength — in that case, try using the <strong>Package NDC</strong>.
           </p>
           <p className="mt-2">
-            <strong>Crowdsourcing tip:</strong> Call local pharmacies and ask the pharmacist if they carry the NDC you're seeking. If they confirm availability, please report it — your contribution helps others.
+            <strong>Crowdsourcing tip:</strong> Call local pharmacies and ask the pharmacist if they carry the NDC you are seeking. If they confirm availability, please report it — your contribution helps others.
           </p>
         </section>
 

@@ -9,7 +9,7 @@ export default function PlaceholderPage() {
       <main className="min-h-screen flex flex-col items-center justify-center bg-background text-foreground p-6 text-center">
         <h1 className="text-3xl font-bold mb-6">More on this coming soon</h1>
         <p className="text-lg text-gray-500 dark:text-gray-400 max-w-xl mb-8">
-          This page is under development. If you have questions you'd like us to cover here, feel free to reach out on{" "}
+          This page is under development. If you have questions you would like us to cover here, feel free to reach out on{" "}
           <a
             href="https://www.instagram.com/ichooserx/"
             target="_blank"
@@ -21,7 +21,7 @@ export default function PlaceholderPage() {
           or email us at{" "}
           <a href="mailto:iChooseRx@gmail.com" className="text-primary hover:underline">
             iChooseRx@gmail.com
-          </a>. We're working to add practical tools and resources that make your pharmacy experience more informed and empowering. Please check back soon!
+          </a>. We are working to add practical tools and resources that make your experience more informed and empowering. Please check back soon!
         </p>
 
         <section className="text-left max-w-2xl">
@@ -37,7 +37,7 @@ export default function PlaceholderPage() {
           <div className="mb-6">
             <h3 className="font-semibold mb-2">Is the website being updated regularly?</h3>
             <p className="text-gray-600 dark:text-gray-400">
-              Yes! We're actively expanding iChooseRx to improve filter explanations, pharmacy tools, and search functionality. We aim to provide helpful, easy-to-understand information so you can make confident medication decisions. Got ideas? Let us know via{" "}
+              Yes! We are actively expanding iChooseRx to improve filter explanations, pharmacy tools, and search functionality. We aim to provide helpful, easy-to-understand information so you can make confident medication decisions. Got ideas? Let us know via{" "}
               <a
                 href="https://www.instagram.com/ichooserx/"
                 target="_blank"
@@ -76,7 +76,7 @@ export default function PlaceholderPage() {
               <a href="mailto:iChooseRx@gmail.com" className="text-primary hover:underline">
                 email
               </a>{" "}
-              if you'd like to receive future updates, contribute ideas, or share your experience.
+              if you would like to receive future updates, contribute ideas, or share your experience.
             </p>
           </div>
         </section>

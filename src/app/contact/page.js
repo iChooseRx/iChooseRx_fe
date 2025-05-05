@@ -6,7 +6,7 @@ export default function ContactPage() {
   return (
     <PublicPageLayout title="Contact iChooseRx">
       <p className="mb-4">
-        We’d love to hear from you. Whether you have a question, found an issue, or want to collaborate, or want to share your experience using iChooseRx.com feel free to reach out!
+        We wouldd love to hear from you. Whether you have a question, found an issue, or want to collaborate, or want to share your experience using iChooseRx.com feel free to reach out!
       </p>
 
       <div className="space-y-4">
