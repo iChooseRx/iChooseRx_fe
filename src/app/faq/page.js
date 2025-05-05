@@ -9,16 +9,19 @@ export default function PlaceholderPage() {
       <main className="min-h-screen flex flex-col items-center justify-center bg-background text-foreground p-6 text-center">
         <h1 className="text-3xl font-bold mb-6">More on this coming soon</h1>
         <p className="text-lg text-gray-500 dark:text-gray-400 max-w-xl mb-8">
-          This page is in the works, reach out on Instagram Please reach out to on instagram <a
+          This page is under development. If you have questions you'd like us to cover here, feel free to reach out on{" "}
+          <a
             href="https://www.instagram.com/ichooserx/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-primary hover:underline"
           >
-            @ichooserx
-          </a> or email <a href="mailto:iChooseRx@gmail.com" className="text-primary hover:underline">
+            Instagram @ichooserx
+          </a>{" "}
+          or email us at{" "}
+          <a href="mailto:iChooseRx@gmail.com" className="text-primary hover:underline">
             iChooseRx@gmail.com
-          </a> if you have questions you would like to see answered here. We are working to add helpful resources and tools to empower your medication and pharmacy choices. Please check back soon for updates!
+          </a>. We're working to add practical tools and resources that make your pharmacy experience more informed and empowering. Please check back soon!
         </p>
 
         <section className="text-left max-w-2xl">
@@ -27,46 +30,53 @@ export default function PlaceholderPage() {
           <div className="mb-6">
             <h3 className="font-semibold mb-2">What is iChooseRx?</h3>
             <p className="text-gray-600 dark:text-gray-400">
-              iChooseRx is a platform that helps users search FDA-approved drugs based on filters like inactive ingredients, lifestyle preferences, and wellness goals.
+              iChooseRx is a health transparency tool that helps users search FDA-approved drugs based on inactive ingredients, lifestyle preferences, and personal wellness filters — putting informed choices into your hands.
             </p>
           </div>
 
           <div className="mb-6">
             <h3 className="font-semibold mb-2">Is the website being updated regularly?</h3>
             <p className="text-gray-600 dark:text-gray-400">
-              Yes, we are actively expanding iChooseRx to provide detailed information for every filter, pharmacy tool, and feature. In addition to informational pages, we regularly update app functionality and user experience for user benefit. Our goal is to deliver high-quality and helpful content that is easy for a user to understand. Please reach out to on instagram <a
+              Yes! We're actively expanding iChooseRx to improve filter explanations, pharmacy tools, and search functionality. We aim to provide helpful, easy-to-understand information so you can make confident medication decisions. Got ideas? Let us know via{" "}
+              <a
                 href="https://www.instagram.com/ichooserx/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:underline"
               >
-                @ichooserx
-              </a> or email <a href="mailto:iChooseRx@gmail.com" className="text-primary hover:underline">
-                iChooseRx@gmail.com
-              </a> if you have any suggestions for improvements or testimonials. Your voice can help shape the future of iChooseRx and help other users.
+                Instagram
+              </a>{" "}
+              or{" "}
+              <a href="mailto:iChooseRx@gmail.com" className="text-primary hover:underline">
+                email
+              </a>.
             </p>
           </div>
 
           <div className="mb-6">
             <h3 className="font-semibold mb-2">How often is content updated?</h3>
             <p className="text-gray-600 dark:text-gray-400">
-              New content is added and updated regularly as we continue improving the platform and responding to community needs.
+              We update content regularly as we learn from user needs and expand features. This includes filter logic, crowdsourced pharmacy data, and educational pages like this one.
             </p>
           </div>
 
           <div>
             <h3 className="font-semibold mb-2">How can I stay informed about updates?</h3>
             <p className="text-gray-600 dark:text-gray-400">
-              You can follow our updates on the iChooseRx homepage, instagram Please reach out to on instagram <a
+              Follow us on{" "}
+              <a
                 href="https://www.instagram.com/ichooserx/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:underline"
               >
-                @ichooserx
-              </a> or email <a href="mailto:iChooseRx@gmail.com" className="text-primary hover:underline">
-                iChooseRx@gmail.com
-              </a> if you would like to receive future announcements.
+                Instagram @ichooserx
+              </a>{" "}
+              or reach out via{" "}
+              <a href="mailto:iChooseRx@gmail.com" className="text-primary hover:underline">
+                email
+              </a>{" "}
+              if you'd like to receive future updates, contribute ideas, or share your experience.
             </p>
           </div>
         </section>
