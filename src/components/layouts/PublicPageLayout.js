@@ -1,4 +1,3 @@
-// components/layouts/PublicPageLayout.js
 "use client";
 import DashboardHeader from "@/components/DashboardHeader";
 

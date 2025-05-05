@@ -49,9 +49,21 @@ export default function MenuDropdown() {
         <ul className="flex flex-col p-2">
           {isLoggedIn ? (
             <>
-              <li><Link href="/" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">Home</Link></li>
-              <li><Link href="/dashboard/search" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">Drug Search</Link></li>
-              <li><Link href="/dashboard/saved" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">Saved Drugs & Pharmacies</Link></li>
+              <li>
+                <Link href="/" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link href="/dashboard/search" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
+                  Drug Search
+                </Link>
+              </li>
+              <li>
+                <Link href="/dashboard/saved" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
+                  Saved Drugs & Pharmacies
+                </Link>
+              </li>
               {(role === "pharmacy" || role === "admin") && (
                 <li>
                   <Link href="/dashboard/pharmacy" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
@@ -73,14 +85,44 @@ export default function MenuDropdown() {
                   </Link>
                 </li>
               )}
-              <li><button onClick={() => { handleLogout(); closeMenu(); }} className="block w-full text-left px-4 py-2 hover:bg-gray-200 rounded">Logout</button></li>
-              <li><button onClick={() => { handleDeleteAccount(); closeMenu(); }} className="block w-full text-left px-4 py-2 hover:bg-gray-200 rounded text-red-600">Delete Account</button></li>
+              <li>
+                <Link href="/contact" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
+                  Contact
+                </Link>
+              </li>
+              <li>
+                <button onClick={() => { handleLogout(); closeMenu(); }} className="block w-full text-left px-4 py-2 hover:bg-gray-200 rounded">
+                  Logout
+                </button>
+              </li>
+              <li>
+                <button onClick={() => { handleDeleteAccount(); closeMenu(); }} className="block w-full text-left px-4 py-2 hover:bg-gray-200 rounded text-red-600">
+                  Delete Account
+                </button>
+              </li>
             </>
           ) : (
             <>
-              <li><Link href="/" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">Home</Link></li>
-              <li><Link href="/login" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">Login</Link></li>
-              <li><Link href="/signup/user" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">Create Account</Link></li>
+              <li>
+                <Link href="/" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link href="/login" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
+                  Login
+                </Link>
+              </li>
+              <li>
+                <Link href="/signup/user" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
+                  Create Account
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" onClick={closeMenu} className="block px-4 py-2 hover:bg-gray-200 rounded">
+                  Contact
+                </Link>
+              </li>
             </>
           )}
         </ul>
