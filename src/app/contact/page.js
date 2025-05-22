@@ -1,7 +1,7 @@
 "use client";
 
 import PublicPageLayout from "@/components/layouts/PublicPageLayout";
-import AdSlot from "@/components/AdSlot";
+import AdSlot from "@/components/ads/AdSlot";
 
 export default function ContactPage() {
   return (

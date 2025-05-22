@@ -1,7 +1,7 @@
 "use client";
 
 import DashboardHeader from "@/components/DashboardHeader";
-import AdSlot from "@/components/AdSlot";
+import AdSlot from "@/components/ads/AdSlot";
 
 export default function PlaceholderPage() {
   return (

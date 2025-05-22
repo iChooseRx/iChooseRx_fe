@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import DashboardHeader from "@/components/DashboardHeader";
-import AdSlot from "@/components/AdSlot";
+import AdSlot from "@/components/ads/AdSlot";
 
 export default function UserHowToPage() {
   const [isReady, setIsReady] = useState(false);
