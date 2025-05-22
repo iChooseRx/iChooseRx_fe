@@ -39,7 +39,7 @@ export default function LandingPage() {
             </div>
 
             <p className="mt-8 text-sm text-gray-500 dark:text-gray-400 italic">
-              Ads coming soon — you might see placeholders. Your feedback helps shape the future.
+              {/* Ads coming soon — you might see placeholders.  */}Your feedback helps shape the future.
             </p>
 
             <p className="mt-4 text-xs text-gray-400 dark:text-gray-500">

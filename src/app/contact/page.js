@@ -1,6 +1,7 @@
 "use client";
 
 import PublicPageLayout from "@/components/layouts/PublicPageLayout";
+import AdSlot from "@/components/AdSlot";
 
 export default function ContactPage() {
   return (
@@ -36,6 +37,8 @@ export default function ContactPage() {
           </p>
         </div>
       </div>
+
+      <AdSlot position="contact-page-bottom" className="mt-8" />
     </PublicPageLayout>
   );
 }
