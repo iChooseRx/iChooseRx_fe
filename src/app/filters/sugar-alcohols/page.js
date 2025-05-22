@@ -47,7 +47,7 @@ export default function SugarAlcoholsPage() {
         </section>
 
         <div className="my-6">
-          <AdSlot position="added-sugar-page-bottom" className="h-24" />
+          <AdSlot position="sugar-alcohols-page-bottom" className="h-24" />
         </div>
 
         <Link href="/filter-explainer" className="text-primary hover:underline">

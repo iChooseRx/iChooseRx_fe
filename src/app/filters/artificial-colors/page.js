@@ -34,7 +34,7 @@ export default function ArtificialColorsPage() {
         </section>
 
         <div className="my-6">
-          <AdSlot position="added-sugar-page-bottom" className="h-24" />
+          <AdSlot position="artificial-colors-page-bottom" className="h-24" />
         </div>
 
         <section className="mt-10">

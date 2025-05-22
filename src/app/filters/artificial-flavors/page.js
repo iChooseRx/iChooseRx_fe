@@ -54,7 +54,7 @@ export default function ArtificialFlavorsPage() {
         </section>
 
         <div className="my-6">
-          <AdSlot position="added-sugar-page-bottom" className="h-24" />
+          <AdSlot position="artificial-flavors-page-bottom" className="h-24" />
         </div>
 
         <Link href="/filter-explainer" className="text-primary hover:underline">

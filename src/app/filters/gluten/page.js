@@ -62,7 +62,7 @@ export default function GlutenPage() {
         </section>
 
         <div className="my-6">
-          <AdSlot position="added-sugar-page-bottom" className="h-24" />
+          <AdSlot position="gluten-page-bottom" className="h-24" />
         </div>
 
         <Link href="/filter-explainer" className="text-primary hover:underline">

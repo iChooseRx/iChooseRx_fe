@@ -56,7 +56,7 @@ export default function ArtificialSweetenersPage() {
         </section>
 
         <div className="my-6">
-          <AdSlot position="added-sugar-page-bottom" className="h-24" />
+          <AdSlot position="artificial-sweeteners-page-bottom" className="h-24" />
         </div>
 
         <Link href="/filter-explainer" className="text-primary hover:underline">

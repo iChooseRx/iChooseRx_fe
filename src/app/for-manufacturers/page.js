@@ -50,7 +50,7 @@ export default function ForManufacturersPage() {
         </section>
 
         <div className="my-6">
-          <AdSlot position="added-sugar-page-bottom" className="h-24" />
+          <AdSlot position="for-manufacturers-page-bottom" className="h-24" />
         </div>
       </main>
     </>

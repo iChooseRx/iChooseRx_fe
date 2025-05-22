@@ -44,7 +44,7 @@ export default function HarmfulAdditivesPage() {
         </section>
 
         <div className="my-6">
-          <AdSlot position="added-sugar-page-bottom" className="h-24" />
+          <AdSlot position="harmful-additives-page-bottom" className="h-24" />
         </div>
 
         <Link href="/filter-explainer" className="text-primary hover:underline">

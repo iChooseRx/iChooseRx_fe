@@ -1,5 +1,6 @@
 'use client';
 import PublicPageLayout from "@/components/layouts/PublicPageLayout";
+import AdSlot from "@/components/ads/AdSlot";
 
 export default function WhyIChooseRxPage() {
   return (
@@ -15,6 +16,9 @@ export default function WhyIChooseRxPage() {
         This platform empowers you to align your prescriptions with your values, allergies,
         and health goals—whether that is avoiding dyes, allergens, additives, etc or finding local pharmacies who carry a specific NDC.
       </p>
+
+      <AdSlot position="whyichooserx-middle" className="h-24 my-6" />
+
       <p className="mb-4 italic text-sm text-gray-500 dark:text-gray-400">
         iChooseRx is not about labeling drugs “clean” or “dirty.” It is about **conscious choice**— giving you the data and control to make informed decisions in collaboration with your doctor or pharmacist.
       </p>

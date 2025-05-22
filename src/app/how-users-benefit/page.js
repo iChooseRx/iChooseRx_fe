@@ -50,7 +50,7 @@ export default function HowUsersBenefitPage() {
         </section>
 
         <div className="my-6">
-          <AdSlot position="added-sugar-page-bottom" className="h-24" />
+          <AdSlot position="how-users-benefit-page-bottom" className="h-24" />
         </div>
       </main>
     </>

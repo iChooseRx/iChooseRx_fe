@@ -112,7 +112,7 @@ export default function UserHowToPage() {
         </div>
 
         <div className="my-6">
-          <AdSlot position="added-sugar-page-bottom" className="h-24" />
+          <AdSlot position="user-how-to-page-bottom" className="h-24" />
         </div>
 
         <Link href="/dashboard" className="text-primary hover:underline mt-4 inline-block">
