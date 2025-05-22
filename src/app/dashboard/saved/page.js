@@ -2,15 +2,15 @@
 import { useDashboard } from "@/hooks/useDashboard";
 import SavedDrugs from "@/components/SavedDrugs";
 import PharmacySearch from "@/components/PharmacySearch";
-import { AdBelowHeader } from "@/components/ads";
-import TimeBasedAdGateModal from "@/components/ads/TimeBasedAdGateModal";
+// import { AdBelowHeader } from "@/components/ads";
+// import TimeBasedAdGateModal from "@/components/ads/TimeBasedAdGateModal";
 
 export default function SavedPage() {
   const dashboard = useDashboard();
 
   return (
     <>
-      <AdBelowHeader />
+      {/* <AdBelowHeader /> */}
 
       <div className="min-h-screen bg-background text-foreground px-1">
         <h2 className="text-3xl font-semibold mb-2">
@@ -29,7 +29,7 @@ export default function SavedPage() {
 
         <PharmacySearch />
       </div>
-      <TimeBasedAdGateModal />
+      {/* <TimeBasedAdGateModal /> */}
     </>
   );
 }

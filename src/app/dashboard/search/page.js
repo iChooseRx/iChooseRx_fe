@@ -3,16 +3,16 @@ import { useDashboard } from "@/hooks/useDashboard";
 import SearchBar from "@/components/SearchBar";
 import DrugFilter from "@/components/Filters";
 import SearchResults from "@/components/SearchResults";
-import { AdBelowHeader } from "@/components/ads";
-import { AdSlot } from "@/components/ads";
-import TimeBasedAdGateModal from "@/components/ads/TimeBasedAdGateModal";
+// import { AdBelowHeader } from "@/components/ads";
+// import { AdSlot } from "@/components/ads";
+// import TimeBasedAdGateModal from "@/components/ads/TimeBasedAdGateModal";
 
 export default function SearchPage() {
   const dashboard = useDashboard();
 
   return (
     <>
-      <AdBelowHeader />
+      {/* <AdBelowHeader /> */}
 
       <div className="min-h-screen bg-background text-foreground px-4 pb-4">
         <h2 className="text-2xl font-semibold mb-2">
@@ -50,7 +50,7 @@ export default function SearchPage() {
           </div>
         )}
 
-        <AdSlot position="below-filters" className="h-24 my-4" />
+        {/* <AdSlot position="below-filters" className="h-24 my-4" /> */}
 
         <SearchResults
           results={dashboard.searchResults}
@@ -61,7 +61,7 @@ export default function SearchPage() {
         />
       </div>
 
-      <TimeBasedAdGateModal />
+      {/* <TimeBasedAdGateModal /> */}
     </>
   );
 }
