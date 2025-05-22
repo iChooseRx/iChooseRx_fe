@@ -1,6 +1,7 @@
 "use client";
 
 import DashboardHeader from "@/components/DashboardHeader";
+import AdSlot from "@/components/AdSlot";
 
 export default function PlaceholderPage() {
   return (
@@ -79,6 +80,8 @@ export default function PlaceholderPage() {
               if you would like to receive future updates, contribute ideas, or share your experience.
             </p>
           </div>
+
+          <AdSlot position="faq-bottom" className="h-24" />
         </section>
       </main>
     </>

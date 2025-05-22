@@ -1,6 +1,7 @@
 "use client";
 
 import DashboardHeader from "@/components/DashboardHeader";
+import AdSlot from "@/components/AdSlot";
 
 export default function ForPharmaciesPage() {
   return (
@@ -47,6 +48,10 @@ export default function ForPharmaciesPage() {
             Stay tuned — we are excited to help pharmacies grow and strengthen their role as trusted health allies.
           </p>
         </section>
+
+        <div className="my-6">
+          <AdSlot position="added-sugar-page-bottom" className="h-24" />
+        </div>
       </main>
     </>
   );

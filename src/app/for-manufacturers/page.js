@@ -1,6 +1,7 @@
 "use client";
 
 import DashboardHeader from "@/components/DashboardHeader";
+import AdSlot from "@/components/AdSlot";
 
 export default function ForManufacturersPage() {
   return (
@@ -47,6 +48,10 @@ export default function ForManufacturersPage() {
             Stay tuned — we are excited to help build stronger patient-manufacturer connections.
           </p>
         </section>
+
+        <div className="my-6">
+          <AdSlot position="added-sugar-page-bottom" className="h-24" />
+        </div>
       </main>
     </>
   );

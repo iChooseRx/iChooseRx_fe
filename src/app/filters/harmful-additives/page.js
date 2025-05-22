@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import DashboardHeader from "@/components/DashboardHeader";
+import AdSlot from "@/components/AdSlot";
 
 export default function HarmfulAdditivesPage() {
   return (
@@ -41,6 +42,10 @@ export default function HarmfulAdditivesPage() {
             Reminder: If you are concerned about any of these ingredients, consult your healthcare provider for safe alternatives and medical guidance.
           </p>
         </section>
+
+        <div className="my-6">
+          <AdSlot position="added-sugar-page-bottom" className="h-24" />
+        </div>
 
         <Link href="/filter-explainer" className="text-primary hover:underline">
           ← Back to Filter Explainer

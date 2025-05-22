@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import DashboardHeader from "@/components/DashboardHeader";
+import AdSlot from "@/components/AdSlot";
 
 export default function GlutenPage() {
   return (
@@ -59,6 +60,10 @@ export default function GlutenPage() {
             Note: Always check with your pharmacist if you have a severe gluten allergy or celiac disease. While iChooseRx helps flag common gluten-containing ingredients, manufacturers may change formulations.
           </p>
         </section>
+
+        <div className="my-6">
+          <AdSlot position="added-sugar-page-bottom" className="h-24" />
+        </div>
 
         <Link href="/filter-explainer" className="text-primary hover:underline">
           ← Back to Filter Explainer

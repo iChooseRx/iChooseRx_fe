@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import DashboardHeader from "@/components/DashboardHeader";
+import AdSlot from "@/components/AdSlot";
 
 export default function EndocrineDisruptorsPage() {
   return (
@@ -58,6 +59,10 @@ export default function EndocrineDisruptorsPage() {
             Reminder: This filter is provided to support informed decision-making. Please consult a healthcare professional for personalized medical advice.
           </p>
         </section>
+
+        <div className="my-6">
+          <AdSlot position="added-sugar-page-bottom" className="h-24" />
+        </div>
 
         <Link href="/filter-explainer" className="text-primary hover:underline">
           ← Back to Filter Explainer

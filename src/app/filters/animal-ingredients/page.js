@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import DashboardHeader from "@/components/DashboardHeader";
+import AdSlot from "@/components/AdSlot";
 
 export default function AnimalIngredientsPage() {
   return (
@@ -50,6 +51,10 @@ export default function AnimalIngredientsPage() {
             Reminder: Always consult your doctor or pharmacist if you have specific ingredient sensitivities or dietary needs.
           </p>
         </section>
+
+        <div className="my-6">
+          <AdSlot position="added-sugar-page-bottom" className="h-24" />
+        </div>
 
         <Link href="/filter-explainer" className="text-primary hover:underline">
           ← Back to Filter Explainer

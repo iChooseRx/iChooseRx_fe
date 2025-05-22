@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import DashboardHeader from "@/components/DashboardHeader";
+import AdSlot from "@/components/AdSlot";
 
 export default function AddedSugarPage() {
   return (
@@ -55,6 +56,10 @@ export default function AddedSugarPage() {
             Reminder: Always consult your healthcare provider before making medication decisions.
           </p>
         </section>
+
+        <div className="my-6">
+          <AdSlot position="added-sugar-page-bottom" className="h-24" />
+        </div>
 
         <Link href="/filter-explainer" className="text-primary hover:underline">
           ← Back to Filter Explainer

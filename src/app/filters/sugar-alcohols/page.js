@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import DashboardHeader from "@/components/DashboardHeader";
+import AdSlot from "@/components/AdSlot";
 
 export default function SugarAlcoholsPage() {
   return (
@@ -44,6 +45,10 @@ export default function SugarAlcoholsPage() {
             Reminder: Always consult your doctor or pharmacist if you experience gastrointestinal side effects or are unsure about ingredients in your medication.
           </p>
         </section>
+
+        <div className="my-6">
+          <AdSlot position="added-sugar-page-bottom" className="h-24" />
+        </div>
 
         <Link href="/filter-explainer" className="text-primary hover:underline">
           ← Back to Filter Explainer

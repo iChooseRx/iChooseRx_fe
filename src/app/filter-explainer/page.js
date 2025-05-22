@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import DashboardHeader from "@/components/DashboardHeader";
+import AdSlot from "@/components/AdSlot";
 
 export default function FilterExplainerPage() {
   return (
@@ -74,6 +75,10 @@ export default function FilterExplainerPage() {
             </Link>
           </li>
         </ul>
+
+        <div className="my-8">
+          <AdSlot position="filter-explainer-bottom" className="h-24" />
+        </div>
 
         <p className="mt-10 text-sm text-gray-500">
           These filters are not medical advice. Always consult a qualified healthcare professional to

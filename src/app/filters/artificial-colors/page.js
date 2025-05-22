@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import DashboardHeader from "@/components/DashboardHeader";
+import AdSlot from "@/components/AdSlot";
 
 export default function ArtificialColorsPage() {
   return (
@@ -31,6 +32,10 @@ export default function ArtificialColorsPage() {
             Rather than making users choose which dyes to filter individually, we group these ingredients under a single Artificial Colors filter to simplify the experience and avoid confusion from obscure dye names or manufacturer variations.
           </p>
         </section>
+
+        <div className="my-6">
+          <AdSlot position="added-sugar-page-bottom" className="h-24" />
+        </div>
 
         <section className="mt-10">
           <Link

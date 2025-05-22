@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import DashboardHeader from "@/components/DashboardHeader";
+import AdSlot from "@/components/AdSlot";
 
 export default function UserHowToPage() {
   const [isReady, setIsReady] = useState(false);
@@ -108,6 +109,10 @@ export default function UserHowToPage() {
               @ichooserx
             </Link>
           </div>
+        </div>
+
+        <div className="my-6">
+          <AdSlot position="added-sugar-page-bottom" className="h-24" />
         </div>
 
         <Link href="/dashboard" className="text-primary hover:underline mt-4 inline-block">

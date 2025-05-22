@@ -1,6 +1,7 @@
 "use client";
 
 import DashboardHeader from "@/components/DashboardHeader";
+import AdSlot from "@/components/AdSlot";
 
 export default function HowUsersBenefitPage() {
   return (
@@ -47,6 +48,10 @@ export default function HowUsersBenefitPage() {
             Your choices matter. iChooseRx makes finding the right drug — and the right pharmacy — simpler, faster, and more aligned with what matters most to you.
           </p>
         </section>
+
+        <div className="my-6">
+          <AdSlot position="added-sugar-page-bottom" className="h-24" />
+        </div>
       </main>
     </>
   );
