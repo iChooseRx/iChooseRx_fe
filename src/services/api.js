@@ -14,6 +14,32 @@ api.interceptors.request.use((config) => {
   return config;
 }, (error) => Promise.reject(error));
 
+// Handle token expiration globally
+api.interceptors.response.use(
+  (response) => response, // pass through successful responses
+  (error) => {
+    const status = error.response?.status;
+    const message = error.response?.data?.error;
+
+    if (status === 401 && message === "Token expired") {
+      console.warn("⚠️ Token expired — logging user out");
+
+      // Clear stored auth
+      localStorage.removeItem("auth_token");
+      localStorage.removeItem("user_id");
+      localStorage.removeItem("user_role");
+
+      // Notify the app to show the session expired modal
+      window.dispatchEvent(new Event("session-expired"));
+
+      // Do not retry the request — just reject
+      return Promise.reject(error);
+    }
+
+    return Promise.reject(error); // Other errors flow through
+  }
+);
+
 // Python Microservice API
 const pythonApi = axios.create({
   baseURL: process.env.NEXT_PUBLIC_PYTHON_MICROSERVICE_URL,

@@ -1,5 +1,6 @@
 import localFont from "next/font/local";
 import "./globals.css";
+import SessionExpiredModalProvider from "@/components/SessionExpired/SessionExpiredModalProvider";
 
 // Load local fonts
 const geistSans = localFont({
@@ -37,6 +38,7 @@ export default function RootLayout({ children }) {
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
       <body className="relative z-10 antialiased bg-background text-foreground overflow-x-hidden">
+        <SessionExpiredModalProvider />
         {children}
       </body>
     </html>
