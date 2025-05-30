@@ -6,7 +6,7 @@ export default function SessionExpiredModal({ onAcknowledge }) {
       <div className="bg-white dark:bg-zinc-900 text-foreground max-w-md w-full p-6 rounded-xl shadow-lg border border-borderColor">
         <h2 className="text-xl font-bold mb-2 text-center">Session Expired</h2>
         <p className="text-center text-sm mb-4 text-gray-700 dark:text-gray-300">
-          You’ve been logged out because your session expired after 1 week of inactivity.
+          You’ve been logged out because logged in sessions after 1 week.
           Please log in again to continue using iChooseRx.
         </p>
 
